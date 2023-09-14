@@ -728,12 +728,28 @@ vim.keymap.set('n', '<leader>gc', git_branches, { desc = "Git branches", noremap
 vim.keymap.set('n', '<leader>sc', search_scio, { desc = "Search scio", noremap = true })
 
 -- augroups
+
+
+vim.keymap.set('n', '<leader><cr>', ':source ~/.config/nvim/init.lua<cr>', { noremap = true })
+vim.keymap.set('n', '<leader>rc', ':new ~/.config/nvim/init.lua<cr>', { noremap = true })
+
+local mmngreco = vim.api.nvim_create_augroup('mmngreco', { clear = true })
+vim.api.nvim_create_autocmd('BufWritePre', { group = mmngreco, pattern = '*', command = '%s/\\s\\+$//e' })
+vim.api.nvim_create_autocmd('BufWritePre', { group = mmngreco, pattern = '*.go', command = 'GoFmt' })
+vim.api.nvim_create_autocmd('BufEnter', { group = mmngreco, pattern = '*.dbout', command = 'norm zR' })
+vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'markdown', command = 'setl conceallevel=2 spl=en,es' })
+vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'make', command = 'setl noexpandtab shiftwidth=4 softtabstop=0' })
+vim.api.nvim_create_autocmd('TermOpen', { group = mmngreco, pattern = '*', command = 'setl nonumber norelativenumber' })
+vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'fugitive', command = 'setl nonumber norelativenumber' })
+vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'python', command = 'nnoremap <buffer> <F8> :silent !black -l79 -S %<CR><CR>' })
+vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'python', command = 'nnoremap <buffer> <F7> :silent !ruff -l79 %<CR><CR>' })
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, { pattern = 'Jenkinsfile', group = mmngreco, command = 'setl ft=groovy' })
+
 local augroup = vim.api.nvim_create_augroup
-Mgreco = augroup('mgreco', {})
-
 local autocmd = vim.api.nvim_create_autocmd
--- local yank_group = augroup('HighlightYank', {})
 
+-- local yank_group = augroup('HighlightYank', {})
+Mgreco = augroup('mgreco', {})
 autocmd({ "BufWritePre" }, {
   group = Mgreco,
   pattern = "*",
@@ -1078,6 +1094,7 @@ vim.api.nvim_command('command! -buffer Jq %!jq "."')
 vim.o.grepprg = 'rg --vimgrep'
 vim.o.grepformat = '%f:%l:%c:%m'
 -- }}
+
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et tw=0
