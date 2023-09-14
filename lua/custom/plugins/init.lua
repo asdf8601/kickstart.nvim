@@ -7,6 +7,20 @@ local executable = function(x)
 end
 
 return {
+    'sbulav/nredir.nvim',
+    'tpope/vim-abolish',
+    'tpope/vim-dadbod',
+    'kristijanhusak/vim-dadbod-ui',
+    'tpope/vim-dispatch',
+    'tpope/vim-fugitive',
+    'tpope/vim-markdown',
+    'tpope/vim-obsession',
+    'tpope/vim-repeat',
+    'tpope/vim-rhubarb',
+    'tpope/vim-speeddating',
+    'tpope/vim-surround',
+    'tpope/vim-unimpaired',
+    'tpope/vim-vinegar',
     'goerz/jupytext.vim',
     'ThePrimeagen/harpoon',
     'szw/vim-maximizer',
