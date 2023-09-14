@@ -240,7 +240,7 @@ require('lazy').setup({
   --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {})
 
 -- [[ Setting options ]]
@@ -259,7 +259,7 @@ vim.o.mouse = 'a'
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.o.clipboard = 'unnamedplus'
+-- vim.o.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -623,18 +623,45 @@ cmp.setup {
 
 
 -- Custom setup {{
+-- [[ Setting options ]]
+vim.o.t_Co = 256
+vim.o.scrollback = 20000
+-- vim.o.guicursor=""
+-- vim.o.nohlsearch = true
+-- vim.o.hidden = true
+-- vim.o.noerrorbells = true
+vim.o.tabstop = 4
+vim.o.softtabstop = 4
+vim.o.shiftwidth = 4
+vim.o.expandtab = true
+vim.o.smartindent = true
+-- vim.o.number = true
+vim.o.relativenumber = true
+vim.o.wrap = false
+-- vim.o.noswapfile = true
+-- vim.o.nobackup = true
+vim.o.undodir = os.getenv("HOME") .. '/.vim/undodir'
+vim.o.undofile = true
+vim.o.incsearch = true
+vim.o.scrolloff = 8
+-- vim.o.signcolumn='no'
+vim.o.cmdheight = 1
+vim.o.timeoutlen = 200
+vim.o.updatetime = 50
+-- vim.o.shortmess = vim.o.shortmess .. 'c'
+vim.o.textwidth = 79
+vim.o.cursorline = true
+vim.o.colorcolumn = "80" -- works! (using integer will fail)
 vim.o.completeopt = 'menuone,noselect'
-vim.keymap.set('n', '-', ':Ex %:h<cr>', { silent = true })
 vim.g.netrw_hide = 0
 
-
 -- bang chatgpt command
-vim.api.nvim_set_keymap('n', '<C-c>%', ':%!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = 'chatgpt' })
-vim.api.nvim_set_keymap('n', '<C-c>.', ':.!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = 'chatgpt' })
-vim.api.nvim_set_keymap('v', '<C-c>.', ':!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = 'chatgpt' })
+vim.api.nvim_set_keymap('n', '<C-c>%', ':%!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = '%!chatgpt' })
+vim.api.nvim_set_keymap('n', '<C-c>.', ':.!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = '.!chatgpt' })
+vim.api.nvim_set_keymap('v', '<C-c>.', ':!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = '!chatgpt' })
 
 -- Explore
-vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>', { silent = false })
+vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
 vim.o.completeopt = 'menuone,noselect'
 
 -- telescope
@@ -695,10 +722,10 @@ local function git_branches()
   })
 end
 
-vim.keymap.set('n', '<leader>dot', search_dotfiles, { noremap = true })
-vim.keymap.set('n', '<Leader>ff', find_files, { noremap = true })
-vim.keymap.set('n', '<leader>gc', git_branches, { noremap = true })
-vim.keymap.set('n', '<leader>sc', search_scio, { noremap = true })
+vim.keymap.set('n', '<leader>dot', search_dotfiles, { desc = "Search dotfiles", noremap = true })
+vim.keymap.set('n', '<Leader>ff', find_files, { desc = "Find files", noremap = true })
+vim.keymap.set('n', '<leader>gc', git_branches, { desc = "Git branches", noremap = true })
+vim.keymap.set('n', '<leader>sc', search_scio, { desc = "Search scio", noremap = true })
 
 -- augroups
 local augroup = vim.api.nvim_create_augroup
@@ -748,27 +775,27 @@ else
 end
 
 -- terminal settings
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
-vim.keymap.set('t', '<C-w>h', '<C-\\><C-n><C-w>h', { noremap = true })
-vim.keymap.set('t', '<C-w>j', '<C-\\><C-n><C-w>j', { noremap = true })
-vim.keymap.set('t', '<C-w>k', '<C-\\><C-n><C-w>k', { noremap = true })
-vim.keymap.set('t', '<C-w>l', '<C-\\><C-n><C-w>l', { noremap = true })
-vim.keymap.set('t', '<C-w>w', '<C-\\><C-n><C-w>w', { noremap = true })
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true, desc = "Switch to normal mode" })
+vim.keymap.set('t', '<C-w>h', '<C-\\><C-n><C-w>h', { noremap = true, desc = "Move cursor to the left window" })
+vim.keymap.set('t', '<C-w>j', '<C-\\><C-n><C-w>j', { noremap = true, desc = "Move cursor to the below window" })
+vim.keymap.set('t', '<C-w>k', '<C-\\><C-n><C-w>k', { noremap = true, desc = "Move cursor to the above window" })
+vim.keymap.set('t', '<C-w>l', '<C-\\><C-n><C-w>l', { noremap = true, desc = "Move cursor to the right window" })
+vim.keymap.set('t', '<C-w>w', '<C-\\><C-n><C-w>w', { noremap = true, desc = "Switch to the next window" })
 -- vim.keymap.set('t', '<C-P>', '<C-\\><C-n>pi<cr>', { noremap = true })
 -- vim.keymap.set('n', '<C-l>', 'i<C-l>', {noremap = true})
 
 vim.g.completion_matching_strategy_list = { 'exact', 'substring', 'fuzzy' }
 vim.g.completion_enable_snippet = 'vim-vsnip'
-vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true })
-vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true })
-vim.keymap.set('n', '<leader>gd', ':lua vim.lsp.buf.definition()<CR>', { noremap = true })
-vim.keymap.set('n', '<leader>gi', ':lua vim.lsp.buf.implementation()<CR>', { noremap = true })
-vim.keymap.set('n', '<leader>gh', ':lua vim.lsp.buf.signature_help()<CR>', { noremap = true })
-vim.keymap.set('n', '<leader>gf', ':lua vim.lsp.buf.references()<CR>', { noremap = true })
-vim.keymap.set('n', '<leader>ga', ':lua vim.lsp.buf.code_action()<CR>', { noremap = true })
-vim.keymap.set('n', '<leader>dq', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', { noremap = true })
-vim.keymap.set('n', '<leader>dn', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', { noremap = true })
-vim.keymap.set('n', '<leader>dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', { noremap = true })
+vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, desc = 'Show Hover' })
+vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true, desc = 'Rename' })
+vim.keymap.set('n', '<leader>gd', ':lua vim.lsp.buf.definition()<CR>', { noremap = true, desc = 'Go to Definition' })
+vim.keymap.set('n', '<leader>gi', ':lua vim.lsp.buf.implementation()<CR>', { noremap = true, desc = 'Go to Implementation' })
+vim.keymap.set('n', '<leader>gh', ':lua vim.lsp.buf.signature_help()<CR>', { noremap = true, desc = 'Show Signature Help' })
+vim.keymap.set('n', '<leader>gf', ':lua vim.lsp.buf.references()<CR>', { noremap = true, desc = 'Find References' })
+vim.keymap.set('n', '<leader>ga', ':lua vim.lsp.buf.code_action()<CR>', { noremap = true, desc = 'Code Actions' })
+vim.keymap.set('n', '<leader>dq', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', { noremap = true, desc = 'Diagnostics Quickfix' })
+vim.keymap.set('n', '<leader>dn', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', { noremap = true, desc = 'Go to Next Diagnostic' })
+vim.keymap.set('n', '<leader>dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', { noremap = true, desc = 'Go to Previous Diagnostic' })
 
 -- [[ jupytext ]]
 vim.g.jupytext_filetype_map = { py = 'python' }
@@ -779,19 +806,16 @@ vim.g.jupytext_fmt = 'py:percent'
 
 vim.g.slime_cell_delimiter = [[\s*#\s*%%]]
 vim.g.slime_paste_file = os.getenv("HOME") .. "/.slime_paste"
-vim.keymap.set('n', '<leader>cv', ':SlimeConfig<cr>', { noremap = true })
-vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', { noremap = true })
--- vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', {noremap = true})
-vim.keymap.set('n', '<leader>ck', '<cmd>call search(g:slime_cell_delimiter, "b")<cr>', { noremap = true })
-vim.keymap.set('n', '<leader>cj', '<cmd>call search(g:slime_cell_delimiter)<cr>', { noremap = true })
-vim.keymap.set('n', '<leader>cv', ':SlimeConfig<cr>', { noremap = true })
 vim.keymap.set('n', '<leader>e', ':SlimeSend<cr>', { noremap = true, desc = 'send line to tmux' })
 vim.keymap.set('x', '<leader>e', '<Plug>SlimeRegionSend', { noremap = true, desc = 'send line to tmux' })
-
-vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', { noremap = true })
-vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', { noremap = true })
-vim.keymap.set('n', '<leader>ck', '<cmd>call search(g:slime_cell_delimiter, "b")<cr>', { noremap = true })
-vim.keymap.set('n', '<leader>cj', '<cmd>call search(g:slime_cell_delimiter)<cr>', { noremap = true })
+vim.keymap.set('n', '<leader>cv', ':SlimeConfig<cr>', { noremap = true, desc = "Open SlimeConfig" })
+vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', { noremap = true, desc = "Send Paragraph with Slime" })
+-- vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', {noremap = true})
+vim.keymap.set('n', '<leader>ck', '<cmd>call search(g:slime_cell_delimiter, "b")<cr>', { noremap = true, desc = "Search backward for slime cell delimiter" })
+vim.keymap.set('n', '<leader>cj', '<cmd>call search(g:slime_cell_delimiter)<cr>', { noremap = true, desc = "Search forward for slime cell delimiter" })
+vim.keymap.set('n', '<leader>cv', ':SlimeConfig<cr>', { noremap = true, desc = "Open slime configuration" })
+vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', { noremap = true, desc = "Send paragraph to slime" })
+vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', { noremap = true, desc = "Send cell to slime" })
 
 local function slime_use_tmux()
   vim.g.slime_target = "tmux"
@@ -891,7 +915,7 @@ function Checkboxes()
 end
 
 -- [[ fugitive
-vim.keymap.set("n", "<leader>w", ":Git|10wincmd_<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>w", ":Git|10wincmd_<cr>", { noremap = true, desc = "Open Git status and advance 10 windows" })
 vim.keymap.set('n', '<C-g>', ':GBrowse<cr>', { noremap = true, desc = 'browse current file on github' })
 vim.keymap.set('v', '<C-g>', ':GBrowse<cr>', { noremap = true, desc = 'browse current file and line on github' })
 vim.keymap.set('n', '<C-G>', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current file' })
@@ -1002,11 +1026,57 @@ function AddPdbrc()
   vim.api.nvim_command("normal! :w .pdbrc<cr>")
   local file = vim.fn.expand('%:p')
   local line = vim.fn.line('.')
+  -- todo: use a join
   local cmd = "b " .. file .. ":" .. line
   vim.api.nvim_command("normal! :r !echo '" .. cmd .. "' >> .pdbrc<cr>")
 end
 
-vim.api.nvim_set_keymap('n', '<C-b><C-b>', ':lua AddPdbrc()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-b><C-b>', ':lua AddPdbrc()<CR>', { noremap = true, silent = true, desc = 'Add pdbrc' })
+
+
+-- send to harpoon terminal
+vim.keymap.set('n', '<C-s><C-h>', ':lua SendToHarpoon(1, 0)<CR>', { noremap = true, desc = "Send to Harpoon (normal mode)" })
+vim.keymap.set('v', '<C-s><C-h>', ':lua SendToHarpoon(1, 1)<CR>', { noremap = true, desc = "Send to Harpoon (visual mode)" })
+-- open harpoon menu
+vim.keymap.set('n', '<leader>ha', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true, desc = "Toggle Harpoon's quick menu" })
+
+vim.keymap.set('n', '<C-h>', ':lua require("harpoon.ui").nav_file(1)<cr>', { noremap = true, desc = 'Go to 1 file' })
+vim.keymap.set('n', '<C-j>', ':lua require("harpoon.ui").nav_file(2)<cr>', { noremap = true, desc = 'Go to 2 file' })
+vim.keymap.set('n', '<C-k>', ':lua require("harpoon.ui").nav_file(3)<cr>', { noremap = true, desc = 'Go to 3 file' })
+vim.keymap.set('n', '<C-l>', ':lua require("harpoon.ui").nav_file(4)<cr>', { noremap = true, desc = 'Go to 4 file' })
+
+vim.keymap.set('n', '<C-h><C-h>', ':lua require("harpoon.term").gotoTerminal(1)<cr>i', { noremap = true, desc = "Go to Terminal 1" })
+vim.keymap.set('n', '<C-j><C-j>', ':lua require("harpoon.term").gotoTerminal(2)<cr>i', { noremap = true, desc = "Go to Terminal 2" })
+vim.keymap.set('n', '<C-k><C-k>', ':lua require("harpoon.term").gotoTerminal(3)<cr>i', { noremap = true, desc = "Go to Terminal 3" })
+vim.keymap.set('n', '<C-l><C-l>', ':lua require("harpoon.term").gotoTerminal(4)<cr>i', { noremap = true, desc = "Go to Terminal 4" })
+
+-- add file to harpoon
+vim.keymap.set('n', '<leader>hf', ':lua require("harpoon.mark").add_file()<CR>', { desc = "Add file to Harpoon marks" })
+
+-- add python cells
+vim.keymap.set('n', '<leader>co', 'O%%<esc>:norm gcc<cr>j', { noremap = true, desc = 'Insert a cell comment above the current line' })
+vim.keymap.set('n', '<leader>cO', 'o%%<esc>:norm gcc<cr>k', { noremap = true, desc = 'Insert a cell comment below the current line' })
+vim.keymap.set('n', '<leader>c-', 'O<esc>77i-<esc>:norm gcc<cr>j', { noremap = true, desc = 'Insert a horizontal line of dashes above the current line' })
+vim.keymap.set('n', 'vic', 'V?%%<cr>o/%%<cr>koj', { noremap = true, desc = 'Visually select a cell and insert a comment before and after it' })
+
+-- markdown
+vim.g.markdown_fenced_languages = { 'html', 'python', 'bash=sh', 'sql', 'mermaid' }
+vim.g.markdown_minlines = 50
+
+-- TODO: fill this
+-- vim.g.mkdp_markdown_css = ''
+vim.g.mkdp_auto_start = 0
+vim.g.mkdp_auto_close = 0
+vim.g.mkdp_page_title = "${name}"
+vim.g.mkdp_theme = 'light'
+
+-- {{ Create command to call jq '.' % and replace the buffer with the output
+vim.api.nvim_command('command! -buffer Jq %!jq "."')
+-- }}
+
+-- {{ grep program}}
+vim.o.grepprg = 'rg --vimgrep'
+vim.o.grepformat = '%f:%l:%c:%m'
 -- }}
 
 -- The line beneath this is called `modeline`. See `:help modeline`
