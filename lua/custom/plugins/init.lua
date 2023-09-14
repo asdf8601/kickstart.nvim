@@ -2,4 +2,72 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
-return {}
+local executable = function(x)
+  return vim.fn.executable(x) == 1
+end
+
+return {
+    'goerz/jupytext.vim',
+    'ThePrimeagen/harpoon',
+    'szw/vim-maximizer',
+    'RRethy/vim-illuminate',
+    'jpalardy/vim-slime',
+    'mhartington/formatter.nvim',
+    {
+        "zbirenbaum/copilot.lua",
+        config = function()
+            require('copilot').setup()
+        end,
+    },
+    {
+        "zbirenbaum/copilot-cmp",
+        dependencies = { "copilot.lua" },
+        config = function()
+            require("copilot_cmp").setup()
+        end,
+    },
+    {
+        "NTBBloodbath/rest.nvim",
+        enable = executable "jq",
+        config = function()
+            require("rest-nvim").setup()
+        end,
+    },
+    {
+        "nvim-neotest/neotest",
+        dependencies = {
+            "nvim-neotest/neotest-vim-test",
+            "nvim-neotest/neotest-python",
+            "nvim-neotest/neotest-plenary",
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+            "antoinemadec/FixCursorHold.nvim"
+        }
+    },
+    {
+        "klen/nvim-test",
+        config = function()
+            require('nvim-test').setup({})
+        end
+    },
+  {
+    'jakewvincent/mkdnflow.nvim',
+    rocks = 'luautf8', -- Ensures optional luautf8 dependency is installed
+    config = function()
+      require('mkdnflow').setup({})
+    end
+  },
+  { 'mracos/mermaid.vim' },
+  {
+    "iamcco/markdown-preview.nvim",
+    run = "cd app && npm install",
+    setup = function() vim.g.mkdp_filetypes = { "markdown" } end,
+    ft = { "markdown" },
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    run = "cd app && npm install",
+    setup = function() vim.g.mkdp_filetypes = { "markdown" } end,
+    ft = { "markdown" },
+  },
+}
