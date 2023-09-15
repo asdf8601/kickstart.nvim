@@ -27,11 +27,17 @@ return {
     'RRethy/vim-illuminate',
     'jpalardy/vim-slime',
     'mhartington/formatter.nvim',
+    'tyru/open-browser.vim',
     {
         "zbirenbaum/copilot.lua",
         config = function()
             require('copilot').setup()
         end,
+    },
+
+    {
+        'hrsh7th/nvim-cmp',
+        dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline' },
     },
     {
         "zbirenbaum/copilot-cmp",
@@ -74,14 +80,18 @@ return {
   { 'mracos/mermaid.vim' },
   {
     "iamcco/markdown-preview.nvim",
-    run = "cd app && npm install",
-    setup = function() vim.g.mkdp_filetypes = { "markdown" } end,
+    build = "cd app && npm install",
+    init = function() vim.g.mkdp_filetypes = { "markdown" } end,
     ft = { "markdown" },
   },
   {
     "iamcco/markdown-preview.nvim",
-    run = "cd app && npm install",
-    setup = function() vim.g.mkdp_filetypes = { "markdown" } end,
+    build = "cd app && npm install",
+    init = function() vim.g.mkdp_filetypes = { "markdown" } end,
     ft = { "markdown" },
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = { "mfussenegger/nvim-dap",'theHamsta/nvim-dap-virtual-text', 'mfussenegger/nvim-dap-python' }
   },
 }
