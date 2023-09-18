@@ -98,5 +98,61 @@ return {
 			'mfussenegger/nvim-dap-python',
     }
   },
+  {
+    "jackMort/ChatGPT.nvim",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    init = function()
+      require("chatgpt").setup({
+        openai_params = {
+          model = "gpt-4",
+          frequency_penalty = 0,
+          presence_penalty = 0,
+          max_tokens = 300,
+          temperature = 0,
+          top_p = 1,
+          n = 1,
+        },
+        -- openai_edit_params = {
+        --   model = "code-davinci-edit-001",
+        --   temperature = 0,
+        --   top_p = 1,
+        --   n = 1,
+        -- },
+        chat = {
+          keymaps = {
+            close = { "<C-c>", },
+            yank_last = "<C-y>",
+            scroll_up = "<C-u>",
+            scroll_down = "<C-d>",
+            toggle_settings = "<C-o>",
+            new_session = "<C-n>",
+            cycle_windows = "<Tab>",
+          },
+        },
+        popup_input = {
+          submit = "<C-s>",
+        },
+      })
+    end,
+  },
+  {
+    "dpayne/CodeGPT.nvim",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+    },
+    init = function()
+      require("codegpt.config")
+    end
+  },
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {}
+  },
 }
 -- vim: ts=2 sts=2 sw=2 et tw=0
