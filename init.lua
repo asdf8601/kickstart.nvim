@@ -644,8 +644,36 @@ vim.o.completeopt = 'menuone,noselect'
 vim.g.netrw_hide = 0
 vim.o.laststatus = 3
 
+-- TODO: fix this
 -- bang chatgpt command
-vim.api.nvim_set_keymap('n', '<C-c>%', ':%!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = '%!chatgpt' })
+-- function Gpt_command(args)
+--   -- print(args)
+--   local how = args[1]
+--   local arg = args[2] or ""
+--   print(how)
+--   print(arg)
+--   local prefix = 'Avoid comments and explanations unless I ask for it. '
+--   local cmd = ''
+--   if arg == nil then
+--     arg = ''
+--   end
+--
+--   if how == '%' then
+--     cmd = ':%!chatgpt -p "' .. prefix .. arg .. '"<cr>'
+--   elseif how == '.' then
+--     cmd = ':%!chatgpt -p "' .. prefix .. arg .. '"<cr>'
+--   else
+--     cmd = ':!chatgpt -p "' .. prefix .. arg .. '"<cr>'
+--   end
+--   vim.cmd(cmd)
+-- end
+-- vim.api.nvim_create_user_command('Gpt', Gpt_command, { nargs= "*" , bang=true })
+-- vim.api.nvim_exec([[
+--   command! -nargs=* Gpt lua Gpt_command({<f-args>})
+-- ]], false)
+-- hola esto es una prueba
+
+vim.api.nvim_set_keymap('n', '<C-c>f', ':%!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = '%!chatgpt' })
 vim.api.nvim_set_keymap('n', '<C-c>.', ':.!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = '.!chatgpt' })
 vim.api.nvim_set_keymap('v', '<C-c>.', ':!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = '!chatgpt' })
 
@@ -653,7 +681,7 @@ vim.api.nvim_set_keymap('v', '<C-c>.', ':!chatgpt -p "Avoid comments and explana
 vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
 vim.o.completeopt = 'menuone,noselect'
 
--- telescope
+-- telescope {{
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<C-p>', builtin.git_files, { noremap = true, desc = 'Find files in git repo' })
 vim.keymap.set('n', '<leader>gs', builtin.git_stash, { noremap = true, desc = 'Git stash' })
@@ -711,10 +739,55 @@ local function git_branches()
   })
 end
 
+vim.keymap.set('n', '<leader>fk', ':Telescope keymaps<cr>', { noremap = true, desc = "Find keymaps", silent = false })
 vim.keymap.set('n', '<leader>dot', search_dotfiles, { desc = "Search dotfiles", noremap = true })
 vim.keymap.set('n', '<Leader>ff', find_files, { desc = "Find files", noremap = true })
 vim.keymap.set('n', '<leader>gc', git_branches, { desc = "Git branches", noremap = true })
 vim.keymap.set('n', '<leader>sc', search_scio, { desc = "Search scio", noremap = true })
+vim.keymap.set('n', "<leader>fp", "<cmd>lua require('telescope.builtin').find_files( { cwd = vim.fn.expand('%:p:h') }) <CR>", { desc = "Search current buffer dir", noremap = true })
+vim.keymap.set('n', "ts", "<cmd>lua require('telescope.builtin').symbols{ sources = {'emoji', 'kaomoji', 'gitmoji'} } <CR>", { desc = "Search emoji", noremap = true })
+
+
+
+require("telescope").setup {
+  pickers = {
+    buffers = {
+      mappings = {
+        i = {
+          ["<c-d>"] = actions.delete_buffer + actions.move_to_top,
+        }
+      }
+    }
+  }
+}
+require("telescope").setup{
+  defaults = {
+    mappings = {
+      i = {
+        ["<esc>"] = actions.close
+      },
+    },
+  }
+}
+function vim.find_files_from_project_git_root()
+  local function is_git_repo()
+    vim.fn.system("git rev-parse --is-inside-work-tree")
+    return vim.v.shell_error == 0
+  end
+  local function get_git_root()
+    local dot_git_path = vim.fn.finddir(".git", ".;")
+    return vim.fn.fnamemodify(dot_git_path, ":h")
+  end
+  local opts = {}
+  if is_git_repo() then
+    opts = {
+      cwd = get_git_root(),
+    }
+  end
+  require("telescope.builtin").find_files(opts)
+end
+
+-- }}
 
 -- augroups
 
