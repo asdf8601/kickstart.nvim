@@ -645,33 +645,40 @@ vim.g.netrw_hide = 0
 vim.o.laststatus = 3
 
 -- TODO: fix this
--- bang chatgpt command
--- function Gpt_command(args)
---   -- print(args)
---   local how = args[1]
---   local arg = args[2] or ""
---   print(how)
---   print(arg)
---   local prefix = 'Avoid comments and explanations unless I ask for it. '
---   local cmd = ''
---   if arg == nil then
---     arg = ''
---   end
---
---   if how == '%' then
---     cmd = ':%!chatgpt -p "' .. prefix .. arg .. '"<cr>'
---   elseif how == '.' then
---     cmd = ':%!chatgpt -p "' .. prefix .. arg .. '"<cr>'
---   else
---     cmd = ':!chatgpt -p "' .. prefix .. arg .. '"<cr>'
---   end
---   vim.cmd(cmd)
--- end
--- vim.api.nvim_create_user_command('Gpt', Gpt_command, { nargs= "*" , bang=true })
--- vim.api.nvim_exec([[
---   command! -nargs=* Gpt lua Gpt_command({<f-args>})
--- ]], false)
--- hola esto es una prueba
+function Gpt_command(args)
+  local mod = args.fargs[1]
+  local prompt = ""
+
+  for key, value in ipairs(args.fargs) do
+    if key > 1 then
+      prompt = prompt .. value .. " "
+    end
+  end
+  local filetype = vim.bo.filetype
+  local prefix = 'You are a ' .. filetype .. ' developer/writer expert. '
+  prefix = prefix .. 'Avoid comments and explanations unless I ask for it. '
+  prefix = prefix .. 'Keep the original language. '
+  local cmd = ''
+  if prompt == nil then
+    prompt = ''
+  end
+
+  local _cmd = ''
+  if mod == '%' then
+    -- file
+    _cmd = '%!chatgpt -p "'
+  elseif mod == '.' then
+    -- line
+    _cmd = '.!chatgpt -p "'
+  else
+    _cmd = '!chatgpt -p "'
+  end
+  cmd = _cmd .. prefix .. prompt .. '"<cr>'
+  vim.print(cmd)
+  vim.api.nvim_cmd({ cmd }, { output = true })
+end
+
+-- hla mundo
 
 vim.api.nvim_set_keymap('n', '<C-c>f', ':%!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = '%!chatgpt' })
 vim.api.nvim_set_keymap('n', '<C-c>.', ':.!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = '.!chatgpt' })
@@ -685,7 +692,7 @@ vim.o.completeopt = 'menuone,noselect'
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<C-p>', builtin.git_files, { noremap = true, desc = 'Find files in git repo' })
 vim.keymap.set('n', '<leader>gs', builtin.git_stash, { noremap = true, desc = 'Git stash' })
-local ignore_patterns = { "venv/", ".venv/", ".git/", "node_modules/", "*.pyc", "__.*cache.*/", "*.pkl", "*.pickle", "*.mat" }
+local ignore_patterns = { "venv/*", ".venv/*", ".git/*", "node_modules/*", "*.pyc", "__.*cache.*/", "*.pkl", "*.pickle", "*.mat" }
 local actions = require('telescope.actions')
 
 local function search_scio()
@@ -741,12 +748,11 @@ end
 
 vim.keymap.set('n', '<leader>fk', ':Telescope keymaps<cr>', { noremap = true, desc = "Find keymaps", silent = false })
 vim.keymap.set('n', '<leader>dot', search_dotfiles, { desc = "Search dotfiles", noremap = true })
-vim.keymap.set('n', '<Leader>ff', find_files, { desc = "Find files", noremap = true })
+-- vim.keymap.set('n', '<Leader>ff', find_files, { desc = "Find files", noremap = true })
 vim.keymap.set('n', '<leader>gc', git_branches, { desc = "Git branches", noremap = true })
 vim.keymap.set('n', '<leader>sc', search_scio, { desc = "Search scio", noremap = true })
 vim.keymap.set('n', "<leader>fp", "<cmd>lua require('telescope.builtin').find_files( { cwd = vim.fn.expand('%:p:h') }) <CR>", { desc = "Search current buffer dir", noremap = true })
 vim.keymap.set('n', "ts", "<cmd>lua require('telescope.builtin').symbols{ sources = {'emoji', 'kaomoji', 'gitmoji'} } <CR>", { desc = "Search emoji", noremap = true })
-
 
 
 require("telescope").setup {
@@ -769,7 +775,8 @@ require("telescope").setup{
     },
   }
 }
-function vim.find_files_from_project_git_root()
+
+local function find_files_from_project_git_root()
   local function is_git_repo()
     vim.fn.system("git rev-parse --is-inside-work-tree")
     return vim.v.shell_error == 0
@@ -778,14 +785,38 @@ function vim.find_files_from_project_git_root()
     local dot_git_path = vim.fn.finddir(".git", ".;")
     return vim.fn.fnamemodify(dot_git_path, ":h")
   end
-  local opts = {}
+  local opts = {
+    file_ignore_patterns = ignore_patterns,
+  }
   if is_git_repo() then
-    opts = {
-      cwd = get_git_root(),
-    }
+    opts["cwd"] = get_git_root()
   end
   require("telescope.builtin").find_files(opts)
 end
+
+vim.keymap.set("n", "<leader>ff", find_files_from_project_git_root, { noremap = true, desc = "Find files from git root" })
+
+local previewers = require("telescope.previewers")
+
+local new_maker = function(filepath, bufnr, opts)
+  opts = opts or {}
+
+  filepath = vim.fn.expand(filepath)
+  vim.loop.fs_stat(filepath, function(_, stat)
+    if not stat then return end
+    if stat.size > 100000 then
+      return
+    else
+      previewers.buffer_previewer_maker(filepath, bufnr, opts)
+    end
+  end)
+end
+
+require("telescope").setup {
+  defaults = {
+    buffer_previewer_maker = new_maker,
+  }
+}
 
 -- }}
 
