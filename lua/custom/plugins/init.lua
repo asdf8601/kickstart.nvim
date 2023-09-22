@@ -7,6 +7,17 @@ local executable = function(x)
 end
 
 return {
+  'nvim-telescope/telescope-symbols.nvim',
+  'alec-gibson/nvim-tetris',
+  'mzlogin/vim-markdown-toc',
+  {
+    'simrat39/symbols-outline.nvim',
+    init = function()
+      require("symbols-outline").setup({
+          show_symbol_details = true,
+      })
+    end
+  },
   'sbulav/nredir.nvim',
   'tpope/vim-abolish',
   'tpope/vim-dadbod',
@@ -30,7 +41,7 @@ return {
   'tyru/open-browser.vim',
   {
     "zbirenbaum/copilot.lua",
-    config = function()
+    init = function()
       require('copilot').setup()
     end,
   },
@@ -42,14 +53,14 @@ return {
   {
     "zbirenbaum/copilot-cmp",
     dependencies = { "copilot.lua" },
-    config = function()
+    init = function()
       require("copilot_cmp").setup()
     end,
   },
   {
     "NTBBloodbath/rest.nvim",
     enable = executable "jq",
-    config = function()
+    init = function()
       require("rest-nvim").setup()
     end,
   },
@@ -62,18 +73,32 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "antoinemadec/FixCursorHold.nvim"
-    }
+    },
+    init = function ()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-python")({
+            -- Extra arguments for nvim-dap configuration
+            -- See https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for values
+            dap = { justMyCode = false },
+            args = {"--log-level", "DEBUG"},
+            runner = "pytest",
+            -- python = ".venv/bin/python",
+          })
+        }
+      })
+    end
   },
   {
     "klen/nvim-test",
-    config = function()
+    init = function()
       require('nvim-test').setup({})
     end
   },
   {
     'jakewvincent/mkdnflow.nvim',
     rocks = 'luautf8', -- Ensures optional luautf8 dependency is installed
-    config = function()
+    init = function()
       require('mkdnflow').setup({})
     end
   },

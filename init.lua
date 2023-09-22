@@ -697,9 +697,9 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- telescope {{
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<C-p>', builtin.git_files, { noremap = true, desc = 'Find files in git repo' })
+-- vim.keymap.set('n', '<C-p>', builtin.git_files, { noremap = true, desc = 'Find files in git repo' })
 vim.keymap.set('n', '<leader>gs', builtin.git_stash, { noremap = true, desc = 'Git stash' })
-local ignore_patterns = { "venv/*", ".venv/*", ".git/*", "node_modules/*", "*.pyc", "__.*cache.*/", "*.pkl", "*.pickle", "*.mat" }
+local ignore_patterns = { "*/venv/*", ".venv/*", ".git/*", "node_modules/*", "*.pyc", "__.*cache.*/", "*.pkl", "*.pickle", "*.mat" }
 local actions = require('telescope.actions')
 
 local function search_scio()
@@ -733,7 +733,7 @@ local function search_dotfiles()
   })
 end
 
-local function find_files()
+local function my_find_files()
   require("telescope.builtin").find_files({
     file_ignore_patterns = ignore_patterns,
     hidden = true,
@@ -753,16 +753,14 @@ local function git_branches()
   })
 end
 
-vim.keymap.set('n', '<leader>fk', ':Telescope keymaps<cr>', { noremap = true, desc = "Find keymaps", silent = false })
-vim.keymap.set('n', '<leader>dot', search_dotfiles, { desc = "Search dotfiles", noremap = true })
--- vim.keymap.set('n', '<Leader>ff', find_files, { desc = "Find files", noremap = true })
-vim.keymap.set('n', '<leader>gc', git_branches, { desc = "Git branches", noremap = true })
-vim.keymap.set('n', '<leader>sc', search_scio, { desc = "Search scio", noremap = true })
-vim.keymap.set('n', "<leader>fp", "<cmd>lua require('telescope.builtin').find_files( { cwd = vim.fn.expand('%:p:h') }) <CR>", { desc = "Search current buffer dir", noremap = true })
-vim.keymap.set('n', "ts", "<cmd>lua require('telescope.builtin').symbols{ sources = {'emoji', 'kaomoji', 'gitmoji'} } <CR>", { desc = "Search emoji", noremap = true })
-
-
 require("telescope").setup {
+  defaults = {
+    mappings = {
+      i = {
+        ["<esc>"] = actions.close
+      },
+    },
+  },
   pickers = {
     buffers = {
       mappings = {
@@ -771,15 +769,6 @@ require("telescope").setup {
         }
       }
     }
-  }
-}
-require("telescope").setup{
-  defaults = {
-    mappings = {
-      i = {
-        ["<esc>"] = actions.close
-      },
-    },
   }
 }
 
@@ -801,7 +790,19 @@ local function find_files_from_project_git_root()
   require("telescope.builtin").find_files(opts)
 end
 
-vim.keymap.set("n", "<leader>ff", find_files_from_project_git_root, { noremap = true, desc = "Find files from git root" })
+vim.keymap.set("n", "<C-p>", find_files_from_project_git_root, { noremap = true, desc = "Find files from git root" })
+-- vim.keymap.set('n', '<leader>fh', ':Telescope <cr>', { noremap = true, desc = "Find help", silent = false })
+vim.keymap.set('n', '<leader>fl', ':Telescope diagnostics<cr>', { noremap = true, desc = "Find errors, lint, diagnostics", silent = false })
+vim.keymap.set('n', '<leader>fc', ':Telescope commands<cr>', { noremap = true, desc = "Find commands", silent = false })
+vim.keymap.set('n', '<leader>fk', ':Telescope keymaps<cr>', { noremap = true, desc = "Find keymaps", silent = false })
+vim.keymap.set('n', '<Leader>ff', my_find_files, { desc = "Find files", noremap = true })
+vim.keymap.set('n', '<leader>dot', search_dotfiles, { desc = "Search dotfiles", noremap = true })
+vim.keymap.set('n', '<leader>gc', git_branches, { desc = "Git branches", noremap = true })
+vim.keymap.set('n', '<leader>sc', search_scio, { desc = "Search scio", noremap = true })
+vim.keymap.set('n', "<leader>fp", "<cmd>lua require('telescope.builtin').find_files( { cwd = vim.fn.expand('%:p:h') }) <CR>", { desc = "Search current buffer dir", noremap = true })
+vim.keymap.set('n', "ts", "<cmd>lua require('telescope.builtin').symbols{ sources = {'emoji', 'kaomoji', 'gitmoji'} } <CR>", { desc = "Search emoji", noremap = true })
+
+
 
 local previewers = require("telescope.previewers")
 
@@ -1270,18 +1271,13 @@ require("formatter").setup {
 -- }}
 
 
-
-
-
-function Bang_command()
-  local cmd = ":.!sh"
-  local out = vim.cmd(cmd)
-  vim.print(out)
-end
-vim.api.nvim_create_user_command('Bang', Bang_command, { nargs = "*" })
-
--- hola
-
+-- [[ neotest ]] {{
+vim.keymap.set('n', '<leader>tn', ':TestNearest<cr>', { noremap = true, desc = 'Run nearest test' })
+vim.keymap.set('n', '<leader>tf', ':TestFile<cr>', { noremap = true, desc = 'Run current file tests' })
+vim.keymap.set('n', '<leader>ts', ':TestSuite<cr>', { noremap = true, desc = 'Run test suite' })
+vim.keymap.set('n', '<leader>tl', ':TestLast<cr>', { noremap = true, desc = 'Run last test' })
+vim.keymap.set('n', '<leader>td', function() require("neotest").run.run({strategy = "dap"}) end , { noremap = true, desc = 'Run test debug mode' })
+-- }}
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et tw=0
