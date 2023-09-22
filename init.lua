@@ -576,7 +576,7 @@ local luasnip = require 'luasnip'
 require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
 
-cmp.setup {
+cmp.setup({
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
@@ -606,7 +606,7 @@ cmp.setup {
     -- { name = 'nvim_lsp_signature_help' },
     -- { name = 'orgmode' },
   },
-}
+})
 
 
 
@@ -643,6 +643,11 @@ vim.o.colorcolumn = "80" -- works! (using integer will fail)
 vim.o.completeopt = 'menuone,noselect'
 vim.g.netrw_hide = 0
 vim.o.laststatus = 3
+
+
+-- motion
+vim.keymap.set('i', 'kj', '<esc>', { noremap = true, silent = true })
+vim.keymap.set('i', 'jk', '<esc>', { noremap = true, silent = true })
 
 function Gpt_command(args)
   -- vim.print(args)
@@ -709,7 +714,7 @@ local function search_scio()
     local prompt = current_picker:_get_prompt()
     local cwd = current_picker.cwd
     actions.close(prompt_bufnr)
-    vim.api.nvim_exec(':edit ' .. cwd .. '/' .. prompt, false)
+    vim.cmd('edit ' .. cwd .. '/' .. prompt)
     return true
   end
   require("telescope.builtin").find_files({
@@ -1106,7 +1111,7 @@ function CreateScratch()
     parent = '.'
   end
   local num = 0
-  local ext = vim.fn.input('Enter extension (.py)', '.py')
+  local ext = vim.fn.input('Enter extension (.py)') or '.py'
   local file = function(n) return vim.fn.expand(parent .. '/' .. n .. ext) end
 
   while (vim.fn.filereadable(file(num)) == 0) and (num <= 1000) do
@@ -1276,7 +1281,29 @@ vim.keymap.set('n', '<leader>tn', ':TestNearest<cr>', { noremap = true, desc = '
 vim.keymap.set('n', '<leader>tf', ':TestFile<cr>', { noremap = true, desc = 'Run current file tests' })
 vim.keymap.set('n', '<leader>ts', ':TestSuite<cr>', { noremap = true, desc = 'Run test suite' })
 vim.keymap.set('n', '<leader>tl', ':TestLast<cr>', { noremap = true, desc = 'Run last test' })
-vim.keymap.set('n', '<leader>td', function() require("neotest").run.run({strategy = "dap"}) end , { noremap = true, desc = 'Run test debug mode' })
+vim.keymap.set('n', '<leader>td', function() require("neotest").run.run({ strategy = "dap" }) end , { noremap = true, desc = 'Run test debug mode' })
+-- }}
+
+-- [[ skiz ]] {{
+function Skiz(args)
+  local name = args.fargs[0]
+  if name ~= nil then
+    name = vim.fn.join({"-n", name}, " ")
+  else
+    name = ""
+  end
+  local ext = args.fargs[0]
+  if ext ~= nil then
+    ext = vim.fn.join({"-e", ext}, " ")
+  else
+    ext = ""
+  end
+  local cmd = vim.fn.join({'skiz', name, ext}, " ")
+  local output = vim.fn.system(cmd)
+  vim.cmd('e ' .. output)
+end
+vim.api.nvim_create_user_command('Skiz', Skiz, { nargs = '*' })
+vim.keymap.set('n', '<leader>sk', ':Skiz<cr>', { noremap = true, desc = 'New Skiz' })
 -- }}
 
 -- The line beneath this is called `modeline`. See `:help modeline`
