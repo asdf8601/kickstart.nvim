@@ -19,6 +19,7 @@ return {
     end
   },
   'sbulav/nredir.nvim',
+  'tpope/vim-eunuch',
   'tpope/vim-abolish',
   'tpope/vim-dadbod',
   'kristijanhusak/vim-dadbod-ui',
