@@ -1308,7 +1308,7 @@ vim.keymap.set('n', '<leader>sk', ':Skiz<cr>', { noremap = true, desc = 'New Ski
 
 -- autocommand to automatically commit and push modifications on init.lua file using lua api
 local AutoCommitVimFiles = vim.api.nvim_create_augroup('AutoCommitVimFiles', { clear = true })
-vim.api.nvim_create_autocmd('BufWritePost', {
+vim.api.nvim_create_autocmd('WinClosed', {
   callback = function()
     vim.cmd("Git camp 'Auto commit'")
   end,
