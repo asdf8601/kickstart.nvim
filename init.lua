@@ -804,7 +804,7 @@ vim.keymap.set('n', '<Leader>ff', my_find_files, { desc = "Find files", noremap 
 vim.keymap.set('n', '<leader>dot', search_dotfiles, { desc = "Search dotfiles", noremap = true })
 vim.keymap.set('n', '<leader>gc', git_branches, { desc = "Git branches", noremap = true })
 vim.keymap.set('n', '<leader>sc', search_scio, { desc = "Search scio", noremap = true })
-vim.keymap.set('n', "<leader>fp", "<cmd>lua require('telescope.builtin').find_files( { cwd = vim.fn.expand('%:p:h') }) <CR>", { desc = "Search current buffer dir", noremap = true })
+vim.keymap.set('n', "<leader>fp", "<cmd>lua require('telescope.builtin').find_files( { cwd = vim.fn.expand('%:p:h'), hidden = false }) <CR>", { desc = "Search current buffer dir", noremap = true })
 vim.keymap.set('n', "ts", "<cmd>lua require('telescope.builtin').symbols{ sources = {'emoji', 'kaomoji', 'gitmoji'} } <CR>", { desc = "Search emoji", noremap = true })
 
 
