@@ -1306,5 +1306,15 @@ vim.api.nvim_create_user_command('Skiz', Skiz, { nargs = '*' })
 vim.keymap.set('n', '<leader>sk', ':Skiz<cr>', { noremap = true, desc = 'New Skiz' })
 -- }}
 
+-- autocommand to automatically commit and push modifications on init.lua file using lua api
+local AutoCommitVimFiles = vim.api.nvim_create_augroup('AutoCommitVimFiles', { clear = true })
+vim.api.nvim_create_autocmd('BufWritePost', {
+  callback = function()
+    vim.cmd("Git camp 'Auto commit'")
+  end,
+  group = AutoCommitVimFiles,
+  pattern = '*/.config/nvim/*',
+})
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et tw=0
