@@ -7,15 +7,15 @@ local executable = function(x)
 end
 
 return {
+  'nvim-telescope/telescope-symbols.nvim',
   {
-    'nvim-telescope/telescope-symbols.nvim',
+    'edluffy/hologram.nvim',
     init = function ()
       require('hologram').setup{
         auto_display = true -- WIP automatic markdown image display, may be prone to breaking
       }
     end
-  }
-  'edluffy/hologram.nvim',
+  },
   'alec-gibson/nvim-tetris',
   'mzlogin/vim-markdown-toc',
   {
