@@ -788,9 +788,11 @@ local function find_files_from_project_git_root()
   end
   local opts = {
     file_ignore_patterns = ignore_patterns,
+    hidden = true,
   }
   if is_git_repo() then
     opts["cwd"] = get_git_root()
+    opts["hidden"] = true
   end
   require("telescope.builtin").find_files(opts)
 end
