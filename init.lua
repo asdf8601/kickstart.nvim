@@ -704,7 +704,20 @@ vim.o.completeopt = 'menuone,noselect'
 local builtin = require('telescope.builtin')
 -- vim.keymap.set('n', '<C-p>', builtin.git_files, { noremap = true, desc = 'Find files in git repo' })
 vim.keymap.set('n', '<leader>gs', builtin.git_stash, { noremap = true, desc = 'Git stash' })
-local ignore_patterns = { '.cache', '.tmux/*', ".oh-my-zsh", "*/venv/*", ".venv/*", ".git/*", "node_modules/*", "*.pyc", "__.*cache.*/", "*.pkl", "*.pickle", "*.mat" }
+local ignore_patterns = {
+  '.cache',
+  '.tmux/*',
+  '.oh-my-zsh/*',
+  '*/venv/*',
+  '.venv/*',
+  '.git/*',
+  'node_modules/*',
+  '*.pyc',
+  '__.*cache.*/',
+  '*.pkl',
+  '*.pickle',
+  '*.mat' ,
+}
 local actions = require('telescope.actions')
 
 local function search_scio()
