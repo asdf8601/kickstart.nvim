@@ -8,6 +8,7 @@ end
 
 return {
   'nvim-telescope/telescope-symbols.nvim',
+  'edluffy/hologram.nvim',
   'alec-gibson/nvim-tetris',
   'mzlogin/vim-markdown-toc',
   {

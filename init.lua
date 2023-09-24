@@ -704,20 +704,22 @@ vim.o.completeopt = 'menuone,noselect'
 local builtin = require('telescope.builtin')
 -- vim.keymap.set('n', '<C-p>', builtin.git_files, { noremap = true, desc = 'Find files in git repo' })
 vim.keymap.set('n', '<leader>gs', builtin.git_stash, { noremap = true, desc = 'Git stash' })
-local ignore_patterns = {
-  '.cache',
-  '.tmux/*',
-  '.oh-my-zsh/*',
-  '*/venv/*',
-  '.venv/*',
-  '.git/*',
-  'node_modules/*',
-  '*.pyc',
-  '__.*cache.*/',
-  '*.pkl',
-  '*.pickle',
-  '*.mat' ,
-}
+-- local ignore_patterns = {
+--   '^.npm/',
+--   '^.zsh%/',
+--   '^.oh-my-zsh/',
+--   '^.cache/',
+--   '^.tmux/',
+--   '/venv/',
+--   '.venv/',
+--   '.git/',
+--   'node_modules/',
+--   '*.pyc',
+--   'cache',
+--   '%.pkl',
+--   '%.pickle',
+--   '%.mat',
+-- }
 local actions = require('telescope.actions')
 
 local function search_scio()
@@ -753,7 +755,7 @@ end
 
 local function my_find_files()
   require("telescope.builtin").find_files({
-    file_ignore_patterns = ignore_patterns,
+    -- file_ignore_patterns = ignore_patterns,
     hidden = true,
     no_ignore = true,
     follow = true,
@@ -800,12 +802,11 @@ local function find_files_from_project_git_root()
     return vim.fn.fnamemodify(dot_git_path, ":h")
   end
   local opts = {
-    file_ignore_patterns = ignore_patterns,
+    -- file_ignore_patterns = ignore_patterns,
     hidden = true,
   }
   if is_git_repo() then
     opts["cwd"] = get_git_root()
-    opts["hidden"] = true
   end
   require("telescope.builtin").find_files(opts)
 end
@@ -843,6 +844,7 @@ end
 require("telescope").setup {
   defaults = {
     buffer_previewer_maker = new_maker,
+    -- file_ignore_patterns=ignore_patterns,
   }
 }
 
