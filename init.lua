@@ -700,7 +700,9 @@ vim.api.nvim_create_user_command('Gpt', Gpt_command, { nargs = "*", range = true
 vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
 vim.o.completeopt = 'menuone,noselect'
 
--- telescope {{
+-- [[ telescope ]]  {{
+pcall(require('telescope').load_extension, 'media_files')
+-- require('telescope').load_extension('media_files')
 local builtin = require('telescope.builtin')
 -- vim.keymap.set('n', '<C-p>', builtin.git_files, { noremap = true, desc = 'Find files in git repo' })
 vim.keymap.set('n', '<leader>gs', builtin.git_stash, { noremap = true, desc = 'Git stash' })
