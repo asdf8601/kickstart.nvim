@@ -8,7 +8,13 @@ end
 
 return {
   'alec-gibson/nvim-tetris',
-  {'kevinhwang91/nvim-bqf'},
+  {
+    'kevinhwang91/nvim-bqf',
+    dependencies = {
+      'junegunn/fzf',
+      init = function() vim.fn['fzf#install']() end,
+    },
+  },
   'nvim-telescope/telescope-symbols.nvim',
   -- {
   --   'edluffy/hologram.nvim',
