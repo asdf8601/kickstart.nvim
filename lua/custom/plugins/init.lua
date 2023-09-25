@@ -7,6 +7,7 @@ local executable = function(x)
 end
 
 return {
+  {'kevinhwang91/nvim-bqf'},
   'nvim-telescope/telescope-symbols.nvim',
   {
     'edluffy/hologram.nvim',
