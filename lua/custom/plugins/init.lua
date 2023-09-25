@@ -7,33 +7,33 @@ local executable = function(x)
 end
 
 return {
+  'alec-gibson/nvim-tetris',
   {'kevinhwang91/nvim-bqf'},
   'nvim-telescope/telescope-symbols.nvim',
-  {
-    'edluffy/hologram.nvim',
-    init = function ()
-      require('hologram').setup{
-        auto_display = true -- WIP automatic markdown image display, may be prone to breaking
-      }
-    end
-  },
-  'alec-gibson/nvim-tetris',
-  {
-    'nvim-telescope/telescope-media-files.nvim',
-    init = function()
-      require('telescope').setup({
-        extensions = {
-          media_files = {
-            -- filetypes whitelist
-            -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
-            filetypes = {"png", "webp", "jpg", "jpeg"},
-            -- find command (defaults to `fd`)
-            find_cmd = "rg"
-          }
-        },
-      })
-    end
-  },
+  -- {
+  --   'edluffy/hologram.nvim',
+  --   init = function ()
+  --     require('hologram').setup{
+  --       auto_display = true -- WIP automatic markdown image display, may be prone to breaking
+  --     }
+  --   end
+  -- },
+  -- {
+  --   'nvim-telescope/telescope-media-files.nvim',
+  --   init = function()
+  --     require('telescope').setup({
+  --       extensions = {
+  --         media_files = {
+  --           -- filetypes whitelist
+  --           -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
+  --           filetypes = {"png", "webp", "jpg", "jpeg"},
+  --           -- find command (defaults to `fd`)
+  --           find_cmd = "rg"
+  --         }
+  --       },
+  --     })
+  --   end
+  -- },
   'mzlogin/vim-markdown-toc',
   {
     'simrat39/symbols-outline.nvim',
