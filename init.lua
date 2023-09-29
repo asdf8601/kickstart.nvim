@@ -1134,12 +1134,15 @@ vim.keymap.set('n', '<leader>zz', '<cmd>ZenMode<cr>', { noremap = true, desc = '
 
 -- scratch
 function CreateScratch()
-  local parent = './scratch'
+  local parent = './.scratch'
   if vim.fn.isdirectory(parent) == 0 then
     parent = '.'
   end
   local num = 0
-  local ext = vim.fn.input('Enter extension (.py)') or '.py'
+  local ext = vim.fn.input('Enter filename or extension (.py)') or '.py'
+  -- explit ext by '.'
+  fname, ext = vim.split(ext, '.', true)
+
   local file = function(n) return vim.fn.expand(parent .. '/' .. n .. ext) end
 
   while (vim.fn.filereadable(file(num)) == 0) and (num <= 1000) do
