@@ -1134,12 +1134,12 @@ vim.keymap.set('n', '<leader>zz', '<cmd>ZenMode<cr>', { noremap = true, desc = '
 
 -- scratch
 function CreateScratch()
-  local parent = './.scratch'
+  local parent = './.scratches'
   if vim.fn.isdirectory(parent) == 0 then
     vim.fn.mkdir(parent, 'p')
   end
   local fpath = vim.fn.input('Enter filename or extension (.py): ') or '.py'
-  local fname_ext = vim.split(fpath, '.', {plain=true})
+  local fname_ext = vim.split(fpath, '.', { plain = true })
   local fname = fname_ext[1]
   local ext = '.' .. fname_ext[2]
 
