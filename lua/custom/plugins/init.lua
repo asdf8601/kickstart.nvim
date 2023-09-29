@@ -7,11 +7,8 @@ local executable = function(x)
 end
 
 return {
-<<<<<<< HEAD
   {'scalameta/nvim-metals', dependencies = { "nvim-lua/plenary.nvim" },},
-=======
   'junegunn/vim-easy-align',
->>>>>>> 86bfbd4 (Auto commit)
   'alec-gibson/nvim-tetris',
   {
     'kevinhwang91/nvim-bqf',
