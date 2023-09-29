@@ -1141,8 +1141,8 @@ function CreateScratch()
   local fpath = vim.fn.input('Enter filename or extension (.py): ') or '.py'
   local fname_ext = vim.split(fpath, '.', {plain=true})
   vim.print(fname_ext)
-  local fname = fname_ext[0]
-  local ext = '.' .. fname_ext[1]
+  local fname = fname_ext[1]
+  local ext = '.' .. fname_ext[2]
   vim.print('fname:', fname)
   vim.print('ext:', ext)
 
