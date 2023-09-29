@@ -7,12 +7,13 @@ local executable = function(x)
 end
 
 return {
+  {'scalameta/nvim-metals', dependencies = { "nvim-lua/plenary.nvim" },},
   'alec-gibson/nvim-tetris',
   {
     'kevinhwang91/nvim-bqf',
     dependencies = {
       'junegunn/fzf',
-      init = function() vim.fn['fzf#install']() end,
+      -- init = function() vim.fn['fzf#install']() end,
     },
   },
   'nvim-telescope/telescope-symbols.nvim',
