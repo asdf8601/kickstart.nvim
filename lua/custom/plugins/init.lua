@@ -7,6 +7,14 @@ local executable = function(x)
 end
 
 return {
+  {
+    'phaazon/mind.nvim',
+    tag = 'v2.2',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    init = function()
+      require'mind'.setup()
+    end
+  },
   {'scalameta/nvim-metals', dependencies = { "nvim-lua/plenary.nvim" },},
   'junegunn/vim-easy-align',
   'alec-gibson/nvim-tetris',
