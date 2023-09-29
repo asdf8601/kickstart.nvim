@@ -9,7 +9,7 @@ end
 return {
   {
     'phaazon/mind.nvim',
-    tag = 'v2.2',
+    version = 'v2.2',
     dependencies = { 'nvim-lua/plenary.nvim' },
     init = function()
       require'mind'.setup()
