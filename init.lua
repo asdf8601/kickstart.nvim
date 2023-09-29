@@ -1149,10 +1149,11 @@ function CreateScratch()
 
   if fname == '' then
     local num = 0
-    while (vim.fn.filereadable(file(num)) == 0) and (num <= 1000) do
+    while (vim.fn.filereadable(file(num)) == 0) and (num <= 500) do
       num = num + 1
     end
     fname = file(num)
+    vim.print(fname)
   end
   vim.print('Creating ' .. fname .. ext .. ' ...')
 
