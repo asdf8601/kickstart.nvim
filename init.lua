@@ -1136,15 +1136,12 @@ vim.keymap.set('n', '<leader>zz', '<cmd>ZenMode<cr>', { noremap = true, desc = '
 function CreateScratch()
   local parent = './.scratch'
   if vim.fn.isdirectory(parent) == 0 then
-    parent = '.'
+    vim.fn.mkdir(parent, 'p')
   end
   local fpath = vim.fn.input('Enter filename or extension (.py): ') or '.py'
   local fname_ext = vim.split(fpath, '.', {plain=true})
-  vim.print(fname_ext)
   local fname = fname_ext[1]
   local ext = '.' .. fname_ext[2]
-  vim.print('fname:', fname)
-  vim.print('ext:', ext)
 
   local file = function(n)
     return vim.fn.expand(parent .. '/' .. n .. ext)
@@ -1157,8 +1154,6 @@ function CreateScratch()
     end
     fname = file(num)
   end
-
-  vim.print('Creating ' .. fname .. ext .. ' ...')
 
   vim.cmd('10new ' .. fname .. ext)
 
