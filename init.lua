@@ -1138,17 +1138,25 @@ function CreateScratch()
   if vim.fn.isdirectory(parent) == 0 then
     parent = '.'
   end
-  local num = 0
-  local ext = vim.fn.input('Enter filename or extension (.py)') or '.py'
-  -- explit ext by '.'
-  fname, ext = vim.split(ext, '.', true)
+  local fpath = vim.fn.input('Enter filename or extension (.py)') or '.py'
+  local fname_ext = vim.split(fpath, '.', true)
+  local fname = fname_ext[0]
+  local ext = '.' .. fname_ext[1]
 
-  local file = function(n) return vim.fn.expand(parent .. '/' .. n .. ext) end
-
-  while (vim.fn.filereadable(file(num)) == 0) and (num <= 1000) do
-    num = num + 1
+  local file = function(n)
+    return vim.fn.expand(parent .. '/' .. n .. ext)
   end
-  vim.cmd('10new ' .. file(num))
+
+  if fname == '' then
+    local num = 0
+    while (vim.fn.filereadable(file(num)) == 0) and (num <= 1000) do
+      num = num + 1
+    end
+    fname = file(num)
+  end
+  vim.print('Creating ' .. fname .. ext .. ' ...')
+
+  vim.cmd('10new ' .. fname .. ext)
 
   -- vim.bo.buftype = '__scratch__'
   -- vim.bo.filetype = 'markdown'
