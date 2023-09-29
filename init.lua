@@ -1138,8 +1138,8 @@ function CreateScratch()
   if vim.fn.isdirectory(parent) == 0 then
     parent = '.'
   end
-  local fpath = vim.fn.input('Enter filename or extension (.py)') or '.py'
-  local fname_ext = vim.split(fpath, '.', true)
+  local fpath = vim.fn.input('Enter filename or extension (.py): ') or '.py'
+  local fname_ext = vim.split(fpath, '.')
   local fname = fname_ext[0]
   local ext = '.' .. fname_ext[1]
 
@@ -1155,6 +1155,7 @@ function CreateScratch()
     fname = file(num)
     vim.print(fname)
   end
+
   vim.print('Creating ' .. fname .. ext .. ' ...')
 
   vim.cmd('10new ' .. fname .. ext)
