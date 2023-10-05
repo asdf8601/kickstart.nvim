@@ -645,6 +645,7 @@ vim.g.netrw_hide = 0
 vim.o.laststatus = 3
 
 
+-- [[ Setting keymaps ]]
 -- motion
 vim.keymap.set('i', 'kj', '<esc>', { noremap = true, silent = true })
 vim.keymap.set('i', 'jk', '<esc>', { noremap = true, silent = true })
@@ -706,6 +707,9 @@ vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>', { desc = "Open the current file'
 
 vim.keymap.set('n', '<leader>0', '"0p', { desc = "Paste from register 0", silent = false })
 vim.keymap.set('n', '<leader>1', '"1p', { desc = "Paste from register 1", silent = false })
+
+
+vim.keymap.set('n', '<leader>t', ':SymbolsOutline<cr>', { desc = "Symbols outline", silent = false })
 
 vim.o.completeopt = 'menuone,noselect'
 
