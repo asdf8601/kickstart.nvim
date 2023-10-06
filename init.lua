@@ -1334,7 +1334,7 @@ function Skiz(args)
   else
     name = ""
   end
-  local ext = args.fargs[0]
+  local ext = args.fargs[1]
   if ext ~= nil then
     ext = vim.fn.join({"-e", ext}, " ")
   else
