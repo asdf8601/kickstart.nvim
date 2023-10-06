@@ -1328,13 +1328,13 @@ vim.keymap.set('n', '<leader>td', function() require("neotest").run.run({ strate
 
 -- [[ skiz ]] {{
 function Skiz(args)
-  local name = args.fargs[0]
+  local name = args.fargs[1]
   if name ~= nil then
     name = vim.fn.join({"-n", name}, " ")
   else
     name = ""
   end
-  local ext = args.fargs[1]
+  local ext = args.fargs[2]
   if ext ~= nil then
     ext = vim.fn.join({"-e", ext}, " ")
   else
