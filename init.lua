@@ -376,7 +376,7 @@ end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
+-- vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
@@ -610,7 +610,7 @@ cmp.setup({
 
 
 
--- Custom setup {{
+-- [[ Custom setup ]] {{
 -- [[ Setting options ]]
 vim.o.t_Co = 256
 vim.o.scrollback = 20000
@@ -650,224 +650,33 @@ vim.o.laststatus = 3
 vim.keymap.set('i', 'kj', '<esc>', { noremap = true, silent = true })
 vim.keymap.set('i', 'jk', '<esc>', { noremap = true, silent = true })
 
-
--- chatgpt custom function
-function Gpt_command(args)
-  -- vim.print(args)
-  local mod = args.fargs[1]
-  local prompt = ""
-  for key, value in ipairs(args.fargs) do
-    if key > 1 then
-      prompt = prompt .. value .. " "
-    end
-  end
-  local filetype = vim.bo.filetype
-  local prefix = 'You are a ' .. filetype .. ' developer/writer expert. '
-  prefix = prefix .. 'Avoid comments and explanations unless I ask for it. '
-  prefix = prefix .. 'You should make changes using the same language as the input.'
-  local cmd = ''
-  if prompt == nil then
-    prompt = ''
-  end
-  local _cmd = ''
-  -- detect visual mode
-  if mod == '%' then
-    -- file
-    _cmd = '%!chatgpt -p "'
-  elseif mod == '.' then
-    -- line
-    _cmd = '.!chatgpt -p "'
-  else
-    prompt = mod .. " " .. prompt
-    if args.line1 ~= nil then
-        -- visual
-        -- vim.print("visual mode")
-        _cmd = '\'<,\'>!chatgpt -p "'
-    else
-        -- vim.print("normal mode")
-        _cmd = '!chatgpt -p "'
-    end
-  end
-  cmd = _cmd .. prefix .. prompt .. '"'
-  -- debug
-  -- vim.print(cmd)
-  vim.cmd(cmd)
-end
-vim.api.nvim_create_user_command('Gpt', Gpt_command, { nargs = "*", range = true })
-
--- vim.api.nvim_set_keymap('n', '<C-c>f', ':%!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = '%!chatgpt' })
--- vim.api.nvim_set_keymap('n', '<C-c>.', ':.!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = '.!chatgpt' })
--- vim.api.nvim_set_keymap('v', '<C-c>.', ':!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = '!chatgpt' })
+-- shebang
+vim.keymap.set('n', '<leader>sh', ":0<cr>O#!/usr/bin/env bash<esc><C-o><C-o>", { desc = 'Add shebang' })
 
 -- commands
 vim.keymap.set('n', '!<space>', ':.!sh ' , { noremap = true, desc = 'Fill command to execute sh using current line' })
 vim.keymap.set('n', '!<cr>', ':.!sh<cr>' , { noremap = true, desc = 'Execute sh current line' })
+
 -- Explore
 vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
 
+-- paste / yank / copy
 vim.keymap.set('n', '<leader>0', '"0p', { desc = "Paste from register 0", silent = false })
 vim.keymap.set('n', '<leader>1', '"1p', { desc = "Paste from register 1", silent = false })
+vim.keymap.set("v", "<C-c>", "\"0y", { noremap = true, desc = 'yank to clipboard' })
+vim.keymap.set("n", "<C-c>", "\"0yy", { noremap = true, desc = 'yank to clipboard' })
+vim.keymap.set('n', '<C-v><C-v>', '"0p', { desc = 'Paste 0 register' })
+vim.keymap.set('i', '<C-v>', '<C-r>0', { desc = 'Paste 0 register' })
+vim.keymap.set('n', '<leader>p', '"+p', { desc = 'Paste clipboard register' })
+vim.keymap.set('v', '<leader>p', '"+p', { desc = 'Paste clipboard register' })
+vim.keymap.set('n', '<leader>y', '"+yy', { noremap = true, desc = 'copy to system clipboard' })
+vim.keymap.set('v', '<leader>y', '"+y', { noremap = true, desc = 'copy to system clipboard' })
+vim.keymap.set('n', '<leader>yf', ':let @+ = expand("%:p")<cr>', { noremap = true, desc = 'yank filename/buffer path' })
 
-
+-- tag bar
 vim.keymap.set('n', '<leader>t', ':SymbolsOutline<cr>', { desc = "Symbols outline", silent = false })
 
-vim.o.completeopt = 'menuone,noselect'
-
--- [[ telescope ]]  {{
-pcall(require('telescope').load_extension, 'media_files')
--- require('telescope').load_extension('media_files')
-local builtin = require('telescope.builtin')
--- vim.keymap.set('n', '<C-p>', builtin.git_files, { noremap = true, desc = 'Find files in git repo' })
-vim.keymap.set('n', '<leader>gs', builtin.git_stash, { noremap = true, desc = 'Git stash' })
--- local ignore_patterns = {
---   '^.npm/',
---   '^.zsh%/',
---   '^.oh-my-zsh/',
---   '^.cache/',
---   '^.tmux/',
---   '/venv/',
---   '.venv/',
---   '.git/',
---   'node_modules/',
---   '*.pyc',
---   'cache',
---   '%.pkl',
---   '%.pickle',
---   '%.mat',
--- }
-local actions = require('telescope.actions')
-
-local function search_scio()
-  -- function to edit a file
-  local vim_edit_prompt = function(prompt_bufnr)
-    local current_picker = require('telescope.actions.state').get_current_picker(prompt_bufnr)
-    local prompt = current_picker:_get_prompt()
-    local cwd = current_picker.cwd
-    actions.close(prompt_bufnr)
-    vim.cmd('edit ' .. cwd .. '/' .. prompt)
-    return true
-  end
-  require("telescope.builtin").find_files({
-    prompt_title = "< scio >",
-    cwd = "~/github/mmngreco/scio",
-    hidden = true,
-    no_ignore = true,
-    attach_mappings = function(_, map)
-      map('i', '<c-n>', vim_edit_prompt)
-      return true
-    end
-  })
-end
-
-local function search_dotfiles()
-  require("telescope.builtin").find_files({
-    prompt_title = "< dotfiles >",
-    cwd = "$DOTFILES_HOME",
-    hidden = true,
-    no_ignore = true,
-  })
-end
-
-local function my_find_files()
-  require("telescope.builtin").find_files({
-    -- file_ignore_patterns = ignore_patterns,
-    hidden = true,
-    no_ignore = true,
-    follow = true,
-  })
-end
-
-local function git_branches()
-  require("telescope.builtin").git_branches({
-    attach_mappings = function(_, map)
-      map('i', '<c-d>', actions.git_delete_branch)
-      map('n', '<c-d>', actions.git_delete_branch)
-      map('i', '<c-b>', actions.git_create_branch)
-      return true
-    end
-  })
-end
-
-require("telescope").setup {
-  defaults = {
-    mappings = {
-      i = {
-        ["<esc>"] = actions.close
-      },
-    },
-  },
-  pickers = {
-    buffers = {
-      mappings = {
-        i = {
-          ["<c-d>"] = actions.delete_buffer + actions.move_to_top,
-        }
-      }
-    }
-  }
-}
-
-local function find_files_from_project_git_root()
-  local function is_git_repo()
-    vim.fn.system("git rev-parse --is-inside-work-tree")
-    return vim.v.shell_error == 0
-  end
-  local function get_git_root()
-    local dot_git_path = vim.fn.finddir(".git", ".;")
-    return vim.fn.fnamemodify(dot_git_path, ":h")
-  end
-  local opts = {
-    -- file_ignore_patterns = ignore_patterns,
-    hidden = true,
-  }
-  if is_git_repo() then
-    opts["cwd"] = get_git_root()
-  end
-  require("telescope.builtin").find_files(opts)
-end
-
-vim.keymap.set("n", "<C-p>", find_files_from_project_git_root, { noremap = true, desc = "Find files from git root" })
--- vim.keymap.set('n', '<leader>fh', ':Telescope <cr>', { noremap = true, desc = "Find help", silent = false })
-vim.keymap.set('n', '<leader>fl', ':Telescope diagnostics<cr>', { noremap = true, desc = "Find errors, lint, diagnostics", silent = false })
-vim.keymap.set('n', '<leader>fc', ':Telescope commands<cr>', { noremap = true, desc = "Find commands", silent = false })
-vim.keymap.set('n', '<leader>fk', ':Telescope keymaps<cr>', { noremap = true, desc = "Find keymaps", silent = false })
-vim.keymap.set('n', '<Leader>ff', my_find_files, { desc = "Find files", noremap = true })
-vim.keymap.set('n', '<leader>dot', search_dotfiles, { desc = "Search dotfiles", noremap = true })
-vim.keymap.set('n', '<leader>gc', git_branches, { desc = "Git branches", noremap = true })
-vim.keymap.set('n', '<leader>sc', search_scio, { desc = "Search scio", noremap = true })
-vim.keymap.set('n', "<leader>fp", "<cmd>lua require('telescope.builtin').find_files( { cwd = vim.fn.expand('%:p:h'), hidden = false }) <CR>", { desc = "Search current buffer dir", noremap = true })
-vim.keymap.set('n', "ts", "<cmd>lua require('telescope.builtin').symbols{ sources = {'emoji', 'kaomoji', 'gitmoji'} } <CR>", { desc = "Search emoji", noremap = true })
-
-
-
-local previewers = require("telescope.previewers")
-
-local new_maker = function(filepath, bufnr, opts)
-  opts = opts or {}
-
-  filepath = vim.fn.expand(filepath)
-  vim.loop.fs_stat(filepath, function(_, stat)
-    if not stat then return end
-    if stat.size > 100000 then
-      return
-    else
-      previewers.buffer_previewer_maker(filepath, bufnr, opts)
-    end
-  end)
-end
-
-require("telescope").setup {
-  defaults = {
-    buffer_previewer_maker = new_maker,
-    -- file_ignore_patterns=ignore_patterns,
-  }
-}
-
--- }}
-
--- augroups
-
-
+-- reload
 vim.keymap.set('n', '<leader><cr>', ':source ~/.config/nvim/init.lua<cr>', { noremap = true })
 vim.keymap.set('n', '<leader>rc', ':new ~/.config/nvim/init.lua<cr>', { noremap = true })
 
@@ -951,71 +760,7 @@ vim.keymap.set('n', '<leader>dq', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
 vim.keymap.set('n', '<leader>dn', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', { noremap = true, desc = 'Go to Next Diagnostic' })
 vim.keymap.set('n', '<leader>dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', { noremap = true, desc = 'Go to Previous Diagnostic' })
 
--- [[ jupytext ]]
-vim.g.jupytext_filetype_map = { py = 'python' }
-vim.g.jupytext_fmt = 'py:percent'
-
-
--- slow_cmd_time
-
-vim.g.slime_cell_delimiter = [[\s*#\s*%%]]
-vim.g.slime_paste_file = os.getenv("HOME") .. "/.slime_paste"
-vim.keymap.set('n', '<leader>e', ':SlimeSend<cr>', { noremap = true, desc = 'send line to term' })
-vim.keymap.set('x', '<leader>e', '<Plug>SlimeRegionSend', { noremap = true, desc = 'send line to tmux' })
-vim.keymap.set('n', '<leader>cv', ':SlimeConfig<cr>', { noremap = true, desc = "Open SlimeConfig" })
-vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', { noremap = true, desc = "Send Paragraph with Slime" })
--- vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', {noremap = true})
-vim.keymap.set('n', '<leader>ck', '<cmd>call search(g:slime_cell_delimiter, "b")<cr>', { noremap = true, desc = "Search backward for slime cell delimiter" })
-vim.keymap.set('n', '<leader>cj', '<cmd>call search(g:slime_cell_delimiter)<cr>', { noremap = true, desc = "Search forward for slime cell delimiter" })
-vim.keymap.set('n', '<leader>cv', ':SlimeConfig<cr>', { noremap = true, desc = "Open slime configuration" })
-vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', { noremap = true, desc = "Send paragraph to slime" })
-vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', { noremap = true, desc = "Send cell to slime" })
-
-local function slime_use_tmux()
-  vim.g.slime_target = "tmux"
-  vim.g.slime_bracketed_paste = 1
-  vim.g.slime_python_ipython = 0
-  vim.g.slime_no_mappings = 1
-  vim.g.slime_default_config = { socket_name = "default", target_pane = ":.2" }
-  vim.g.slime_dont_ask_default = 1
-end
-
-local function slime_use_neovim()
-  vim.g.slime_target = "neovim"
-  vim.g.slime_bracketed_paste = 0
-  vim.g.slime_python_ipython = 1
-  -- vim.g.slime_default_config = {}
-  vim.g.slime_no_mappings = 1
-  vim.g.slime_dont_ask_default = 0
-end
-
-slime_use_neovim()
--- slime_use_tmux()
-local function toggle_slime_target()
-  if vim.g.slime_target == "neovim" then
-    slime_use_tmux()
-  else
-    slime_use_neovim()
-  end
-end
-vim.api.nvim_create_user_command('SlimeToggleTarget', toggle_slime_target, { nargs = 0 })
-
--- toggle numbers
-vim.g.number = 1
-function ToggleNumbers()
-  if vim.g.number == 1 then
-    vim.g.number = 0
-    vim.o.number = false
-    vim.o.relativenumber = false
-    vim.o.signcolumn = 'no'
-  else
-    vim.g.number = 1
-    vim.o.number = true
-    vim.o.relativenumber = true
-    vim.o.signcolumn = 'yes'
-  end
-end
-
+-- replace in all file
 vim.keymap.set('n', '<leader>s', ':%s/<C-r><C-w>/<C-r><C-w>/gI<left><left><left>', { noremap = true, desc = 'search and replace word under cursor' })
 -- vim.keymap.set('n', 'gs', ':%s//g<left><left>', {noremap = true, desc = 'search and replace' })
 
@@ -1039,44 +784,6 @@ vim.keymap.set('n', '<leader>t<space>', ':s/\\[x\\]/[ ]/<cr>', { noremap = true,
 vim.keymap.set('n', '<leader>ta', 'I- [ ] <esc>', { noremap = true, desc = 'append empty checkbox in markdown' })
 vim.keymap.set('n', '<leader>m', ':MaximizerToggle<cr>', { noremap = true, desc = 'Maximize current window' })
 
--- [[ checkbox ]]
-function SummaryCheckboxes()
-  local line = vim.fn.line('.')
-  -- local line_orig = vim.fn.getline('.')
-  local checked = 0
-  local total = 0
-
-  -- find the first line of the paragraph
-  while line > 1 and vim.fn.getline(line - 1) ~= '' do
-    line = line - 1
-  end
-
-  while true do
-    local line_text = vim.fn.getline(line)
-    if line_text:match('^%s*%-%s%[[xX]%]') then
-      checked = checked + 1
-      total = total + 1
-    elseif line_text:match('^%s*%-%s%[.%]') then
-      total = total + 1
-    else
-      break
-    end
-    line = line + 1
-  end
-
-  vim.api.nvim_input("vipo<esc>A (" .. checked .. "/" .. total .. ")<esc>")
-  return { checked, total }
-end
-
--- [[ fugitive ]] {{
-vim.keymap.set("n", "<leader>w", ":Git|10wincmd_<cr>", { noremap = true, desc = "Open Git status" })
-vim.keymap.set('n', '<C-g>', ':GBrowse<cr>', { noremap = true, desc = 'browse current file on github' })
-vim.keymap.set('v', '<C-g>', ':GBrowse<cr>', { noremap = true, desc = 'browse current file and line on github' })
-vim.keymap.set('n', '<C-G>', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current file' })
-vim.keymap.set('v', '<C-G>', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current line' })
--- }}
-
-
 vim.cmd[[
   let g:gist_clip_command = 'xclip -selection clipboard'
   let g:gist_detect_filetype = 1
@@ -1086,157 +793,9 @@ vim.cmd[[
   let g:gist_token = $GH_GIST_TOKEN
 ]]
 
-
--- [[ dap
-require("dapui").setup()
-require("nvim-dap-virtual-text").setup({})
-require("dap-python").setup(os.getenv('HOME') .. '/.venv-nvim/bin/python')
-
-local dap = require('dap')
-vim.keymap.set('n', '<leader>B', function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end, { noremap = true, desc = 'dap set breakpoint condition' })
-vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { noremap = true, desc = 'dap toggle breakpoint' })
-vim.keymap.set('n', '<leader>dc', dap.continue, { noremap = true, desc = 'dap continue' })
-
-vim.keymap.set('n', '<leader>dh', dap.step_out, { noremap = true, desc = 'dap step out ←' })
-vim.keymap.set('n', '<leader>dl', dap.step_into, { noremap = true, desc = 'dap step into →' })
-vim.keymap.set('n', '<leader>dk', dap.step_back, { noremap = true, desc = 'dap step back ↑' })
-vim.keymap.set('n', '<leader>dj', dap.step_over, { noremap = true, desc = 'dap step over ↓' })
-
-vim.keymap.set('n', '<leader>de', dap.repl.open, { noremap = true, desc = 'dap open repl' })
-vim.keymap.set('n', '<leader>dr', dap.run_last, { noremap = true, desc = 'dap run last' })
-vim.keymap.set('n', '<leader>dq', dap.disconnect, { noremap = true, desc = 'dap disconnect' })
-
--- [[ dap:ui ]]
-local dapui = require('dapui')
-vim.keymap.set('n', '<leader>du', dapui.toggle, { noremap = true, desc = 'toggle dap ui' })
-vim.keymap.set('n', '<leader>do', dapui.open, { noremap = true, desc = 'toggle dap ui' })
-vim.keymap.set('n', '<leader>dx', dapui.close, { noremap = true, desc = 'toggle dap ui' })
--- ]]
-
--- [[ luasnip:snippets ]]
-local ls = require("luasnip")
-local s = ls.snippet
-local t = ls.text_node
-ls.add_snippets('all', {
-  s('hola', t 'hola mundo!')
-})
-
-ls.add_snippets('python', {
-  s('pdb', t '__import__("pdb").set_trace()')
-})
-
-ls.add_snippets('python', {
-  s('pm', t '__import__("pdb").pm()')
-})
-
--- date
-ls.add_snippets('all', {
-  s('date', t(os.date('%Y-%m-%d')))
-})
-
 vim.keymap.set('n', '<leader>zz', '<cmd>ZenMode<cr>', { noremap = true, desc = 'ZenMode toggle' })
-
--- scratch
-function CreateScratch()
-  local parent = './.scratches'
-  if vim.fn.isdirectory(parent) == 0 then
-    vim.fn.mkdir(parent, 'p')
-  end
-  local fpath = vim.fn.input('Enter filename or extension (.py): ') or '.py'
-  local fname_ext = vim.split(fpath, '.', { plain = true })
-  local fname = fname_ext[1]
-  local ext = '.' .. fname_ext[2]
-
-  local file = function(n)
-    return vim.fn.expand(parent .. '/' .. n .. ext)
-  end
-
-  if fname == '' then
-    local num = 0
-    while (vim.fn.filereadable(file(num)) == 0) and (num <= 500) do
-      num = num + 1
-    end
-    fname = file(num)
-  end
-
-  vim.cmd('10new ' .. fname .. ext)
-
-  -- vim.bo.buftype = '__scratch__'
-  -- vim.bo.filetype = 'markdown'
-  -- vim.bo.bufhidden = 'wipe'
-  -- vim.bo.swapfile = false
-  vim.bo.modifiable = true
-  vim.bo.textwidth = 0
-end
-vim.keymap.set('n', '<leader>ss', ':lua CreateScratch()<cr>', { noremap = true, desc = 'create scratch buffer' })
-
 vim.keymap.set("v", "<leader>h", ":<c-u>HSHighlight 2<cr>", { noremap = true, desc = 'high-str' })
 -- vim.keymap.set("n", "<leader>h", ":<c-u>HSHighlight 2<cr>", {noremap = true, desc = 'high-str'})
-
-vim.keymap.set("v", "<C-c>", "\"0y", { noremap = true, desc = 'yank to clipboard' })
-vim.keymap.set("n", "<C-c>", "\"0yy", { noremap = true, desc = 'yank to clipboard' })
-
-vim.keymap.set('n', '<C-v><C-v>', '"0p', { desc = 'Paste 0 register' })
-vim.keymap.set('i', '<C-v>', '<C-r>0', { desc = 'Paste 0 register' })
-
-vim.keymap.set('n', '<leader>p', '"+p', { desc = 'Paste clipboard register' })
-vim.keymap.set('v', '<leader>p', '"+p', { desc = 'Paste clipboard register' })
-vim.keymap.set('n', '<leader>y', '"+yy', { noremap = true, desc = 'copy to system clipboard' })
-vim.keymap.set('v', '<leader>y', '"+y', { noremap = true, desc = 'copy to system clipboard' })
-vim.keymap.set('n', '<leader>yf', ':let @+ = expand("%:p")<cr>', { noremap = true, desc = 'yank filename/buffer path' })
-
--- [[ pdbrc ]] {{
-local pdbrc_win
-local current_win
-
-function AddPdbrc()
-  local file = vim.fn.expand('%:p')
-  local line = vim.fn.line('.')
-  local cmd = "b " .. file .. ":" .. line
-
-  local full_cmd = [[!echo ']] .. cmd .. [[' >> .pdbrc]]
-  vim.cmd(full_cmd)
-
-  -- Guardar la ventana actual
-  current_win = vim.api.nvim_get_current_win()
-
-  -- Comprobar si .pdbrc ya está abierto
-  if not pdbrc_win or not vim.api.nvim_win_is_valid(pdbrc_win) then
-    -- Abrir .pdbrc en un buffer superior con 5 líneas de alto si no está abierto
-    vim.cmd('5split .pdbrc')
-    pdbrc_win = vim.api.nvim_get_current_win()
-  else
-    -- Activar la ventana donde se abrió .pdbrc
-    vim.api.nvim_set_current_win(pdbrc_win)
-  end
-  vim.cmd('norm G')
-
-  vim.api.nvim_set_current_win(current_win)
-end
-
-vim.api.nvim_set_keymap('n', '<C-b><C-b>', ':lua AddPdbrc()<CR><CR>', { noremap = true, silent = true, desc = 'Add pdbrc' })
--- }}
-
-
--- send to harpoon terminal {{
-vim.keymap.set('n', '<C-s><C-h>', ':lua SendToHarpoon(1, 0)<CR>', { noremap = true, desc = "Send to Harpoon (normal mode)" })
-vim.keymap.set('v', '<C-s><C-h>', ':lua SendToHarpoon(1, 1)<CR>', { noremap = true, desc = "Send to Harpoon (visual mode)" })
--- open harpoon menu
-vim.keymap.set('n', '<leader>ha', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true, desc = "Harpoon's quick menu" })
-
-vim.keymap.set('n', '<C-h>', ':lua require("harpoon.ui").nav_file(1)<cr>', { noremap = true, desc = 'Harpoon file 1' })
-vim.keymap.set('n', '<C-j>', ':lua require("harpoon.ui").nav_file(2)<cr>', { noremap = true, desc = 'Harpoon file 2' })
-vim.keymap.set('n', '<C-k>', ':lua require("harpoon.ui").nav_file(3)<cr>', { noremap = true, desc = 'Harpoon file 3' })
-vim.keymap.set('n', '<C-l>', ':lua require("harpoon.ui").nav_file(4)<cr>', { noremap = true, desc = 'Harpoon file 4' })
-
-vim.keymap.set('n', '<C-h><C-h>', ':lua require("harpoon.term").gotoTerminal(1)<cr>i', { noremap = true, desc = "Harpoon Terminal 1" })
-vim.keymap.set('n', '<C-j><C-j>', ':lua require("harpoon.term").gotoTerminal(2)<cr>i', { noremap = true, desc = "Harpoon Terminal 2" })
-vim.keymap.set('n', '<C-k><C-k>', ':lua require("harpoon.term").gotoTerminal(3)<cr>i', { noremap = true, desc = "Harpoon Terminal 3" })
-vim.keymap.set('n', '<C-l><C-l>', ':lua require("harpoon.term").gotoTerminal(4)<cr>i', { noremap = true, desc = "Harpoon Terminal 4" })
-
--- add file to harpoon
-vim.keymap.set('n', '<leader>hf', ':lua require("harpoon.mark").add_file()<CR>', { desc = "Add file to Harpoon marks" })
--- }}
 
 -- add python cells
 vim.keymap.set('n', '<leader>co', 'O%%<esc>:norm gcc<cr>j', { noremap = true, desc = 'Insert a cell comment above the current line' })
@@ -1264,89 +823,6 @@ vim.o.grepprg = 'rg --vimgrep'
 vim.o.grepformat = '%f:%l:%c:%m'
 -- }}
 
--- [[ formatter ]] {{
--- Utilities for creating configurations
-local util = require "formatter.util"
-
--- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
-require("formatter").setup {
-  -- Enable or disable logging
-  logging = true,
-  -- Set the log level
-  log_level = vim.log.levels.WARN,
-  -- All formatter configurations are opt-in
-  filetype = {
-    -- Formatter configurations for filetype "lua" go here
-    -- and will be executed in order
-    lua = {
-      -- "formatter.filetypes.lua" defines default configurations for the
-      -- "lua" filetype
-      require("formatter.filetypes.lua").stylua,
-
-      -- You can also define your own configuration
-      function()
-        -- Supports conditional formatting
-        if util.get_current_buffer_file_name() == "special.lua" then
-          return nil
-        end
-
-        -- Full specification of configurations is down below and in Vim help
-        -- files
-        return {
-          exe = "stylua",
-          args = {
-            "--search-parent-directories",
-            "--stdin-filepath",
-            util.escape_path(util.get_current_buffer_file_path()),
-            "--",
-            "-",
-          },
-          stdin = true,
-        }
-      end
-    },
-
-    -- Use the special "*" filetype for defining formatter configurations on
-    -- any filetype
-    ["*"] = {
-      -- "formatter.filetypes.any" defines default configurations for any
-      -- filetype
-      require("formatter.filetypes.any").remove_trailing_whitespace
-    }
-  }
-}
--- }}
-
-
--- [[ neotest ]] {{
-vim.keymap.set('n', '<leader>tn', ':TestNearest<cr>', { noremap = true, desc = 'Run nearest test' })
-vim.keymap.set('n', '<leader>tf', ':TestFile<cr>', { noremap = true, desc = 'Run current file tests' })
-vim.keymap.set('n', '<leader>ts', ':TestSuite<cr>', { noremap = true, desc = 'Run test suite' })
-vim.keymap.set('n', '<leader>tl', ':TestLast<cr>', { noremap = true, desc = 'Run last test' })
-vim.keymap.set('n', '<leader>td', function() require("neotest").run.run({ strategy = "dap" }) end , { noremap = true, desc = 'Run test debug mode' })
--- }}
-
--- [[ skiz ]] {{
-function Skiz(args)
-  local name = args.fargs[1]
-  if name ~= nil then
-    name = vim.fn.join({"-n", name}, " ")
-  else
-    name = ""
-  end
-  local ext = args.fargs[2]
-  if ext ~= nil then
-    ext = vim.fn.join({"-e", ext}, " ")
-  else
-    ext = ""
-  end
-  local cmd = vim.fn.join({'skiz', name, ext}, " ")
-  local output = vim.fn.system(cmd)
-  vim.cmd('e ' .. output)
-end
-vim.api.nvim_create_user_command('Skiz', Skiz, { nargs = '*' })
-vim.keymap.set('n', '<leader>sk', ':Skiz<cr>', { noremap = true, desc = 'New Skiz' })
--- }}
 
 -- autocommand to automatically commit and push modifications on init.lua file using lua api
 local AutoCommitVimFiles = vim.api.nvim_create_augroup('AutoCommitVimFiles', { clear = true })
@@ -1358,95 +834,6 @@ vim.api.nvim_create_autocmd({'WinClosed', 'VimLeavePre'}, {
   pattern = '*/.config/nvim/*',
 })
 
-
--- [[ scala ]] {{
--------------------------------------------------------------------------------
--- These are example settings to use with nvim-metals and the nvim built-in
--- LSP. Be sure to thoroughly read the `:help nvim-metals` docs to get an
--- idea of what everything does. Again, these are meant to serve as an example,
--- if you just copy pasta them, then should work,  but hopefully after time
--- goes on you'll cater them to your own liking especially since some of the stuff
--- in here is just an example, not what you probably want your setup to be.
---
--- Unfamiliar with Lua and Neovim?
---  - Check out https://github.com/nanotee/nvim-lua-guide
---
--- The below configuration also makes use of the following plugins besides
--- nvim-metals, and therefore is a bit opinionated:
---
--- - https://github.com/hrsh7th/nvim-cmp
---   - hrsh7th/cmp-nvim-lsp for lsp completion sources
---   - hrsh7th/cmp-vsnip for snippet sources
---   - hrsh7th/vim-vsnip for snippet sources
---
--- - https://github.com/wbthomason/packer.nvim for package management
--- - https://github.com/mfussenegger/nvim-dap (for debugging)
--------------------------------------------------------------------------------
-local api = vim.api
-local cmd = vim.cmd
-local map = vim.keymap.set
-
-----------------------------------
--- PLUGINS -----------------------
-----------------------------------
-local metals_config = require("metals").bare_config()
-
--- Example of settings
-metals_config.settings = {
-  showImplicitArguments = true,
-  excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
-}
-
--- *READ THIS*
--- I *highly* recommend setting statusBarProvider to true, however if you do,
--- you *have* to have a setting to display this in your statusline or else
--- you'll not see any messages from metals. There is more info in the help
--- docs about this
--- metals_config.init_options.statusBarProvider = "on"
-
--- Example if you are using cmp how to make sure the correct capabilities for snippets are set
-metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
-
--- Debug settings if you're using nvim-dap
--- local dap = require("dap")
-
-dap.configurations.scala = {
-  {
-    type = "scala",
-    request = "launch",
-    name = "RunOrTest",
-    metals = {
-      runType = "runOrTestFile",
-      --args = { "firstArg", "secondArg", "thirdArg" }, -- here just as an example
-    },
-  },
-  {
-    type = "scala",
-    request = "launch",
-    name = "Test Target",
-    metals = {
-      runType = "testTarget",
-    },
-  },
-}
-
-metals_config.on_attach = function(client, bufnr)
-  require("metals").setup_dap()
-end
-
--- Autocmd that will actually be in charging of starting the whole thing
-local nvim_metals_group = api.nvim_create_augroup("nvim-metals", { clear = true })
-api.nvim_create_autocmd("FileType", {
-  -- NOTE: You may or may not want java included here. You will need it if you
-  -- want basic Java support but it may also conflict if you are using
-  -- something like nvim-jdtls which also works on a java filetype autocmd.
-  pattern = { "scala", "sbt", "java" },
-  callback = function()
-    require("metals").initialize_or_attach(metals_config)
-  end,
-  group = nvim_metals_group,
-})
--- }}
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et tw=0
