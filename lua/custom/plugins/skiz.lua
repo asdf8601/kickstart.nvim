@@ -53,3 +53,4 @@ function CreateScratch()
   vim.bo.textwidth = 0
 end
 vim.keymap.set('n', '<leader>ss', ':lua CreateScratch()<cr>', { noremap = true, desc = 'create scratch buffer' })
+return {}

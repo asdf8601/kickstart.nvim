@@ -6,3 +6,4 @@ vim.keymap.set('n', '<leader>ts', ':TestSuite<cr>', { noremap = true, desc = 'Ru
 vim.keymap.set('n', '<leader>tl', ':TestLast<cr>', { noremap = true, desc = 'Run last test' })
 vim.keymap.set('n', '<leader>td', function() require("neotest").run.run({ strategy = "dap" }) end , { noremap = true, desc = 'Run test debug mode' })
 -- }}
+return {}

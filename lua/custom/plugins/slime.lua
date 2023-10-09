@@ -44,3 +44,4 @@ local function toggle_slime_target()
 end
 vim.api.nvim_create_user_command('SlimeToggleTarget', toggle_slime_target, { nargs = 0 })
 
+return {}

@@ -151,3 +151,4 @@ require("telescope").setup {
 }
 
 -- }}
+return {}
