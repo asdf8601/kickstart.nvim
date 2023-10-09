@@ -1,4 +1,3 @@
-
 -- [[ checkbox ]]
 function SummaryCheckboxes()
   local line = vim.fn.line('.')
@@ -27,3 +26,4 @@ function SummaryCheckboxes()
   vim.api.nvim_input("vipo<esc>A (" .. checked .. "/" .. total .. ")<esc>")
   return { checked, total }
 end
+return {}

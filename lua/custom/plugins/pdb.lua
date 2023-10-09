@@ -19,5 +19,6 @@ function AddPdbrc()
   vim.api.nvim_set_current_win(current_win)
 end
 
-vim.api.nvim_set_keymap('n', 'bp', AddPdbrc, { noremap = true, silent = true, desc = 'Add pdbrc' })
+vim.keymap.set('n', 'bp', AddPdbrc, { noremap = true, silent = true, desc = 'Add pdbrc' })
+return {}
 -- }}

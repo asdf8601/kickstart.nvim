@@ -18,3 +18,4 @@ ls.add_snippets('python', {
 ls.add_snippets('all', {
   s('date', t(os.date('%Y-%m-%d')))
 })
+return {}

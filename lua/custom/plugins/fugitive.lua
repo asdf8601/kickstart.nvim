@@ -8,3 +8,4 @@ vim.keymap.set('v', '<C-G>', ':GBrowse!<cr>', { noremap = true, desc = 'yank git
 -- }}
 
 
+return {}

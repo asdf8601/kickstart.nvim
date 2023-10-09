@@ -23,3 +23,4 @@ vim.keymap.set('n', '<leader>du', dapui.toggle, { noremap = true, desc = 'toggle
 vim.keymap.set('n', '<leader>do', dapui.open, { noremap = true, desc = 'toggle dap ui' })
 vim.keymap.set('n', '<leader>dx', dapui.close, { noremap = true, desc = 'toggle dap ui' })
 -- }}
+return {}

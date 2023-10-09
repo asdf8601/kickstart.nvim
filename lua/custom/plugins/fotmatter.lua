@@ -49,3 +49,4 @@ require("formatter").setup({
   }
 })
 -- }}
+return {}

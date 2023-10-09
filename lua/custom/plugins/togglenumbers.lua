@@ -15,3 +15,4 @@ function ToggleNumbers()
 end
 vim.api.nvim_create_user_command('ToggleNumbers', ToggleNumbers, {})
 
+return {}
