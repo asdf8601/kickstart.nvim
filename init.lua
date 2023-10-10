@@ -241,6 +241,7 @@ require('lazy').setup({
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   { import = 'custom.plugins' },
+  { import = 'custom.settings' },
 }, {})
 
 -- [[ Setting options ]]
@@ -833,7 +834,6 @@ vim.api.nvim_create_autocmd({'WinClosed', 'VimLeavePre'}, {
   group = AutoCommitVimFiles,
   pattern = '*/.config/nvim/*',
 })
-require('custom.plugins')
 
 
 -- The line beneath this is called `modeline`. See `:help modeline`
