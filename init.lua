@@ -833,6 +833,7 @@ vim.api.nvim_create_autocmd({'WinClosed', 'VimLeavePre'}, {
   group = AutoCommitVimFiles,
   pattern = '*/.config/nvim/*',
 })
+require('custom.plugins')
 
 
 -- The line beneath this is called `modeline`. See `:help modeline`
