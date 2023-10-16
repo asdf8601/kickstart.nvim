@@ -155,7 +155,7 @@ vim.g.mkdp_theme = 'light'
 
 -- {{ Create command to call jq '.' % and replace the buffer with the output
 -- vim.api.nvim_command('command! -buffer Jq %!jq "."')
-vim.api.nvim_create_user_command('Jq', '%!jq', { nargs = 0, buffer = true })
+vim.api.nvim_create_user_command('Jq', '%!jq', { nargs = 0 })
 -- }}
 
 -- {{ grep program
