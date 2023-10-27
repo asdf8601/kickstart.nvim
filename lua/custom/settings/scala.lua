@@ -13,4 +13,4 @@ vim.api.nvim_create_autocmd("FileType", {
   group = nvim_metals_group,
 })
 
-return
+return {}
