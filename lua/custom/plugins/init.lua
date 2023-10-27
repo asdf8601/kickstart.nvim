@@ -9,6 +9,21 @@ local executable = function(x)
 end
 
 return {
+    {
+      "ray-x/go.nvim",
+      dependencies = {  -- optional packages
+        "ray-x/guihua.lua",
+        "neovim/nvim-lspconfig",
+        "nvim-treesitter/nvim-treesitter",
+      },
+      config = function()
+        require("go").setup()
+      end,
+      event = {"CmdlineEnter"},
+      ft = {"go", 'gomod'},
+      build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+    },
+
   {
     'phaazon/mind.nvim',
     version = 'v2.2',
@@ -17,7 +32,10 @@ return {
       require'mind'.setup()
     end
   },
-  {'scalameta/nvim-metals', dependencies = { "nvim-lua/plenary.nvim" },},
+  {
+    'scalameta/nvim-metals',
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
   'junegunn/vim-easy-align',
   'alec-gibson/nvim-tetris',
   {
