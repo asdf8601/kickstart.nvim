@@ -490,8 +490,8 @@ local servers = {
   dockerls = {},
   efm = {},
   gopls = {},
-  -- clangd = {},
-  -- rust_analyzer = {},
+  clangd = {},
+  rust_analyzer = {},
   tsserver = {},
   html = { filetypes = { 'html', 'twig', 'hbs'} },
   lua_ls = {
