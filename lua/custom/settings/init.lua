@@ -53,21 +53,49 @@ vim.g.gist_token = os.getenv('GH_GIST_TOKEN')
 
 
 -- [[ Setting keymaps ]] {{
-function open_url()
-  local mode = vim.fn.mode()
-  local url
 
-  if mode == 'v' or mode == 'V' then
-    url = vim.fn.getreg('"')
-  else
-    url = vim.fn.expand('<cWORD>')
-  end
-
-  vim.cmd('!firefox ' .. url .. ' &')
+function GetVisual()
+  local _, ls, cs = unpack(vim.fn.getpos('v'))
+  local _, le, ce = unpack(vim.fn.getpos('.'))
+  -- fix corner case when selection is linewise
+  -- vim.print({ls=ls, cs=cs, le=le, ce=ce})
+  cs = cs == 0 and 1 or cs
+  ls = ls == 0 and 1 or ls
+  le = le == 0 and 1 or le
+  ce = ce == 0 and 1 or ce
+  local data = vim.api.nvim_buf_get_text(0, ls-1, cs-1, le-1, ce, {})
+  return table.concat(data, '\\n')
 end
 
-vim.api.nvim_set_keymap('n', 'gx', open_url, { noremap = true, silent = true })
-vim.api.nvim_set_keymap('v', 'gx', open_url, { noremap = true, silent = true })
+function OpenUrl()
+  local mode = vim.fn.mode()
+  local url
+  local text
+
+  if mode == 'v' or mode == 'V' then
+    text = GetVisual()
+  else
+    text = vim.fn.expand('<cWORD>')
+  end
+
+  -- chek if it is a url
+  if text:match('^https?://') then
+    url = text
+  else
+    -- replace spaces with +
+    text = text:gsub('\\n', '')
+    text = text:gsub('%s+', '+')
+    url = 'https://www.google.com/search?q=' .. text
+  end
+  local cmd = 'firefox ' .. url .. ' &'
+  vim.print(cmd)
+  vim.fn.system(cmd)
+
+end
+
+
+vim.keymap.set('n', 'gx', OpenUrl, { noremap = true, silent = true })
+vim.keymap.set('v', 'gx', OpenUrl, { noremap = true, silent = true })
 
 -- motion
 vim.keymap.set('i', 'kj', '<esc>', { noremap = true, silent = true })
