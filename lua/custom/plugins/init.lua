@@ -311,10 +311,11 @@ return {
     },
 
     -- utils
-    {
-        "folke/todo-comments.nvim",
-        dependencies = { "nvim-lua/plenary.nvim" },
-        opts = {}
-    },
+    -- {
+    --     don't know why but this plugin removes the startup message of neovim
+    --     "folke/todo-comments.nvim",
+    --     dependencies = { "nvim-lua/plenary.nvim" },
+    --     opts = {}
+    -- },
 }
 -- vim: ts=2 sts=2 sw=2 et tw=0
