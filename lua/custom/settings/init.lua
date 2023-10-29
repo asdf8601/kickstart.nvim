@@ -38,6 +38,8 @@ vim.o.colorcolumn = "80" -- works! (using integer will fail)
 vim.o.completeopt = 'menuone,noselect'
 vim.g.netrw_hide = 0
 vim.o.laststatus = 3
+vim.g.netrw_nogx = 1
+
 -- }}
 
 -- [[ gist ]] {{
@@ -51,6 +53,22 @@ vim.g.gist_token = os.getenv('GH_GIST_TOKEN')
 
 
 -- [[ Setting keymaps ]] {{
+function open_url()
+  local mode = vim.fn.mode()
+  local url
+
+  if mode == 'v' or mode == 'V' then
+    url = vim.fn.getreg('"')
+  else
+    url = vim.fn.expand('<cWORD>')
+  end
+
+  vim.cmd('!firefox ' .. url .. ' &')
+end
+
+vim.api.nvim_set_keymap('n', 'gx', open_url, { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', 'gx', open_url, { noremap = true, silent = true })
+
 -- motion
 vim.keymap.set('i', 'kj', '<esc>', { noremap = true, silent = true })
 vim.keymap.set('i', 'jk', '<esc>', { noremap = true, silent = true })
