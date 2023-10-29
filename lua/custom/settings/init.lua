@@ -38,11 +38,9 @@ vim.o.colorcolumn = "80" -- works! (using integer will fail)
 vim.o.completeopt = 'menuone,noselect'
 vim.g.netrw_hide = 0
 vim.g.netrw_nogx = 1
-vim.g.netrw_liststyle = 3
 vim.g.netrw_banner = 0
-vim.g.netrw_winsize = 25
-vim.g.netrw_localrmdir = 'rm -r'
-vim.o.laststatus = 3
+vim.g.netrw_winsize = 20
+vim.o.laststatus = 2
 
 -- }}
 
