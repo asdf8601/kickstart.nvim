@@ -529,10 +529,10 @@ mason_lspconfig.setup_handlers {
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
-local cmp = require 'cmp'
-local luasnip = require 'luasnip'
+local cmp = require('cmp')
+local luasnip = require('luasnip')
 require('luasnip.loaders.from_vscode').lazy_load()
-luasnip.config.setup {}
+luasnip.config.setup({})
 
 cmp.setup({
   snippet = {
@@ -545,11 +545,11 @@ cmp.setup({
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
     ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-    -- ['<C-l>'] = cmp.mapping.complete(),
-    ['<C-l>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
+    ['<C-l>'] = cmp.mapping.complete(),
+    -- ['<C-l>'] = cmp.mapping.confirm {
+    --   behavior = cmp.ConfirmBehavior.Replace,
+    --   select = true,
+    -- },
   },
   sources = {
     { name = 'nvim_lsp' },
@@ -557,8 +557,8 @@ cmp.setup({
     { name = 'copilot' },
     { name = 'path' },
     -- { name = 'buffer' },
-    -- { name = 'neorg' },
     -- { name = 'nvim_lsp_signature_help' },
+    -- { name = 'neorg' },
     -- { name = 'orgmode' },
   },
 })
