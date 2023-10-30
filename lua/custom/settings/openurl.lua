@@ -13,6 +13,8 @@ function GetVisual(mode)
 end
 
 
+vim.g.openurl_command = 'open'
+
 function OpenUrl()
   local mode = vim.fn.mode()
   local url
@@ -35,7 +37,7 @@ function OpenUrl()
     text = text:gsub('\\n', ''):gsub('%s+', '+')
     url = 'https://www.google.com/search?q=' .. text
   end
-  cmd = 'open "' .. url .. '" &'
+  cmd = vim.g.openurl_command .. ' "' .. url .. '" &'
   out = vim.fn.system(cmd)
   return out
 end

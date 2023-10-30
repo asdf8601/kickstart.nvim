@@ -68,6 +68,7 @@ vim.keymap.set('n', '!<space>', ':.!sh ' , { noremap = true, desc = 'Fill comman
 vim.keymap.set('n', '!<cr>', ':.!sh<cr>' , { noremap = true, desc = 'Execute sh current line' })
 
 -- Explore
+vim.keymap.set('n', '-', ':Ex<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
 vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
 
 -- paste / yank / copy
