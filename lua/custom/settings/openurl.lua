@@ -35,7 +35,7 @@ function OpenUrl()
     text = text:gsub('\\n', ''):gsub('%s+', '+')
     url = 'https://www.google.com/search?q=' .. text
   end
-  cmd = 'firefox "' .. url .. '" &'
+  cmd = 'open "' .. url .. '" &'
   out = vim.fn.system(cmd)
   return out
 end

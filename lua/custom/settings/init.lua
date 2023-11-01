@@ -250,4 +250,10 @@ vim.api.nvim_create_user_command('PeekClose', function()
 end, {})
 -- }}
 
+-- [[ neovim-remote ]] {{
+if vim.fn.has('nvim') then
+  vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'
+end
+-- }}
+
 return {}
