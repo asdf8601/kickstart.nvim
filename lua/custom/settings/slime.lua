@@ -12,7 +12,7 @@ local function prev_cell()
     vim.cmd.search(vim.g.slime_cell_delimiter, "b")
 end
 vim.keymap.set('n', '<leader>e', vim.cmd.SlimeSend, { noremap = true, desc = 'send line to term' })
-vim.keymap.set('x', '<leader>e', vim.cmd.SlimeRegionSend, { noremap = true, desc = 'send line to tmux' })
+vim.keymap.set('x', '<leader>e', '<Plug>SlimeRegionSend', { noremap = true, desc = 'send line to tmux' })
 vim.keymap.set('n', '<leader>cv', vim.cmd.SlimeConfig, { noremap = true, desc = "Open SlimeConfig" })
 vim.keymap.set('n', '<leader>ep', vim.cmd.SlimeParagraphSend, { noremap = true, desc = "Send Paragraph with Slime" })
 -- vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', {noremap = true})
