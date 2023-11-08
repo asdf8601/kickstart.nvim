@@ -8,6 +8,14 @@ end
 
 return {
     {
+  "folke/zen-mode.nvim",
+  opts = {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+  },
+  },
+    {
         'Pocco81/HighStr.nvim',
         init = function()
             local high_str = require("high-str")
@@ -54,7 +62,7 @@ return {
         version = 'v2.2',
         dependencies = { 'nvim-lua/plenary.nvim' },
         init = function()
-            require 'mind'.setup()
+            require('mind').setup()
         end
     },
     {
@@ -63,6 +71,7 @@ return {
     },
     'junegunn/vim-easy-align',
     'alec-gibson/nvim-tetris',
+    -- better quick fix
     {
         'kevinhwang91/nvim-bqf',
         dependencies = {
@@ -103,19 +112,20 @@ return {
             })
         end
     },
-    -- 'sbulav/nredir.nvim',
-    -- 'tpope/vim-eunuch',
-    -- 'tpope/vim-abolish', -- work with multiple cases of a word
+    'tpope/vim-eunuch',
     'tpope/vim-dadbod',
     'kristijanhusak/vim-dadbod-ui',
-    -- 'tpope/vim-dispatch',
     'tpope/vim-fugitive', -- git wrapper
     'tpope/vim-obsession',
-    -- 'tpope/vim-markdown',
-    -- 'tpope/vim-repeat',
+    'tpope/vim-repeat', -- better repeat
     'tpope/vim-rhubarb', -- github extension for fugitive
     'tpope/vim-speeddating',
+    -- 'tpope/vim-abolish', -- work with multiple cases of a word
+    -- 'tpope/vim-vinegar',
+    -- 'tpope/vim-dispatch',
     -- 'tpope/vim-surround',
+    -- 'tpope/vim-markdown',
+    -- 'sbulav/nredir.nvim',
     {
         "kylechui/nvim-surround",
         version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -139,7 +149,6 @@ return {
         end
     },
     'tpope/vim-unimpaired',
-    -- 'tpope/vim-vinegar',
     'goerz/jupytext.vim',
     'ThePrimeagen/harpoon',
     'szw/vim-maximizer',
@@ -241,29 +250,29 @@ return {
     },
     { 'mracos/mermaid.vim' },
     { 'mzlogin/vim-markdown-toc', },
-    {
-        -- markdown preview
-        'toppair/peek.nvim',
-        build = 'deno task --quiet build:fast',
-        init = function()
-            require('peek').setup({
-                auto_load = true,          -- whether to automatically load preview when
-                -- entering another markdown buffer
-                close_on_bdelete = true,   -- close preview window on buffer delete
-                syntax = true,             -- enable syntax highlighting, affects performance
-                theme = 'dark',            -- 'dark' or 'light'
-                update_on_change = true,
-                app = 'brave-browser',           -- 'webview', 'browser', string or a table of strings
-                -- explained below
-                filetype = { 'markdown' }, -- list of filetypes to recognize as markdown
-                -- relevant if update_on_change is true
-                throttle_at = 200000,      -- start throttling when file exceeds this
-                -- amount of bytes in size
-                throttle_time = 'auto',    -- minimum amount of time in milliseconds
-                -- that has to pass before starting new render
-            })
-        end
-    },
+    -- {
+    --     -- markdown preview
+    --     'toppair/peek.nvim',
+    --     build = 'deno task --quiet build:fast',
+    --     init = function()
+    --         require('peek').setup({
+    --             auto_load = true,          -- whether to automatically load preview when
+    --             -- entering another markdown buffer
+    --             close_on_bdelete = true,   -- close preview window on buffer delete
+    --             syntax = true,             -- enable syntax highlighting, affects performance
+    --             theme = 'dark',            -- 'dark' or 'light'
+    --             update_on_change = true,
+    --             app = 'brave-browser',           -- 'webview', 'browser', string or a table of strings
+    --             -- explained below
+    --             filetype = { 'markdown' }, -- list of filetypes to recognize as markdown
+    --             -- relevant if update_on_change is true
+    --             throttle_at = 200000,      -- start throttling when file exceeds this
+    --             -- amount of bytes in size
+    --             throttle_time = 'auto',    -- minimum amount of time in milliseconds
+    --             -- that has to pass before starting new render
+    --         })
+    --     end
+    -- },
     {
         "iamcco/markdown-preview.nvim",
         build = "cd app && npm install",
