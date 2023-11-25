@@ -380,6 +380,7 @@ return {
     --     }
     --   end
     -- },
+
   {
     'nvimdev/lspsaga.nvim',
     config = function()
@@ -387,6 +388,7 @@ return {
         ui = {
           devicon = false,
           foldericon = true,
+          code_action = "",
           lightbulb = {
             enable = false,
             enable_in_insert = false,
