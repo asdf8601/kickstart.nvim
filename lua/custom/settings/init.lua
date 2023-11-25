@@ -85,7 +85,7 @@ vim.keymap.set('v', '<leader>y', '"+y', { noremap = true, desc = 'copy to system
 vim.keymap.set('n', '<leader>yf', ':let @+ = expand("%:p")<cr>', { noremap = true, desc = 'yank filename/buffer path' })
 
 -- tag bar
-vim.keymap.set('n', '<leader>t', ':SymbolsOutline<cr>', { desc = "Symbols outline", silent = false })
+vim.keymap.set('n', '<leader>t', ':Lspsaga outline<cr>', { desc = "Symbols outline", silent = false })
 
 -- reload
 vim.keymap.set('n', '<leader><cr>', ':source ~/.config/nvim/init.lua<cr>', { noremap = true })

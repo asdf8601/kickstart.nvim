@@ -7,15 +7,16 @@ local executable = function(x)
 end
 
 return {
-    {
-  "folke/zen-mode.nvim",
-  opts = {
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
+  {
+    "folke/zen-mode.nvim",
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
   },
-  },
     {
+        -- Highlight text
         'Pocco81/HighStr.nvim',
         init = function()
             local high_str = require("high-str")
@@ -57,15 +58,16 @@ return {
         ft = { "go", 'gomod' },
         build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
     },
+    -- {
+    --     'phaazon/mind.nvim',
+    --     version = 'v2.2',
+    --     dependencies = { 'nvim-lua/plenary.nvim' },
+    --     init = function()
+    --         require('mind').setup()
+    --     end
+    -- },
     {
-        'phaazon/mind.nvim',
-        version = 'v2.2',
-        dependencies = { 'nvim-lua/plenary.nvim' },
-        init = function()
-            require('mind').setup()
-        end
-    },
-    {
+        -- scala lsp
         'scalameta/nvim-metals',
         dependencies = { "nvim-lua/plenary.nvim" },
     },
@@ -73,13 +75,14 @@ return {
     'alec-gibson/nvim-tetris',
     -- better quick fix
     {
+        -- better quickfix
         'kevinhwang91/nvim-bqf',
         dependencies = {
             'junegunn/fzf',
             -- init = function() vim.fn['fzf#install']() end,
         },
     },
-    'nvim-telescope/telescope-symbols.nvim',
+    -- 'nvim-telescope/telescope-symbols.nvim',
     -- {
     --   'edluffy/hologram.nvim',
     --   init = function ()
@@ -104,28 +107,50 @@ return {
     --     })
     --   end
     -- },
+    -- {
+    --     'simrat39/symbols-outline.nvim',
+    --     init = function()
+    --         require("symbols-outline").setup({
+    --             show_symbol_details = true,
+    --         })
+    --     end
+    -- },
     {
-        'simrat39/symbols-outline.nvim',
-        init = function()
-            require("symbols-outline").setup({
-                show_symbol_details = true,
-            })
-        end
+        "ludovicchabant/vim-gutentags",
     },
-    'tpope/vim-eunuch',
-    'tpope/vim-dadbod',
+
+    {
+        -- unix commands in vim
+        'tpope/vim-eunuch',
+    },
+
+    {
+        -- database support in vim
+        'tpope/vim-dadbod',
+    },
     'kristijanhusak/vim-dadbod-ui',
     'tpope/vim-fugitive', -- git wrapper
     'tpope/vim-obsession',
     'tpope/vim-repeat', -- better repeat
     'tpope/vim-rhubarb', -- github extension for fugitive
     'tpope/vim-speeddating',
-    -- 'tpope/vim-abolish', -- work with multiple cases of a word
-    -- 'tpope/vim-vinegar',
-    -- 'tpope/vim-dispatch',
-    -- 'tpope/vim-surround',
+    -- {
+    --     -- work with multiple cases of a word
+    --     -- :%Subvert/facilit{y,ies}/building{,s}/g
+    --     'tpope/vim-abolish',
+    -- },
+    {
+        -- better netrw
+        'tpope/vim-vinegar',
+    },
+    -- {
+    --     -- Spawning interactive processes
+    --     'tpope/vim-dispatch',
+    -- },
     -- 'tpope/vim-markdown',
     -- 'sbulav/nredir.nvim',
+
+    -- 'tpope/vim-surround',
     {
         "kylechui/nvim-surround",
         version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -164,7 +189,7 @@ return {
                 formatters_by_ft = {
                     lua = { "stylua" },
                     -- Conform will run multiple formatters sequentially
-                    python = { "isort", "black -l79" },
+                    python = { "isort -m3", "black -l79", },
                     -- Use a sub-list to run only the first available formatter
                     javascript = { { "prettierd", "prettier" } },
                     sh = { "beautysh" },
@@ -203,13 +228,13 @@ return {
             require("copilot_cmp").setup()
         end,
     },
-    {
-        "NTBBloodbath/rest.nvim",
-        enable = executable "jq",
-        init = function()
-            require("rest-nvim").setup()
-        end,
-    },
+    -- {
+    --     "NTBBloodbath/rest.nvim",
+    --     enable = executable "jq",
+    --     init = function()
+    --         require("rest-nvim").setup()
+    --     end,
+    -- },
     {
         "nvim-neotest/neotest",
         dependencies = {
@@ -241,13 +266,13 @@ return {
             require('nvim-test').setup({})
         end
     },
-    {
-        'jakewvincent/mkdnflow.nvim',
-        rocks = 'luautf8', -- Ensures optional luautf8 dependency is installed
-        init = function()
-            require('mkdnflow').setup({})
-        end
-    },
+    -- {
+    --     'jakewvincent/mkdnflow.nvim',
+    --     rocks = 'luautf8', -- Ensures optional luautf8 dependency is installed
+    --     init = function()
+    --         require('mkdnflow').setup({})
+    --     end
+    -- },
     { 'mracos/mermaid.vim' },
     { 'mzlogin/vim-markdown-toc', },
     -- {
@@ -340,6 +365,103 @@ return {
             require("codegpt.config")
         end
     },
+    -- {
+    --     "nvim-treesitter/nvim-treesitter-context",
+    -- },
+    -- {
+    --   "SmiteshP/nvim-navic",
+    --   init = function()
+    --     local navic = require("nvim-navic")
+    --
+    --     require("lspconfig").pyright.setup {
+    --       on_attach = function(client, bufnr)
+    --         navic.attach(client, bufnr)
+    --       end
+    --     }
+    --   end
+    -- },
+  {
+    'nvimdev/lspsaga.nvim',
+    config = function()
+      require('lspsaga').setup({
+        ui = {
+          devicon = false,
+          foldericon = true,
+          lightbulb = {
+            enable = false,
+            enable_in_insert = false,
+            sign = false,
+            sign_priority = 40,
+            virtual_text = false,
+          },
+          kind = {
+              -- disable all icons
+
+              Folder = { "" },
+              Module = { "", "@namespace" },
+              Namespace = { "", "@namespace" },
+              Package = { "", "@namespace" },
+              Class = { "", "@type" },
+              Method = { "", "@method" },
+              Property = { "", "LineNr" },
+              Field = { "", "@field" },
+              Constructor = { "", "@constructor" },
+              Enum = { "", "@type" },
+              Interface = { "", "@type" },
+              Function = { "", "@function" },
+              Variable = { "", "@constant" },
+              Constant = { "", "@constant" },
+              String = { "", "@string" },
+              Number = { "", "@number" },
+              Boolean = { "", "@boolean" },
+              Array = { "", "@constant" },
+              Object = { "", "@type" },
+              Key = { "", "@type" },
+              Null = { "", "@type" },
+              EnumMember = { "", "@field" },
+              Struct = { "", "@type" },
+              Event = { "", "@type" },
+              Operator = { "", "@operator" },
+              TypeParameter = { "", "@parameter" },
+              Parameter = { "", "@parameter" },
+
+              -- Folder = { " " },
+              -- Module = { " ", "@namespace" },
+              -- Namespace = { " ", "@namespace" },
+              -- Package = { " ", "@namespace" },
+              -- Class = { " ", "@type" },
+              -- Method = { " ", "@method" },
+              -- Property = { " ", "LineNr" },
+              -- Field = { " ", "@field" },
+              -- Constructor = { " ", "@constructor" },
+              -- Enum = { " ", "@type" },
+              -- Interface = { " ", "@type" },
+              -- Function = { " ", "@function" },
+              -- Variable = { " ", "@constant" },
+              -- Constant = { " ", "@constant" },
+              -- String = { " ", "@string" },
+              -- Number = { "󰎠 ", "@number" },
+              -- Boolean = { " ", "@boolean" },
+              -- Array = { " ", "@constant" },
+              -- Object = { " ", "@type" },
+              -- Key = { " ", "@type" },
+              -- Null = { "󰟢 ", "@type" },
+              -- EnumMember = { " ", "@field" },
+              -- Struct = { " ", "@type" },
+              -- Event = { "󱐋 ", "@type" },
+              -- Operator = { " ", "@operator" },
+              -- TypeParameter = { " ", "@parameter" },
+              -- Parameter = { " ", "@parameter" },
+          },
+        },
+      })
+    end,
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter', -- optional
+      -- 'nvim-tree/nvim-web-devicons',     -- optional
+    }
+  },
+
 
     -- utils
     -- {
