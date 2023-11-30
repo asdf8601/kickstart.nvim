@@ -277,8 +277,11 @@ vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { de
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
-vim.keymap.set('n', "<leader>fp", "<cmd>lua require('telescope.builtin').find_files( { cwd = vim.fn.expand('%:p:h'), hidden = false }) <CR>", { desc = "Search current buffer dir", noremap = true })
-vim.keymap.set('n', '<leader>fl', ':Telescope diagnostics<cr>', { noremap = true, desc = "Find errors, lint, diagnostics", silent = false })
+vim.keymap.set('n', "<leader>fp",
+  "<cmd>lua require('telescope.builtin').find_files( { cwd = vim.fn.expand('%:p:h'), hidden = false }) <CR>",
+  { desc = "Search current buffer dir", noremap = true })
+vim.keymap.set('n', '<leader>fl', ':Telescope diagnostics<cr>',
+  { noremap = true, desc = "Find errors, lint, diagnostics", silent = false })
 vim.keymap.set('n', '<leader>fc', ':Telescope commands<cr>', { noremap = true, desc = "Find commands", silent = false })
 vim.keymap.set('n', '<leader>fk', ':Telescope keymaps<cr>', { noremap = true, desc = "Find keymaps", silent = false })
 
@@ -520,6 +523,22 @@ cmp.setup({
 
 
 -- [settings] {{
+function UseZsh()
+  local handle = io.popen("which zsh")
+  if handle == nil then
+    return
+  end
+  local result = handle:read("*a")
+  handle:close()
+
+  if result ~= '' then
+    -- Esto elimina los espacios en blanco
+    vim.o.shell = result:match("^%s*(.-)%s*$")
+  end
+end
+
+UseZsh()
+
 vim.o.t_Co = 256
 vim.o.scrollback = 20000
 -- vim.o.guicursor=""
@@ -647,20 +666,27 @@ slime_use_neovim()
 
 -- {{
 -- send to harpoon terminal {{
-vim.keymap.set('n', '<C-s><C-h>', ':lua SendToHarpoon(1, 0)<CR>', { noremap = true, desc = "Send to Harpoon (normal mode)" })
-vim.keymap.set('v', '<C-s><C-h>', ':lua SendToHarpoon(1, 1)<CR>', { noremap = true, desc = "Send to Harpoon (visual mode)" })
+vim.keymap.set('n', '<C-s><C-h>', ':lua SendToHarpoon(1, 0)<CR>',
+  { noremap = true, desc = "Send to Harpoon (normal mode)" })
+vim.keymap.set('v', '<C-s><C-h>', ':lua SendToHarpoon(1, 1)<CR>',
+  { noremap = true, desc = "Send to Harpoon (visual mode)" })
 -- open harpoon menu
-vim.keymap.set('n', '<leader>ha', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true, desc = "Harpoon's quick menu" })
+vim.keymap.set('n', '<leader>ha', ':lua require("harpoon.ui").toggle_quick_menu()<CR>',
+  { noremap = true, desc = "Harpoon's quick menu" })
 
 vim.keymap.set('n', '<C-h>', ':lua require("harpoon.ui").nav_file(1)<cr>', { noremap = true, desc = 'Harpoon file 1' })
 vim.keymap.set('n', '<C-j>', ':lua require("harpoon.ui").nav_file(2)<cr>', { noremap = true, desc = 'Harpoon file 2' })
 vim.keymap.set('n', '<C-k>', ':lua require("harpoon.ui").nav_file(3)<cr>', { noremap = true, desc = 'Harpoon file 3' })
 vim.keymap.set('n', '<C-l>', ':lua require("harpoon.ui").nav_file(4)<cr>', { noremap = true, desc = 'Harpoon file 4' })
 
-vim.keymap.set('n', '<C-h><C-h>', ':lua require("harpoon.term").gotoTerminal(1)<cr>i', { noremap = true, desc = "Harpoon Terminal 1" })
-vim.keymap.set('n', '<C-j><C-j>', ':lua require("harpoon.term").gotoTerminal(2)<cr>i', { noremap = true, desc = "Harpoon Terminal 2" })
-vim.keymap.set('n', '<C-k><C-k>', ':lua require("harpoon.term").gotoTerminal(3)<cr>i', { noremap = true, desc = "Harpoon Terminal 3" })
-vim.keymap.set('n', '<C-l><C-l>', ':lua require("harpoon.term").gotoTerminal(4)<cr>i', { noremap = true, desc = "Harpoon Terminal 4" })
+vim.keymap.set('n', '<C-h><C-h>', ':lua require("harpoon.term").gotoTerminal(1)<cr>i',
+  { noremap = true, desc = "Harpoon Terminal 1" })
+vim.keymap.set('n', '<C-j><C-j>', ':lua require("harpoon.term").gotoTerminal(2)<cr>i',
+  { noremap = true, desc = "Harpoon Terminal 2" })
+vim.keymap.set('n', '<C-k><C-k>', ':lua require("harpoon.term").gotoTerminal(3)<cr>i',
+  { noremap = true, desc = "Harpoon Terminal 3" })
+vim.keymap.set('n', '<C-l><C-l>', ':lua require("harpoon.term").gotoTerminal(4)<cr>i',
+  { noremap = true, desc = "Harpoon Terminal 4" })
 
 -- add file to harpoon
 vim.keymap.set('n', '<leader>hf', ':lua require("harpoon.mark").add_file()<CR>', { desc = "Add file to Harpoon marks" })
@@ -699,12 +725,13 @@ vim.keymap.set('i', 'jk', '<esc>', { noremap = true, silent = true })
 vim.keymap.set('n', '<leader>sh', ":0<cr>O#!/usr/bin/env bash<esc><C-o>", { desc = 'Add shebang' })
 
 -- commands
-vim.keymap.set('n', 'sh', ':.!sh ' , { noremap = true, desc = 'Fill command to execute sh using current line' })
-vim.keymap.set('n', '<c-s><c-s>', ':.!sh<cr>' , { noremap = true, desc = 'Execute sh current line' })
+vim.keymap.set('n', 'sh', ':.!sh ', { noremap = true, desc = 'Fill command to execute sh using current line' })
+vim.keymap.set('n', '<c-s><c-s>', ':.!sh<cr>', { noremap = true, desc = 'Execute sh current line' })
 
 -- Explore
 vim.keymap.set('n', '-', ':Ex<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
-vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
+vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>',
+  { desc = "Open the current file's directory in the file explorer", silent = false })
 
 -- paste / yank / copy
 vim.keymap.set('n', '<leader>0', '"0p', { desc = "Paste from register 0", silent = false })
@@ -725,7 +752,8 @@ vim.keymap.set('n', '<leader>rc', ':new ~/.config/nvim/init.lua<cr>', { noremap 
 
 
 -- replace in all file
-vim.keymap.set('n', '<leader>s', ':%s/<C-r><C-w>/<C-r><C-w>/gI<left><left><left>', { noremap = true, desc = 'search and replace word under cursor' })
+vim.keymap.set('n', '<leader>s', ':%s/<C-r><C-w>/<C-r><C-w>/gI<left><left><left>',
+  { noremap = true, desc = 'search and replace word under cursor' })
 -- vim.keymap.set('n', 'gs', ':%s//g<left><left>', {noremap = true, desc = 'search and replace' })
 --
 vim.keymap.set('i', '<C-J>', '<esc>:.m+1 | startinsert<cr>', { noremap = true, desc = 'move line down' })
