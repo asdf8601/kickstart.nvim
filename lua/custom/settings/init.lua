@@ -7,41 +7,6 @@ else
   vim.g.netrw_browsex_viewer = 'xdg-open'
 end
 
-vim.o.t_Co = 256
-vim.o.scrollback = 20000
--- vim.o.guicursor=""
--- vim.o.nohlsearch = true
--- vim.o.hidden = true
--- vim.o.noerrorbells = true
-vim.o.tabstop = 4
-vim.o.softtabstop = 4
-vim.o.shiftwidth = 4
-vim.o.expandtab = true
-vim.o.smartindent = true
--- vim.o.number = true
-vim.o.relativenumber = true
-vim.o.wrap = false
--- vim.o.noswapfile = true
--- vim.o.nobackup = true
-vim.o.undodir = os.getenv("HOME") .. '/.vim/undodir'
-vim.o.undofile = true
-vim.o.incsearch = true
-vim.o.scrolloff = 8
--- vim.o.signcolumn='no'
-vim.o.cmdheight = 1
-vim.o.timeoutlen = 200
-vim.o.updatetime = 50
--- vim.o.shortmess = vim.o.shortmess .. 'c'
-vim.o.textwidth = 79
-vim.o.cursorline = true
-vim.o.colorcolumn = "80" -- works! (using integer will fail)
-vim.o.completeopt = 'menuone,noselect'
-vim.g.netrw_hide = 0
-vim.g.netrw_nogx = 1
-vim.g.netrw_banner = 0
-vim.g.netrw_winsize = 20
-vim.o.laststatus = 2
-
 -- }}
 
 -- [[ gist ]] {{
@@ -56,50 +21,8 @@ vim.g.gist_token = os.getenv('GH_GIST_TOKEN')
 
 -- [[ Setting keymaps ]] {{
 
--- motion
-vim.keymap.set('i', 'kj', '<esc>', { noremap = true, silent = true })
-vim.keymap.set('i', 'jk', '<esc>', { noremap = true, silent = true })
-
--- shebang
-vim.keymap.set('n', '<leader>sh', ":0<cr>O#!/usr/bin/env bash<esc><C-o><C-o>", { desc = 'Add shebang' })
-
--- commands
-vim.keymap.set('n', '!<space>', ':.!sh ' , { noremap = true, desc = 'Fill command to execute sh using current line' })
-vim.keymap.set('n', '!<cr>', ':.!sh<cr>' , { noremap = true, desc = 'Execute sh current line' })
-
--- Explore
-vim.keymap.set('n', '-', ':Ex<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
-vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
-
--- paste / yank / copy
-vim.keymap.set('n', '<leader>0', '"0p', { desc = "Paste from register 0", silent = false })
-vim.keymap.set('n', '<leader>1', '"1p', { desc = "Paste from register 1", silent = false })
-vim.keymap.set("v", "<C-c>", "\"0y", { noremap = true, desc = 'yank to clipboard' })
-vim.keymap.set("n", "<C-c>", "\"0yy", { noremap = true, desc = 'yank to clipboard' })
-vim.keymap.set('n', '<C-v><C-v>', '"0p', { desc = 'Paste 0 register' })
-vim.keymap.set('i', '<C-v>', '<C-r>0', { desc = 'Paste 0 register' })
-vim.keymap.set('n', '<leader>p', '"+p', { desc = 'Paste clipboard register' })
-vim.keymap.set('v', '<leader>p', '"+p', { desc = 'Paste clipboard register' })
-vim.keymap.set('n', '<leader>y', '"+yy', { noremap = true, desc = 'copy to system clipboard' })
-vim.keymap.set('v', '<leader>y', '"+y', { noremap = true, desc = 'copy to system clipboard' })
-vim.keymap.set('n', '<leader>yf', ':let @+ = expand("%:p")<cr>', { noremap = true, desc = 'yank filename/buffer path' })
-
 -- tag bar
 vim.keymap.set('n', '<leader>t', ':Lspsaga outline<cr>', { desc = "Symbols outline", silent = false })
-
--- reload
-vim.keymap.set('n', '<leader><cr>', ':source ~/.config/nvim/init.lua<cr>', { noremap = true })
-vim.keymap.set('n', '<leader>rc', ':new ~/.config/nvim/init.lua<cr>', { noremap = true })
-
--- terminal settings
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true, desc = "Switch to normal mode" })
-vim.keymap.set('t', '<C-w>h', '<C-\\><C-n><C-w>h', { noremap = true, desc = "Move cursor to the left window" })
-vim.keymap.set('t', '<C-w>j', '<C-\\><C-n><C-w>j', { noremap = true, desc = "Move cursor to the below window" })
-vim.keymap.set('t', '<C-w>k', '<C-\\><C-n><C-w>k', { noremap = true, desc = "Move cursor to the above window" })
-vim.keymap.set('t', '<C-w>l', '<C-\\><C-n><C-w>l', { noremap = true, desc = "Move cursor to the right window" })
-vim.keymap.set('t', '<C-w>w', '<C-\\><C-n><C-w>w', { noremap = true, desc = "Switch to the next window" })
--- vim.keymap.set('t', '<C-P>', '<C-\\><C-n>pi<cr>', { noremap = true })
--- vim.keymap.set('n', '<C-l>', 'i<C-l>', {noremap = true})
 
 vim.g.completion_matching_strategy_list = { 'exact', 'substring', 'fuzzy' }
 vim.g.completion_enable_snippet = 'vim-vsnip'
@@ -113,19 +36,6 @@ vim.keymap.set('n', '<leader>ga', ':lua vim.lsp.buf.code_action()<CR>', { norema
 vim.keymap.set('n', '<leader>dq', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', { noremap = true, desc = 'Diagnostics Quickfix' })
 vim.keymap.set('n', '<leader>dn', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', { noremap = true, desc = 'Go to Next Diagnostic' })
 vim.keymap.set('n', '<leader>dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', { noremap = true, desc = 'Go to Previous Diagnostic' })
-
--- replace in all file
-vim.keymap.set('n', '<leader>s', ':%s/<C-r><C-w>/<C-r><C-w>/gI<left><left><left>', { noremap = true, desc = 'search and replace word under cursor' })
--- vim.keymap.set('n', 'gs', ':%s//g<left><left>', {noremap = true, desc = 'search and replace' })
-
-vim.keymap.set('i', '<C-J>', '<esc>:.m+1 | startinsert<cr>', { noremap = true, desc = 'move line down' })
-vim.keymap.set('i', '<C-K>', '<esc>:.m-2 | startinsert<cr>', { noremap = true, desc = 'move line up' })
-
-vim.keymap.set('n', '<leader>k', ':m .-2<cr>==', { noremap = true, desc = 'move line up' })
-vim.keymap.set('n', '<leader>j', ':m .+1<cr>==', { noremap = true, desc = 'move line down' })
-
-vim.keymap.set('n', '<leader>cn', ':cnext<cr>', { noremap = true, desc = 'next error' })
-vim.keymap.set('n', '<leader>cp', ':cprev<cr>', { noremap = true, desc = 'previous error' })
 
 
 -- vim.keymap.set('n', '<leader>sn', ':\'<,\'>!sort -n -k 2', { noremap = true, desc = 'sort lines numerically' })

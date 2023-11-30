@@ -73,6 +73,7 @@ return {
     },
     'junegunn/vim-easy-align',
     'alec-gibson/nvim-tetris',
+
     -- better quick fix
     {
         -- better quickfix
@@ -82,6 +83,7 @@ return {
             -- init = function() vim.fn['fzf#install']() end,
         },
     },
+
     -- 'nvim-telescope/telescope-symbols.nvim',
     -- {
     --   'edluffy/hologram.nvim',
@@ -115,9 +117,10 @@ return {
     --         })
     --     end
     -- },
-    {
-        "ludovicchabant/vim-gutentags",
-    },
+
+    -- {
+    --     "ludovicchabant/vim-gutentags",
+    -- },
 
     {
         -- unix commands in vim
@@ -178,8 +181,6 @@ return {
     'ThePrimeagen/harpoon',
     'szw/vim-maximizer',
     'RRethy/vim-illuminate',
-    'jpalardy/vim-slime',
-
     -- 'mhartington/formatter.nvim',
     {
         'stevearc/conform.nvim',
@@ -399,7 +400,7 @@ return {
           kind = {
               -- disable all icons
 
-              Folder = { "" },
+              -- Folder = { "" },
               Module = { "", "@namespace" },
               Namespace = { "", "@namespace" },
               Package = { "", "@namespace" },
