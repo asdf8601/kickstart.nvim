@@ -114,15 +114,11 @@ end
 
 vim.keymap.set("n", "<C-p>", find_files_from_project_git_root, { noremap = true, desc = "Find files from git root" })
 -- vim.keymap.set('n', '<leader>fh', ':Telescope <cr>', { noremap = true, desc = "Find help", silent = false })
-vim.keymap.set('n', '<leader>fl', ':Telescope diagnostics<cr>', { noremap = true, desc = "Find errors, lint, diagnostics", silent = false })
-vim.keymap.set('n', '<leader>fc', ':Telescope commands<cr>', { noremap = true, desc = "Find commands", silent = false })
-vim.keymap.set('n', '<leader>fk', ':Telescope keymaps<cr>', { noremap = true, desc = "Find keymaps", silent = false })
 vim.keymap.set('n', '<Leader>ff', my_find_files, { desc = "Find files", noremap = true })
 vim.keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>dot', search_dotfiles, { desc = "Search dotfiles", noremap = true })
 vim.keymap.set('n', '<leader>gc', git_branches, { desc = "Git branches", noremap = true })
 vim.keymap.set('n', '<leader>sc', search_scio, { desc = "Search scio", noremap = true })
-vim.keymap.set('n', "<leader>fp", "<cmd>lua require('telescope.builtin').find_files( { cwd = vim.fn.expand('%:p:h'), hidden = false }) <CR>", { desc = "Search current buffer dir", noremap = true })
 vim.keymap.set('n', "ts", "<cmd>lua require('telescope.builtin').symbols{ sources = {'emoji', 'kaomoji', 'gitmoji'} } <CR>", { desc = "Search emoji", noremap = true })
 
 
