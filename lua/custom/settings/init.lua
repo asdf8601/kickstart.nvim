@@ -90,9 +90,10 @@ vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'markdown'
 vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'make', command = 'setl noexpandtab shiftwidth=4 softtabstop=0' })
 vim.api.nvim_create_autocmd('TermOpen', { group = mmngreco, pattern = '*', command = 'setl nonumber norelativenumber' })
 vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'fugitive', command = 'setl nonumber norelativenumber' })
-vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'python', command = 'nnoremap <buffer> <F8> :silent !black -l79 -S %<CR><CR>' })
-vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'python', command = 'nnoremap <buffer> <F7> :silent !ruff -l79 %<CR><CR>' })
--- vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, { pattern = 'Jenkinsfile', group = mmngreco, command = 'setl ft=groovy' })
+vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'python', command = 'nnoremap <buffer> <F8> :!black -l79 -S %<CR><CR>' })
+vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'python', command = 'nnoremap <buffer> <F7> :!ruff -l79 %<CR><CR>' })
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufRead' }, { pattern = 'Jenkinsfile', group = mmngreco, command = 'setl ft=groovy' })
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufRead' }, { pattern = '*.astro', group = mmngreco, command = 'set ft=astro' })
 
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
