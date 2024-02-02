@@ -7,6 +7,14 @@ local executable = function(x)
 end
 
 return {
+
+  {
+    "windwp/nvim-ts-autotag",
+    init=function ()
+      require('nvim-ts-autotag').setup()
+    end
+  },
+
   {
     "wuelnerdotexe/vim-astro",
   },
@@ -362,6 +370,7 @@ return {
             "mfussenegger/nvim-dap",
             'theHamsta/nvim-dap-virtual-text',
             'mfussenegger/nvim-dap-python',
+            'leoluz/nvim-dap-go',
         }
     },
 

@@ -441,6 +441,8 @@ local servers = {
   clangd = {},
   rust_analyzer = {},
   tsserver = {},
+  terraformls = {},
+  tflint = {},
   html = { filetypes = { 'html', 'twig', 'hbs' } },
   lua_ls = {
     Lua = {
@@ -750,6 +752,7 @@ vim.keymap.set('n', '<leader>sh', ":0<cr>O#!/usr/bin/env bash<esc><C-o>", { desc
 
 -- commands
 vim.keymap.set('n', 'sh', ':.!sh ', { noremap = true, desc = 'Fill command to execute sh using current line' })
+vim.keymap.set('n', '<c-s><c-l>', ':!<C-R><C-L>', { noremap = true, desc = 'Fill command to execute sh using current line' })
 vim.keymap.set('n', '<c-s><c-s>', ':.!sh<cr>', { noremap = true, desc = 'Execute sh current line' })
 
 -- Explore
@@ -789,5 +792,32 @@ vim.keymap.set('n', '<leader>j', ':m .+1<cr>==', { noremap = true, desc = 'move 
 vim.keymap.set('n', '<leader>cn', ':cnext<cr>', { noremap = true, desc = 'next error' })
 vim.keymap.set('n', '<leader>cp', ':cprev<cr>', { noremap = true, desc = 'previous error' })
 -- }}
+--
+
+
+vim.cmd[[
+augroup Latex
+  au!
+  au BufWritePost *.tex silent !dex pdflatex % && firefox %:t:r.pdf
+augroup end
+]]
+
+-- terraform {{
+-- https://www.mukeshsharma.dev/2022/02/08/neovim-workflow-for-terraform.html
+vim.cmd([[silent! autocmd! filetypedetect BufRead,BufNewFile *.tf]])
+vim.cmd([[autocmd BufRead,BufNewFile *.hcl set filetype=hcl]])
+vim.cmd([[autocmd BufRead,BufNewFile .terraformrc,terraform.rc set filetype=hcl]])
+vim.cmd([[autocmd BufRead,BufNewFile *.tf,*.tfvars set filetype=terraform]])
+vim.cmd([[autocmd BufRead,BufNewFile *.tfstate,*.tfstate.backup set filetype=json]])
+
+vim.keymap.set("n", "<leader>ti", ":!terraform init<CR>", { noremap = true, desc = "Terraform init" })
+vim.keymap.set("n", "<leader>tv", ":!terraform validate<CR>", { noremap = true, desc = "Terraform validate" })
+vim.keymap.set("n", "<leader>tp", ":!terraform plan<CR>", { noremap = true, desc = "Terraform plan" })
+vim.keymap.set("n", "<leader>taa", ":!terraform apply -auto-approve<CR>", { noremap = true, desc = "Terraform apply auto approve" })
+
+require('lspconfig').terraformls.setup{}
+require('lspconfig').tflint.setup{}
+-- }}
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et tw=0
