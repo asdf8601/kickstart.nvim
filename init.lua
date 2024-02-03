@@ -869,6 +869,7 @@ require('mini.files').setup(-- No need to copy this inside `setup()`. Will be us
     width_preview = 25,
   },
 })
+vim.keymap.set('n', '-', ':lua MiniFiles.open()<CR>', { noremap = true, desc = 'Mini files' })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et tw=0
