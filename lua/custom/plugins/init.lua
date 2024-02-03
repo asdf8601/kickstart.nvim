@@ -7,7 +7,12 @@ local executable = function(x)
 end
 
 return {
-  { 'echasnovski/mini.nvim', version = false },
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    -- Optional dependencies
+    -- dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
 
   {
     "windwp/nvim-ts-autotag",
