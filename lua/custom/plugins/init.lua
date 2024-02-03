@@ -7,12 +7,6 @@ local executable = function(x)
 end
 
 return {
-  {
-    'stevearc/oil.nvim',
-    opts = {},
-    -- Optional dependencies
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-  },
 
   {
     "windwp/nvim-ts-autotag",
