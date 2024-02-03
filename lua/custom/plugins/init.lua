@@ -7,6 +7,7 @@ local executable = function(x)
 end
 
 return {
+  { 'echasnovski/mini.nvim', version = false },
 
   {
     "windwp/nvim-ts-autotag",
