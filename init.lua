@@ -756,7 +756,7 @@ vim.keymap.set('n', '<c-s><c-l>', ':!<C-R><C-L>', { noremap = true, desc = 'Fill
 vim.keymap.set('n', '<c-s><c-s>', ':.!sh<cr>', { noremap = true, desc = 'Execute sh current line' })
 
 -- Explore
-vim.keymap.set('n', '-', ':Ex<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
+-- vim.keymap.set('n', '-', ':Ex<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
 vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>',
   { desc = "Open the current file's directory in the file explorer", silent = false })
 
@@ -818,6 +818,13 @@ vim.keymap.set("n", "<leader>taa", ":!terraform apply -auto-approve<CR>", { nore
 require('lspconfig').terraformls.setup{}
 require('lspconfig').tflint.setup{}
 -- }}
+
+
+-- [[ oil ]] {{
+require("oil").setup()
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+-- }}
+
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et tw=0
