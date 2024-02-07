@@ -646,24 +646,24 @@ vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', { noremap = true, desc 
 
 vim.g.slime_get_jobid = function()
   local buffers = vim.api.nvim_list_bufs()
-  local terminal_buffers = {}
+  local terminal_buffers = {"Select terminal:",}
 
   for _, buf in ipairs(buffers) do
     if vim.bo[buf].buftype == 'terminal' then
-      table.insert(terminal_buffers, buf)
+      table.insert(terminal_buffers, buf .. ": " .. vim.api.nvim_buf_get_name(buf))
     end
   end
 
   -- Assuming you have a way to choose from terminal_buffers
   -- For simplicity, let's say the user chooses the first terminal
-  local chosen_terminal = terminal_buffers[1]
+  local chosen_terminal = vim.fn.inputlist(terminal_buffers)
 
   if chosen_terminal then
     local jobid = vim.api.nvim_buf_get_var(chosen_terminal, 'terminal_job_id')
+    print("\n[slime] jobid chosen: ", jobid)
     return jobid
   else
     print("No terminal found")
-
   end
 end
 
@@ -682,7 +682,8 @@ local function slime_use_neovim()
   vim.g.slime_python_ipython = 1
   vim.g.slime_default_config = nil
   vim.g.slime_no_mappings = 1
-  vim.g.slime_dont_ask_default = 1
+  vim.g.slime_dont_ask_default = 0
+  vim.g.slime_last_channel = nil
 end
 
 slime_use_neovim()
@@ -877,7 +878,7 @@ require("oil").setup({
     ["<C-s>"] = "actions.select_vsplit",
     ["<C-h>"] = "actions.select_split",
     ["<C-t>"] = "actions.select_tab",
-    ["<C-p>"] = "actions.preview",
+    ["<C-w>"] = "actions.preview",
     ["<C-c>"] = "actions.close",
     ["<C-l>"] = "actions.refresh",
     ["-"] = "actions.parent",
@@ -890,7 +891,7 @@ require("oil").setup({
     ["g\\"] = "actions.toggle_trash",
   },
   -- Set to false to disable all of the above keymaps
-  use_default_keymaps = true,
+  use_default_keymaps = false,
   view_options = {
     -- Show files and directories that start with "."
     show_hidden = false,
@@ -930,7 +931,7 @@ require("oil").setup({
     -- Width dimensions can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
     -- min_width and max_width can be a single value or a list of mixed integer/float types.
     -- max_width = {100, 0.8} means "the lesser of 100 columns or 80% of total"
-    max_width = 0.9,
+    max_width = 0.6,
     -- min_width = {40, 0.4} means "the greater of 40 columns or 40% of total"
     min_width = { 40, 0.4 },
     -- optionally define an integer/float for the exact width of the preview window
@@ -969,6 +970,45 @@ vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 -- }}
 
 
+-- minimap {{
+require('mini.map').setup(
+{
+  -- Highlight integrations (none by default)
+  integrations = nil,
+
+  -- Symbols used to display data
+  symbols = {
+    -- Encode symbols. See `:h MiniMap.config` for specification and
+    -- `:h MiniMap.gen_encode_symbols` for pre-built ones.
+    -- Default: solid blocks with 3x2 resolution.
+    encode = require('mini.map').gen_encode_symbols.dot('3x2'),
+
+    -- Scrollbar parts for view and line. Use empty string to disable any.
+    scroll_line = '█',
+    scroll_view = '┃',
+  },
+  window = {
+    -- Whether window is focusable in normal way (with `wincmd` or mouse)
+    focusable = false,
+
+    -- Side to stick ('left' or 'right')
+    side = 'right',
+
+    -- Whether to show count of multiple integration highlights
+    show_integration_count = true,
+
+    -- Total width
+    width = 12,
+
+    -- Value of 'winblend' option
+    winblend = 25,
+
+    -- Z-index
+    zindex = 10,
+  },
+}
+)
+-- }}
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et tw=0
