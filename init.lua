@@ -624,6 +624,7 @@ ls.add_snippets('all', {
 
 
 -- {{ slime
+vim.g.slime_last_channel = nil
 vim.g.slime_cell_delimiter = '\\s*#\\s*%%'
 vim.g.slime_paste_file = os.getenv("HOME") .. "/.slime_paste"
 
@@ -646,17 +647,20 @@ vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', { noremap = true, desc 
 
 vim.g.slime_get_jobid = function()
   local buffers = vim.api.nvim_list_bufs()
-  local terminal_buffers = {"Select terminal:",}
+  -- local terminal_buffers = {"Select terminal:",}
+  local terminal_buffers = {}
 
   for _, buf in ipairs(buffers) do
     if vim.bo[buf].buftype == 'terminal' then
-      table.insert(terminal_buffers, buf .. ": " .. vim.api.nvim_buf_get_name(buf))
+      -- table.insert(terminal_buffers, buf .. ": " .. vim.api.nvim_buf_get_name(buf))
+      table.insert(terminal_buffers, buf)
     end
   end
 
   -- Assuming you have a way to choose from terminal_buffers
   -- For simplicity, let's say the user chooses the first terminal
-  local chosen_terminal = vim.fn.inputlist(terminal_buffers)
+  local chosen_terminal = terminal_buffers[1]
+  -- local chosen_terminal = vim.fn.inputlist(terminal_buffers)
 
   if chosen_terminal then
     local jobid = vim.api.nvim_buf_get_var(chosen_terminal, 'terminal_job_id')
@@ -667,13 +671,6 @@ vim.g.slime_get_jobid = function()
   end
 end
 
-vim.g.slime_target = "neovim"
-vim.g.slime_bracketed_paste = 0
-vim.g.slime_python_ipython = 1
--- vim.g.slime_default_config = nil
-vim.g.slime_no_mappings = 1
-vim.g.slime_dont_ask_default = 0
-vim.g.slime_last_channel = nil
 
 local function slime_use_tmux()
   vim.g.slime_target = "tmux"
@@ -686,15 +683,14 @@ end
 
 local function slime_use_neovim()
   vim.g.slime_target = "neovim"
-  vim.g.slime_bracketed_paste = 0
-  vim.g.slime_python_ipython = 1
+  vim.g.slime_bracketed_paste = 1
+  vim.g.slime_python_ipython = 0
   -- vim.g.slime_default_config = nil
   vim.g.slime_no_mappings = 1
-  vim.g.slime_dont_ask_default = 0
-  vim.g.slime_last_channel = nil
+  -- vim.g.slime_dont_ask_default = 0
 end
 
--- slime_use_neovim()
+slime_use_neovim()
 -- slime_use_tmux()
 -- }}
 
