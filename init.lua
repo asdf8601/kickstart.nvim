@@ -648,12 +648,16 @@ vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', { noremap = true, desc 
 vim.g.slime_get_jobid = function()
   local buffers = vim.api.nvim_list_bufs()
   -- local terminal_buffers = {}
-  local terminal_buffers = {"Select terminal:",}
+  local terminal_buffers = {"Select terminal:\nbuffer\tjobid\tname",}
+  local name = ""
+  local jid = 1
 
   for _, buf in ipairs(buffers) do
     if vim.bo[buf].buftype == 'terminal' then
       -- table.insert(terminal_buffers, buf)
-      table.insert(terminal_buffers, buf .. ": " .. vim.api.nvim_buf_get_name(buf))
+      jid = vim.api.nvim_buf_get_var(buf, 'terminal_job_id')
+      name = vim.api.nvim_buf_get_name(buf)
+      table.insert(terminal_buffers, buf .. "\t" .. jid .. "\t" .. name)
     end
   end
 
@@ -683,8 +687,8 @@ end
 
 local function slime_use_neovim()
   vim.g.slime_target = "neovim"
-  vim.g.slime_bracketed_paste = 0
-  vim.g.slime_python_ipython = 1
+  vim.g.slime_bracketed_paste = 1
+  vim.g.slime_python_ipython = 0
   vim.g.slime_no_mappings = 1
   -- vim.g.slime_default_config = nil
   -- vim.g.slime_dont_ask_default = 0
