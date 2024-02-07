@@ -624,7 +624,7 @@ ls.add_snippets('all', {
 
 
 -- {{ slime
-vim.g.slime_last_channel = nil
+vim.g.slime_last_channel = {nil}
 vim.g.slime_cell_delimiter = '\\s*#\\s*%%'
 vim.g.slime_paste_file = os.getenv("HOME") .. "/.slime_paste"
 
