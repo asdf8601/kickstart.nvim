@@ -647,20 +647,20 @@ vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', { noremap = true, desc 
 
 vim.g.slime_get_jobid = function()
   local buffers = vim.api.nvim_list_bufs()
-  -- local terminal_buffers = {"Select terminal:",}
-  local terminal_buffers = {}
+  -- local terminal_buffers = {}
+  local terminal_buffers = {"Select terminal:",}
 
   for _, buf in ipairs(buffers) do
     if vim.bo[buf].buftype == 'terminal' then
-      -- table.insert(terminal_buffers, buf .. ": " .. vim.api.nvim_buf_get_name(buf))
-      table.insert(terminal_buffers, buf)
+      -- table.insert(terminal_buffers, buf)
+      table.insert(terminal_buffers, buf .. ": " .. vim.api.nvim_buf_get_name(buf))
     end
   end
 
   -- Assuming you have a way to choose from terminal_buffers
   -- For simplicity, let's say the user chooses the first terminal
-  local chosen_terminal = terminal_buffers[1]
-  -- local chosen_terminal = vim.fn.inputlist(terminal_buffers)
+  -- local chosen_terminal = terminal_buffers[1]
+  local chosen_terminal = vim.fn.inputlist(terminal_buffers)
 
   if chosen_terminal then
     local jobid = vim.api.nvim_buf_get_var(chosen_terminal, 'terminal_job_id')
