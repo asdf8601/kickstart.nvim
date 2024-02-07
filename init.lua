@@ -667,6 +667,14 @@ vim.g.slime_get_jobid = function()
   end
 end
 
+vim.g.slime_target = "neovim"
+vim.g.slime_bracketed_paste = 0
+vim.g.slime_python_ipython = 1
+-- vim.g.slime_default_config = nil
+vim.g.slime_no_mappings = 1
+vim.g.slime_dont_ask_default = 0
+vim.g.slime_last_channel = nil
+
 local function slime_use_tmux()
   vim.g.slime_target = "tmux"
   vim.g.slime_bracketed_paste = 1
@@ -686,7 +694,7 @@ local function slime_use_neovim()
   vim.g.slime_last_channel = nil
 end
 
-slime_use_neovim()
+-- slime_use_neovim()
 -- slime_use_tmux()
 -- }}
 
