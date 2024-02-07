@@ -7,6 +7,11 @@ local executable = function(x)
 end
 
 return {
+  { 'echasnovski/mini.map', version = false },
+  {
+    "lunarVim/bigfile.nvim",
+    opts = {},
+  },
   {
     'stevearc/oil.nvim',
     opts = {},
