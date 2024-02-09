@@ -7,6 +7,13 @@ local executable = function(x)
 end
 
 return {
+  {
+    "robitx/gp.nvim",
+    config = function()
+      require("gp").setup()
+      -- https://github.com/Robitx/gp.nvim?tab=readme-ov-file#4-configuration
+    end,
+  },
   { 'echasnovski/mini.map', version = false },
   {
     "lunarVim/bigfile.nvim",
@@ -386,57 +393,57 @@ return {
     },
 
     -- chatgpt
-    {
-        "jackMort/ChatGPT.nvim",
-        dependencies = {
-            "MunifTanjim/nui.nvim",
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim",
-        },
-        init = function()
-            require("chatgpt").setup({
-                openai_params = {
-                    model = "gpt-4",
-                    frequency_penalty = 0,
-                    presence_penalty = 0,
-                    max_tokens = 300,
-                    temperature = 0,
-                    top_p = 1,
-                    n = 1,
-                },
-                -- openai_edit_params = {
-                --   model = "code-davinci-edit-001",
-                --   temperature = 0,
-                --   top_p = 1,
-                --   n = 1,
-                -- },
-                chat = {
-                    keymaps = {
-                        close = { "<C-c>", },
-                        yank_last = "<C-y>",
-                        scroll_up = "<C-u>",
-                        scroll_down = "<C-d>",
-                        toggle_settings = "<C-o>",
-                        new_session = "<C-n>",
-                        cycle_windows = "<Tab>",
-                    },
-                },
-                popup_input = {
-                    submit = "<C-s>",
-                },
-            })
-        end,
-    },
-    {
-        "dpayne/CodeGPT.nvim",
-        dependencies = {
-            "MunifTanjim/nui.nvim",
-            "nvim-lua/plenary.nvim",
-        },
-        init = function()
-            require("codegpt.config")
-        end
-    },
+    -- {
+    --     "jackMort/ChatGPT.nvim",
+    --     dependencies = {
+    --         "MunifTanjim/nui.nvim",
+    --         "nvim-lua/plenary.nvim",
+    --         "nvim-telescope/telescope.nvim",
+    --     },
+    --     init = function()
+    --         require("chatgpt").setup({
+    --             openai_params = {
+    --                 model = "gpt-4",
+    --                 frequency_penalty = 0,
+    --                 presence_penalty = 0,
+    --                 max_tokens = 300,
+    --                 temperature = 0,
+    --                 top_p = 1,
+    --                 n = 1,
+    --             },
+    --             -- openai_edit_params = {
+    --             --   model = "code-davinci-edit-001",
+    --             --   temperature = 0,
+    --             --   top_p = 1,
+    --             --   n = 1,
+    --             -- },
+    --             chat = {
+    --                 keymaps = {
+    --                     close = { "<C-c>", },
+    --                     yank_last = "<C-y>",
+    --                     scroll_up = "<C-u>",
+    --                     scroll_down = "<C-d>",
+    --                     toggle_settings = "<C-o>",
+    --                     new_session = "<C-n>",
+    --                     cycle_windows = "<Tab>",
+    --                 },
+    --             },
+    --             popup_input = {
+    --                 submit = "<C-s>",
+    --             },
+    --         })
+    --     end,
+    -- },
+    -- {
+    --     "dpayne/CodeGPT.nvim",
+    --     dependencies = {
+    --         "MunifTanjim/nui.nvim",
+    --         "nvim-lua/plenary.nvim",
+    --     },
+    --     init = function()
+    --         require("codegpt.config")
+    --     end
+    -- },
     -- {
     --     "nvim-treesitter/nvim-treesitter-context",
     -- },
@@ -486,9 +493,12 @@ return {
         ui = {
           devicon = false,
           foldericon = true,
-          expand = '[+]',
-          collapse = '[-]',
-          imp_sign = '[ ]',
+          -- expand = '[+]',
+          -- collapse = '[-]',
+          -- imp_sign = '[ ]',
+          expand = '⊞ ',
+          collapse = '⊟ ',
+          imp_sign = '󰳛 ',
           code_action = "",
           lines = { '└', '├', '│', '─', '┌' },
           lightbulb = {
@@ -499,62 +509,64 @@ return {
             virtual_text = false,
           },
           kind = {
-            -- disable all icons
+            -- disable all icons {{
             -- Folder = { "" },
-            Module = { "", "@namespace" },
-            Namespace = { "", "@namespace" },
-            Package = { "", "@namespace" },
-            Class = { "", "@type" },
-            Method = { "", "@method" },
-            Property = { "", "LineNr" },
-            Field = { "", "@field" },
-            Constructor = { "", "@constructor" },
-            Enum = { "", "@type" },
-            Interface = { "", "@type" },
-            Function = { "", "@function" },
-            Variable = { "", "@constant" },
-            Constant = { "", "@constant" },
-            String = { "", "@string" },
-            Number = { "", "@number" },
-            Boolean = { "", "@boolean" },
-            Array = { "", "@constant" },
-            Object = { "", "@type" },
-            Key = { "", "@type" },
-            Null = { "", "@type" },
-            EnumMember = { "", "@field" },
-            Struct = { "", "@type" },
-            Event = { "", "@type" },
-            Operator = { "", "@operator" },
-            TypeParameter = { "", "@parameter" },
-            Parameter = { "", "@parameter" },
-            -- {{
-            -- Folder = { " " },
-            -- Module = { " ", "@namespace" },
-            -- Namespace = { " ", "@namespace" },
-            -- Package = { " ", "@namespace" },
-            -- Class = { " ", "@type" },
-            -- Method = { " ", "@method" },
-            -- Property = { " ", "LineNr" },
-            -- Field = { " ", "@field" },
-            -- Constructor = { " ", "@constructor" },
-            -- Enum = { " ", "@type" },
-            -- Interface = { " ", "@type" },
-            -- Function = { " ", "@function" },
-            -- Variable = { " ", "@constant" },
-            -- Constant = { " ", "@constant" },
-            -- String = { " ", "@string" },
-            -- Number = { "󰎠 ", "@number" },
-            -- Boolean = { " ", "@boolean" },
-            -- Array = { " ", "@constant" },
-            -- Object = { " ", "@type" },
-            -- Key = { " ", "@type" },
-            -- Null = { "󰟢 ", "@type" },
-            -- EnumMember = { " ", "@field" },
-            -- Struct = { " ", "@type" },
-            -- Event = { "󱐋 ", "@type" },
-            -- Operator = { " ", "@operator" },
-            -- TypeParameter = { " ", "@parameter" },
-            -- Parameter = { " ", "@parameter" },
+            -- backup {{
+            -- Module = { "", "@namespace" },
+            -- Namespace = { "", "@namespace" },
+            -- Package = { "", "@namespace" },
+            -- Class = { "", "@type" },
+            -- Method = { "", "@method" },
+            -- Property = { "", "LineNr" },
+            -- Field = { "", "@field" },
+            -- Constructor = { "", "@constructor" },
+            -- Enum = { "", "@type" },
+            -- Interface = { "", "@type" },
+            -- Function = { "", "@function" },
+            -- Variable = { "", "@constant" },
+            -- Constant = { "", "@constant" },
+            -- String = { "", "@string" },
+            -- Number = { "", "@number" },
+            -- Boolean = { "", "@boolean" },
+            -- Array = { "", "@constant" },
+            -- Object = { "", "@type" },
+            -- Key = { "", "@type" },
+            -- Null = { "", "@type" },
+            -- EnumMember = { "", "@field" },
+            -- Struct = { "", "@type" },
+            -- Event = { "", "@type" },
+            -- Operator = { "", "@operator" },
+            -- TypeParameter = { "", "@parameter" },
+            -- Parameter = { "", "@parameter" },
+            -- }}
+            -- defau{{
+            Folder = { " " },
+            Module = { " ", "@namespace" },
+            Namespace = { " ", "@namespace" },
+            Package = { " ", "@namespace" },
+            Class = { " ", "@type" },
+            Method = { " ", "@method" },
+            Property = { " ", "LineNr" },
+            Field = { " ", "@field" },
+            Constructor = { " ", "@constructor" },
+            Enum = { " ", "@type" },
+            Interface = { " ", "@type" },
+            Function = { " ", "@function" },
+            Variable = { " ", "@constant" },
+            Constant = { " ", "@constant" },
+            String = { " ", "@string" },
+            Number = { " ", "@number" },
+            Boolean = { " ", "@boolean" },
+            Array = { " ", "@constant" },
+            Object = { " ", "@type" },
+            Key = { " ", "@type" },
+            Null = { "N ", "@type" },
+            EnumMember = { " ", "@field" },
+            Struct = { " ", "@type" },
+            Event = { " ", "@type" },
+            Operator = { " ", "@operator" },
+            TypeParameter = { " ", "@parameter" },
+            Parameter = { " ", "@parameter" },
             -- }}
           },
         },
