@@ -886,7 +886,7 @@ require("oil").setup({
     ["<C-s>"] = "actions.select_vsplit",
     ["<C-h>"] = "actions.select_split",
     ["<C-t>"] = "actions.select_tab",
-    ["<C-w>"] = "actions.preview",
+    -- ["<C-w>"] = "actions.preview",
     ["<C-c>"] = "actions.close",
     ["<C-l>"] = "actions.refresh",
     ["-"] = "actions.parent",
