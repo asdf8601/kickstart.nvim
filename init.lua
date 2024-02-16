@@ -1017,6 +1017,8 @@ require('mini.map').setup(
 }
 )
 -- }}
+--
+vim.keymap.set("n", "<leader>gw", ":grep '<C-R><C-W>'", { desc = "Find word using grep command" })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et tw=0
