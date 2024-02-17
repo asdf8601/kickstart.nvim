@@ -603,6 +603,7 @@ vim.keymap.set('t', '<C-w>w', '<C-\\><C-n><C-w>w', { noremap = true, desc = "Swi
 local ls = require("luasnip")
 local s = ls.snippet
 local t = ls.text_node
+
 ls.add_snippets('all', {
   s('hola', t 'hola mundo!')
 })
@@ -619,6 +620,11 @@ ls.add_snippets('python', {
 ls.add_snippets('all', {
   s('date', t(os.date('%Y-%m-%d')))
 })
+
+ls.add_snippets('all', {
+  s('time', t(os.date('%H:%M:%S')))
+})
+
 
 -- }}
 
