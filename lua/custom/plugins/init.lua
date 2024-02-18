@@ -212,7 +212,7 @@ return {
     'goerz/jupytext.vim',
     'ThePrimeagen/harpoon',
     'szw/vim-maximizer',
-    'RRethy/vim-illuminate',
+    -- 'RRethy/vim-illuminate',
     -- 'mhartington/formatter.nvim',
     {
         'stevearc/conform.nvim',
