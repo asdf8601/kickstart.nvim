@@ -19,12 +19,12 @@ return {
     "lunarVim/bigfile.nvim",
     opts = {},
   },
-  {
-    'stevearc/oil.nvim',
-    opts = {},
-    -- Optional dependencies
-    -- dependencies = { "nvim-tree/nvim-web-devicons" },
-  },
+  -- {
+  --   'stevearc/oil.nvim',
+  --   opts = {},
+  --   -- Optional dependencies
+  --   -- dependencies = { "nvim-tree/nvim-web-devicons" },
+  -- },
 
   {
     "windwp/nvim-ts-autotag",
