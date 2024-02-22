@@ -14,25 +14,61 @@ return {
       -- https://github.com/Robitx/gp.nvim?tab=readme-ov-file#4-configuration
     end,
   },
-  { 'echasnovski/mini.map', version = false },
+  {
+    'echasnovski/mini.map',
+    version = false,
+    init = function()
+      -- minimap {{
+      require('mini.map').setup(
+        {
+          -- Highlight integrations (none by default)
+          integrations = nil,
+
+          -- Symbols used to display data
+          symbols = {
+            -- Encode symbols. See `:h MiniMap.config` for specification and
+            -- `:h MiniMap.gen_encode_symbols` for pre-built ones.
+            -- Default: solid blocks with 3x2 resolution.
+            encode = require('mini.map').gen_encode_symbols.dot('3x2'),
+
+            -- Scrollbar parts for view and line. Use empty string to disable any.
+            scroll_line = '█',
+            scroll_view = '┃',
+          },
+          window = {
+            -- Whether window is focusable in normal way (with `wincmd` or mouse)
+            focusable = false,
+
+            -- Side to stick ('left' or 'right')
+            side = 'right',
+
+            -- Whether to show count of multiple integration highlights
+            show_integration_count = true,
+
+            -- Total width
+            width = 12,
+
+            -- Value of 'winblend' option
+            winblend = 25,
+
+            -- Z-index
+            zindex = 10,
+          },
+        }
+      )
+      -- }}
+    end,
+  },
   {
     "lunarVim/bigfile.nvim",
     opts = {},
   },
-  -- {
-  --   'stevearc/oil.nvim',
-  --   opts = {},
-  --   -- Optional dependencies
-  --   -- dependencies = { "nvim-tree/nvim-web-devicons" },
-  -- },
-
   {
     "windwp/nvim-ts-autotag",
-    init=function ()
+    init = function()
       require('nvim-ts-autotag').setup()
     end
   },
-
   {
     "wuelnerdotexe/vim-astro",
   },
@@ -47,351 +83,451 @@ return {
       -- refer to the configuration section below
     },
   },
-    {
-        -- Highlight text
-        'Pocco81/HighStr.nvim',
-        init = function()
-            local high_str = require("high-str")
-            high_str.setup({
-                verbosity = 0,
-                saving_path = "/tmp/highstr/",
-                highlight_colors = {
-                    -- color_id = {"bg_hex_code",<"fg_hex_code"/"smart">}
-                    color_0 = { "#0c0d0e", "smart" }, -- Cosmic charcoal
-                    color_1 = { "#e5c07b", "smart" }, -- Pastel yellow
-                    color_2 = { "#7FFFD4", "smart" }, -- Aqua menthe
-                    color_3 = { "#8A2BE2", "smart" }, -- Proton purple
-                    color_4 = { "#FF4500", "smart" }, -- Orange red
-                    color_5 = { "#008000", "smart" }, -- Office green
-                    color_6 = { "#0000FF", "smart" }, -- Just blue
-                    color_7 = { "#FFC0CB", "smart" }, -- Blush pink
-                    color_8 = { "#FFF9E3", "smart" }, -- Cosmic latte
-                    color_9 = { "#7d5c34", "smart" }, -- Fallow brown
-                }
-            })
-            vim.api.nvim_set_keymap("v", "<leader>h1", ":<c-u>HSHighlight 1<CR>", { noremap = true, silent = true })
-            vim.api.nvim_set_keymap("v", "<leader>h2", ":<c-u>HSHighlight 2<CR>", { noremap = true, silent = true })
-            vim.api.nvim_set_keymap("v", "<leader>h3", ":<c-u>HSHighlight 3<CR>", { noremap = true, silent = true })
-            vim.api.nvim_set_keymap("v", "<leader>h4", ":<c-u>HSHighlight 4<CR>", { noremap = true, silent = true })
-            vim.api.nvim_set_keymap("v", "<leader>h0", ":<c-u>HSRmHighlight<CR>", { noremap = true, silent = true })
-        end
-    },
-    {
-        "ray-x/go.nvim",
-        dependencies = { -- optional packages
-            "ray-x/guihua.lua",
-            "neovim/nvim-lspconfig",
-            "nvim-treesitter/nvim-treesitter",
-        },
-        config = function()
-            require("go").setup()
-        end,
-        event = { "CmdlineEnter" },
-        ft = { "go", 'gomod' },
-        build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
-    },
-    -- {
-    --     'phaazon/mind.nvim',
-    --     version = 'v2.2',
-    --     dependencies = { 'nvim-lua/plenary.nvim' },
-    --     init = function()
-    --         require('mind').setup()
-    --     end
-    -- },
-    {
-        -- scala lsp
-        'scalameta/nvim-metals',
-        dependencies = { "nvim-lua/plenary.nvim" },
-    },
-    'junegunn/vim-easy-align',
-    'alec-gibson/nvim-tetris',
-
-    -- better quick fix
-    {
-        -- better quickfix
-        'kevinhwang91/nvim-bqf',
-        dependencies = {
-            'junegunn/fzf',
-            -- init = function() vim.fn['fzf#install']() end,
-        },
-    },
-
-    -- 'nvim-telescope/telescope-symbols.nvim',
-    -- {
-    --   'edluffy/hologram.nvim',
-    --   init = function ()
-    --     require('hologram').setup{
-    --       auto_display = true -- WIP automatic markdown image display, may be prone to breaking
-    --     }
-    --   end
-    -- },
-    -- {
-    --   'nvim-telescope/telescope-media-files.nvim',
-    --   init = function()
-    --     require('telescope').setup({
-    --       extensions = {
-    --         media_files = {
-    --           -- filetypes whitelist
-    --           -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
-    --           filetypes = {"png", "webp", "jpg", "jpeg"},
-    --           -- find command (defaults to `fd`)
-    --           find_cmd = "rg"
-    --         }
-    --       },
-    --     })
-    --   end
-    -- },
-    -- {
-    --     'simrat39/symbols-outline.nvim',
-    --     init = function()
-    --         require("symbols-outline").setup({
-    --             show_symbol_details = true,
-    --         })
-    --     end
-    -- },
-
-    -- {
-    --     "ludovicchabant/vim-gutentags",
-    -- },
-
-    {
-        -- unix commands in vim
-        'tpope/vim-eunuch',
-    },
-
-    {
-        -- database support in vim
-        'tpope/vim-dadbod',
-    },
-    'kristijanhusak/vim-dadbod-ui',
-    'tpope/vim-fugitive', -- git wrapper
-    'tpope/vim-obsession',
-    'tpope/vim-repeat', -- better repeat
-    'tpope/vim-rhubarb', -- github extension for fugitive
-    'tpope/vim-speeddating',
-    -- {
-    --     -- work with multiple cases of a word
-    --     -- :%Subvert/facilit{y,ies}/building{,s}/g
-    --     'tpope/vim-abolish',
-    -- },
-    {
-        -- better netrw
-        'tpope/vim-vinegar',
-    },
-    -- {
-    --     -- Spawning interactive processes
-    --     'tpope/vim-dispatch',
-    -- },
-    -- 'tpope/vim-markdown',
-    -- 'sbulav/nredir.nvim',
-
-    -- 'tpope/vim-surround',
-    {
-        "kylechui/nvim-surround",
-        version = "*", -- Use for stability; omit to use `main` branch for the latest features
-        event = "VeryLazy",
-        config = function()
-            require("nvim-surround").setup({
-                -- Configuration here, or leave empty to use defaults
-                keymaps = {
-                    insert = "<C-g>s",
-                    insert_line = "<C-g>S",
-                    normal = "ys",
-                    normal_cur = "yss",
-                    normal_line = "yS",
-                    normal_cur_line = "ySS",
-                    visual = "S",
-                    visual_line = "gS",
-                    delete = "ds",
-                    change = "cs",
-                },
-            })
-        end
-    },
-    'tpope/vim-unimpaired',
-    'goerz/jupytext.vim',
-    'ThePrimeagen/harpoon',
-    'szw/vim-maximizer',
-    'RRethy/vim-illuminate',
-    -- 'mhartington/formatter.nvim',
-    {
-        'stevearc/conform.nvim',
-        opts = {},
-        init = function()
-            require("conform").setup({
-                formatters_by_ft = {
-                    lua = { "stylua" },
-                    -- Conform will run multiple formatters sequentially
-                    python = { "isort -m3", "black -l79", },
-                    -- Use a sub-list to run only the first available formatter
-                    javascript = { { "prettierd", "prettier" } },
-                    sh = { "beautysh" },
-                },
-            })
-            vim.api.nvim_create_user_command("Format", function(args)
-                local range = nil
-                if args.count ~= -1 then
-                    local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
-                    range = {
-                        start = { args.line1, 0 },
-                        ["end"] = { args.line2, end_line:len() },
-                    }
-                end
-                require("conform").format({ async = true, lsp_fallback = true, range = range })
-            end, { range = true })
-        end
-    },
-    -- 'tyru/open-browser.vim',
-    {
-        "zbirenbaum/copilot.lua",
-        init = function()
-            require('copilot').setup()
-        end,
-    },
-    -- { 'github/copilot.vim' },
-    {
-        'hrsh7th/nvim-cmp',
-        dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip', 'hrsh7th/cmp-path',
-            'hrsh7th/cmp-cmdline' },
-    },
-    {
-        "zbirenbaum/copilot-cmp",
-        dependencies = { "copilot.lua" },
-        init = function()
-            require("copilot_cmp").setup()
-        end,
-    },
-
-    {
-        "NTBBloodbath/rest.nvim",
-        enable = executable "jq",
-        init = function()
-          require("rest-nvim").setup({
-            -- Open request results in a horizontal split
-            result_split_horizontal = true,
-            -- Keep the http file buffer above|left when split horizontal|vertical
-            result_split_in_place = false,
-            -- stay in current windows (.http file) or change to results window (default)
-            stay_in_current_window_after_split = false,
-            -- Skip SSL verification, useful for unknown certificates
-            skip_ssl_verification = true,
-            -- Encode URL before making request
-            encode_url = true,
-            -- Highlight request on run
-            highlight = {
-              enabled = true,
-              timeout = 150,
-            },
-            result = {
-              -- toggle showing URL, HTTP info, headers at top the of result window
-              show_url = true,
-              -- show the generated curl command in case you want to launch
-              -- the same request via the terminal (can be verbose)
-              show_curl_command = true,
-              show_http_info = true,
-              show_headers = true,
-              -- table of curl `--write-out` variables or false if disabled
-              -- for more granular control see Statistics Spec
-              show_statistics = false,
-              -- executables or functions for formatting response body [optional]
-              -- set them to false if you want to disable them
-              formatters = {
-                json = "jq",
-                html = function(body)
-                  return vim.fn.system({"tidy", "-i", "-q", "-"}, body)
-                end
-              },
-            },
-            -- Jump to request line on run
-            jump_to_request = false,
-            env_file = '.env',
-            custom_dynamic_variables = {},
-            yank_dry_run = true,
-            search_back = true,
-          })
-          vim.api.nvim_set_keymap("n", "<leader>rr", "<Plug>RestNvim", { noremap = true, silent = true })
-        end,
-    },
-
-    {
-        "nvim-neotest/neotest",
-        dependencies = {
-            "nvim-neotest/neotest-vim-test",
-            "nvim-neotest/neotest-python",
-            "nvim-neotest/neotest-plenary",
-            "nvim-lua/plenary.nvim",
-            "nvim-treesitter/nvim-treesitter",
-            "antoinemadec/FixCursorHold.nvim"
-        },
-        init = function()
-            require("neotest").setup({
-                adapters = {
-                    require("neotest-python")({
-                        -- Extra arguments for nvim-dap configuration
-                        -- See https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for values
-                        dap = { justMyCode = false },
-                        args = { "--log-level", "DEBUG" },
-                        runner = "pytest",
-                        -- python = ".venv/bin/python",
-                    })
-                }
-            })
-        end
-    },
-    {
-        "klen/nvim-test",
-        init = function()
-            require('nvim-test').setup({})
-        end
-    },
-    -- {
-    --     'jakewvincent/mkdnflow.nvim',
-    --     rocks = 'luautf8', -- Ensures optional luautf8 dependency is installed
-    --     init = function()
-    --         require('mkdnflow').setup({})
-    --     end
-    -- },
-    { 'mracos/mermaid.vim' },
-    { 'mzlogin/vim-markdown-toc', },
-    -- {
-    --     -- markdown preview
-    --     'toppair/peek.nvim',
-    --     build = 'deno task --quiet build:fast',
-    --     init = function()
-    --         require('peek').setup({
-    --             auto_load = true,          -- whether to automatically load preview when
-    --             -- entering another markdown buffer
-    --             close_on_bdelete = true,   -- close preview window on buffer delete
-    --             syntax = true,             -- enable syntax highlighting, affects performance
-    --             theme = 'dark',            -- 'dark' or 'light'
-    --             update_on_change = true,
-    --             app = 'brave-browser',           -- 'webview', 'browser', string or a table of strings
-    --             -- explained below
-    --             filetype = { 'markdown' }, -- list of filetypes to recognize as markdown
-    --             -- relevant if update_on_change is true
-    --             throttle_at = 200000,      -- start throttling when file exceeds this
-    --             -- amount of bytes in size
-    --             throttle_time = 'auto',    -- minimum amount of time in milliseconds
-    --             -- that has to pass before starting new render
-    --         })
-    --     end
-    -- },
-    {
-        "iamcco/markdown-preview.nvim",
-        build = "cd app && npm install",
-        init = function() vim.g.mkdp_filetypes = { "markdown" } end,
-        ft = { "markdown" },
-    },
-    {
-        "rcarriga/nvim-dap-ui",
-        dependencies = {
-            "mfussenegger/nvim-dap",
-            'theHamsta/nvim-dap-virtual-text',
-            'mfussenegger/nvim-dap-python',
-            'leoluz/nvim-dap-go',
+  {
+    -- Highlight text
+    'Pocco81/HighStr.nvim',
+    init = function()
+      local high_str = require("high-str")
+      high_str.setup({
+        verbosity = 0,
+        saving_path = "/tmp/highstr/",
+        highlight_colors = {
+          -- color_id = {"bg_hex_code",<"fg_hex_code"/"smart">}
+          color_0 = { "#0c0d0e", "smart" },           -- Cosmic charcoal
+          color_1 = { "#e5c07b", "smart" },           -- Pastel yellow
+          color_2 = { "#7FFFD4", "smart" },           -- Aqua menthe
+          color_3 = { "#8A2BE2", "smart" },           -- Proton purple
+          color_4 = { "#FF4500", "smart" },           -- Orange red
+          color_5 = { "#008000", "smart" },           -- Office green
+          color_6 = { "#0000FF", "smart" },           -- Just blue
+          color_7 = { "#FFC0CB", "smart" },           -- Blush pink
+          color_8 = { "#FFF9E3", "smart" },           -- Cosmic latte
+          color_9 = { "#7d5c34", "smart" },           -- Fallow brown
         }
+      })
+      vim.api.nvim_set_keymap("v", "<leader>h1", ":<c-u>HSHighlight 1<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("v", "<leader>h2", ":<c-u>HSHighlight 2<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("v", "<leader>h3", ":<c-u>HSHighlight 3<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("v", "<leader>h4", ":<c-u>HSHighlight 4<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("v", "<leader>h0", ":<c-u>HSRmHighlight<CR>", { noremap = true, silent = true })
+    end
+  },
+  {
+    "ray-x/go.nvim",
+    dependencies = {     -- optional packages
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
     },
+    config = function()
+      require("go").setup()
+    end,
+    event = { "CmdlineEnter" },
+    ft = { "go", 'gomod' },
+    build = ':lua require("go.install").update_all_sync()'     -- if you need to install/update all binaries
+  },
+  {
+    -- scala lsp
+    'scalameta/nvim-metals',
+    dependencies = { "nvim-lua/plenary.nvim" },
+    init = function()
+      local metals_config = require("metals").bare_config()
 
+      -- Example of settings
+      metals_config.settings = {
+        showImplicitArguments = true,
+        excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
+      }
+
+      -- metals_config.init_options.statusBarProvider = "on"
+      metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local dap = require("dap")
+      dap.configurations.scala = {
+        {
+          type = "scala",
+          request = "launch",
+          name = "RunOrTest",
+          metals = {
+            runType = "runOrTestFile",
+            --args = { "firstArg", "secondArg", "thirdArg" }, -- here just as an example
+          },
+        },
+        {
+          type = "scala",
+          request = "launch",
+          name = "Test Target",
+          metals = {
+            runType = "testTarget",
+          },
+        },
+      }
+
+      metals_config.on_attach = function(client, bufnr)
+        require("metals").setup_dap()
+      end
+
+      local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "scala", "sbt", "java" },
+        callback = function()
+          require("metals").initialize_or_attach(metals_config)
+        end,
+        group = nvim_metals_group,
+      })
+    end
+  },
+
+  'junegunn/vim-easy-align',
+  'alec-gibson/nvim-tetris',
+
+  -- better quick fix
+  {
+    -- better quickfix
+    'kevinhwang91/nvim-bqf',
+    dependencies = {
+      'junegunn/fzf',
+      -- init = function() vim.fn['fzf#install']() end,
+    },
+  },
+
+  {
+    -- unix commands in vim
+    'tpope/vim-eunuch',
+  },
+
+  {
+    -- database support in vim
+    'tpope/vim-dadbod',
+  },
+  'kristijanhusak/vim-dadbod-ui',
+  'tpope/vim-fugitive',   -- git wrapper
+  'tpope/vim-obsession',
+  'tpope/vim-repeat',     -- better repeat
+  'tpope/vim-rhubarb',    -- github extension for fugitive
+  'tpope/vim-speeddating',
+  {
+    -- better netrw
+    'tpope/vim-vinegar',
+  },
+  'tpope/vim-unimpaired',
+  'goerz/jupytext.vim',
+  'ThePrimeagen/harpoon',
+  'szw/vim-maximizer',
+  'RRethy/vim-illuminate',
+  {
+    'stevearc/conform.nvim',
+    opts = {},
+    init = function()
+      require("conform").setup({
+        formatters_by_ft = {
+          lua = { "stylua" },
+          -- Conform will run multiple formatters sequentially
+          python = { "isort -m3", "black -l79", },
+          -- Use a sub-list to run only the first available formatter
+          javascript = { { "prettierd", "prettier" } },
+          sh = { "beautysh" },
+        },
+      })
+      vim.api.nvim_create_user_command("Format", function(args)
+        local range = nil
+        if args.count ~= -1 then
+          local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+          range = {
+            start = { args.line1, 0 },
+            ["end"] = { args.line2, end_line:len() },
+          }
+        end
+        require("conform").format({ async = true, lsp_fallback = true, range = range })
+      end, { range = true })
+    end
+  },
+  {
+    "zbirenbaum/copilot.lua",
+    init = function()
+      require('copilot').setup()
+    end,
+  },
+  {
+    'hrsh7th/nvim-cmp',
+    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline' },
+  },
+  {
+    "zbirenbaum/copilot-cmp",
+    dependencies = { "copilot.lua" },
+    init = function()
+      require("copilot_cmp").setup()
+    end,
+  },
+
+  {
+    "NTBBloodbath/rest.nvim",
+    enable = executable "jq",
+    init = function()
+      require("rest-nvim").setup({
+        -- Open request results in a horizontal split
+        result_split_horizontal = true,
+        -- Keep the http file buffer above|left when split horizontal|vertical
+        result_split_in_place = false,
+        -- stay in current windows (.http file) or change to results window (default)
+        stay_in_current_window_after_split = false,
+        -- Skip SSL verification, useful for unknown certificates
+        skip_ssl_verification = true,
+        -- Encode URL before making request
+        encode_url = true,
+        -- Highlight request on run
+        highlight = {
+          enabled = true,
+          timeout = 150,
+        },
+        result = {
+          -- toggle showing URL, HTTP info, headers at top the of result window
+          show_url = true,
+          -- show the generated curl command in case you want to launch
+          -- the same request via the terminal (can be verbose)
+          show_curl_command = true,
+          show_http_info = true,
+          show_headers = true,
+          -- table of curl `--write-out` variables or false if disabled
+          -- for more granular control see Statistics Spec
+          show_statistics = false,
+          -- executables or functions for formatting response body [optional]
+          -- set them to false if you want to disable them
+          formatters = {
+            json = "jq",
+            html = function(body)
+              return vim.fn.system({ "tidy", "-i", "-q", "-" }, body)
+            end
+          },
+        },
+        -- Jump to request line on run
+        jump_to_request = false,
+        env_file = '.env',
+        custom_dynamic_variables = {},
+        yank_dry_run = true,
+        search_back = true,
+      })
+      vim.api.nvim_set_keymap("n", "<leader>rr", "<Plug>RestNvim", { noremap = true, silent = true })
+    end,
+  },
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-neotest/neotest-vim-test",
+      "nvim-neotest/neotest-python",
+      "nvim-neotest/neotest-plenary",
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim"
+    },
+    init = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-python")({
+            -- Extra arguments for nvim-dap configuration
+            -- See https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for values
+            dap = { justMyCode = false },
+            args = { "--log-level", "DEBUG" },
+            runner = "pytest",
+            -- python = ".venv/bin/python",
+          })
+        }
+      })
+      vim.keymap.set('n', '<leader>tn', vim.cmd.TestNearest, { noremap = true, desc = 'Run nearest test' })
+      vim.keymap.set('n', '<leader>tf', vim.cmd.TestFile, { noremap = true, desc = 'Run current file tests' })
+      vim.keymap.set('n', '<leader>ts', vim.cmd.TestSuite, { noremap = true, desc = 'Run test suite' })
+      vim.keymap.set('n', '<leader>tl', vim.cmd.TestLast, { noremap = true, desc = 'Run last test' })
+      vim.keymap.set('n', '<leader>td', function() require("neotest").run.run({ strategy = "dap" }) end,
+        { noremap = true, desc = 'Run test debug mode' })
+    end
+  },
+  {
+    "klen/nvim-test",
+    init = function()
+      require('nvim-test').setup({})
+    end
+  },
+  { 'mracos/mermaid.vim' },
+  { 'mzlogin/vim-markdown-toc', },
+  {
+    "iamcco/markdown-preview.nvim",
+    build = "cd app && npm install",
+    init = function() vim.g.mkdp_filetypes = { "markdown" } end,
+    ft = { "markdown" },
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+      'theHamsta/nvim-dap-virtual-text',
+      'mfussenegger/nvim-dap-python',
+      'leoluz/nvim-dap-go',
+    },
+    init = function()
+      require("dapui").setup()
+      require("dapui").setup()
+      require("nvim-dap-virtual-text").setup({})
+      require("dap-python").setup(os.getenv('HOME') .. '/.venv-nvim/bin/python')
+
+      require('dap-go').setup({
+        dap_configurations = {
+          {
+            -- Must be "go" or it will be ignored by the plugin
+            type = "go",
+            name = "Attach remote",
+            mode = "remote",
+            request = "attach",
+          },
+        },
+        delve = {
+          path = "dlv",
+          initialize_timeout_sec = 20,
+          port = "${port}",
+          args = {},
+          build_flags = "",
+        },
+      })
+      local dap = require('dap')
+      vim.keymap.set('n', '<leader>B', function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
+        { noremap = true, desc = 'dap set breakpoint condition' })
+      vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { noremap = true, desc = 'dap toggle breakpoint' })
+      vim.keymap.set('n', '<leader>dc', dap.continue, { noremap = true, desc = 'dap continue' })
+      vim.keymap.set('n', '<leader>dh', dap.step_out, { noremap = true, desc = 'dap step out ←' })
+      vim.keymap.set('n', '<leader>dl', dap.step_into, { noremap = true, desc = 'dap step into →' })
+      vim.keymap.set('n', '<leader>dk', dap.step_back, { noremap = true, desc = 'dap step back ↑' })
+      vim.keymap.set('n', '<leader>dj', dap.step_over, { noremap = true, desc = 'dap step over ↓' })
+      vim.keymap.set('n', '<leader>de', dap.repl.open, { noremap = true, desc = 'dap open repl' })
+      vim.keymap.set('n', '<leader>dr', dap.run_last, { noremap = true, desc = 'dap run last' })
+      vim.keymap.set('n', '<leader>dq', dap.disconnect, { noremap = true, desc = 'dap disconnect' })
+      local dapui = require('dapui')
+      vim.keymap.set('n', '<leader>du', dapui.toggle, { noremap = true, desc = 'toggle dap ui' })
+      vim.keymap.set('n', '<leader>do', dapui.open, { noremap = true, desc = 'toggle dap ui' })
+      vim.keymap.set('n', '<leader>dx', dapui.close, { noremap = true, desc = 'toggle dap ui' })
+    end,
+  },
+  {
+    'nvimdev/lspsaga.nvim',
+    config = function()
+      require('lspsaga').setup({
+        symbol_in_winbar = {
+          enable = true,
+          separator = ' › ',
+          hide_keyword = false,
+          ignore_patterns = nil,
+          show_file = true,
+          folder_level = 1,
+          color_mode = true,
+          delay = 300,
+        },
+        outline = {
+          win_position = 'right',
+          win_width = 40,
+          auto_preview = false,
+          detail = false,
+          auto_close = true,
+          close_after_jump = false,
+          layout = 'normal',
+          max_height = 0.5,
+          left_width = 0.3,
+          keys = {
+            toggle_or_jump = '<cr>',
+            quit = 'q',
+            jump = 'e',
+          },
+        },
+        ui = {
+          devicon = false,
+          foldericon = true,
+          -- expand = '[+]',
+          -- collapse = '[-]',
+          -- imp_sign = '[ ]',
+          expand = '⊞ ',
+          collapse = '⊟ ',
+          imp_sign = '󰳛 ',
+          code_action = "",
+          lines = { '└', '├', '│', '─', '┌' },
+          lightbulb = {
+            enable = false,
+            enable_in_insert = false,
+            sign = false,
+            sign_priority = 40,
+            virtual_text = false,
+          },
+          kind = {
+            Folder = { " " },
+            Module = { " ", "@namespace" },
+            Namespace = { " ", "@namespace" },
+            Package = { " ", "@namespace" },
+            Class = { " ", "@type" },
+            Method = { " ", "@method" },
+            Property = { " ", "LineNr" },
+            Field = { " ", "@field" },
+            Constructor = { " ", "@constructor" },
+            Enum = { " ", "@type" },
+            Interface = { " ", "@type" },
+            Function = { " ", "@function" },
+            Variable = { " ", "@constant" },
+            Constant = { " ", "@constant" },
+            String = { " ", "@string" },
+            Number = { " ", "@number" },
+            Boolean = { " ", "@boolean" },
+            Array = { " ", "@constant" },
+            Object = { " ", "@type" },
+            Key = { " ", "@type" },
+            Null = { "N ", "@type" },
+            EnumMember = { " ", "@field" },
+            Struct = { " ", "@type" },
+            Event = { " ", "@type" },
+            Operator = { " ", "@operator" },
+            TypeParameter = { " ", "@parameter" },
+            Parameter = { " ", "@parameter" },
+          },
+        },
+      })
+    end,
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter', -- optional
+    }
+  },
+
+  -- suspecious
+  -- {
+  --     "kylechui/nvim-surround",
+  --     version = "*", -- Use for stability; omit to use `main` branch for the latest features
+  --     event = "VeryLazy",
+  --     config = function()
+  --         require("nvim-surround").setup({
+  --             -- Configuration here, or leave empty to use defaults
+  --             keymaps = {
+  --                 insert = "<C-g>s",
+  --                 insert_line = "<C-g>S",
+  --                 normal = "ys",
+  --                 normal_cur = "yss",
+  --                 normal_line = "yS",
+  --                 normal_cur_line = "ySS",
+  --                 visual = "S",
+  --                 visual_line = "gS",
+  --                 delete = "ds",
+  --                 change = "cs",
+  --             },
+  --         })
+  --     end
+  -- },
+
+
+    -- utils
+    -- {
+    --     don't know why but this plugin removes the startup message of neovim
+    --     "folke/todo-comments.nvim",
+    --     dependencies = { "nvim-lua/plenary.nvim" },
+    --     opts = {}
+    -- },
+    -- 'mhartington/formatter.nvim',
+  -- {
+  --   'stevearc/oil.nvim',
+  --   opts = {},
+  --   -- Optional dependencies
+  --   -- dependencies = { "nvim-tree/nvim-web-devicons" },
+  -- },
     -- chatgpt
     -- {
     --     "jackMort/ChatGPT.nvim",
@@ -459,132 +595,64 @@ return {
     --     }
     --   end
     -- },
-
-  {
-    'nvimdev/lspsaga.nvim',
-    config = function()
-      require('lspsaga').setup({
-        symbol_in_winbar = {
-            enable = true,
-            separator = ' › ',
-            hide_keyword = false,
-            ignore_patterns = nil,
-            show_file = true,
-            folder_level = 1,
-            color_mode = true,
-            delay = 300,
-        },
-        outline = {
-          win_position = 'right',
-          win_width = 40,
-          auto_preview = false,
-          detail = false,
-          auto_close = true,
-          close_after_jump = false,
-          layout = 'normal',
-          max_height = 0.5,
-          left_width = 0.3,
-          keys = {
-            toggle_or_jump = '<cr>',
-            quit = 'q',
-            jump = 'e',
-          },
-        },
-        ui = {
-          devicon = false,
-          foldericon = true,
-          -- expand = '[+]',
-          -- collapse = '[-]',
-          -- imp_sign = '[ ]',
-          expand = '⊞ ',
-          collapse = '⊟ ',
-          imp_sign = '󰳛 ',
-          code_action = "",
-          lines = { '└', '├', '│', '─', '┌' },
-          lightbulb = {
-            enable = false,
-            enable_in_insert = false,
-            sign = false,
-            sign_priority = 40,
-            virtual_text = false,
-          },
-          kind = {
-            -- disable all icons {{
-            -- Folder = { "" },
-            -- backup {{
-            -- Module = { "", "@namespace" },
-            -- Namespace = { "", "@namespace" },
-            -- Package = { "", "@namespace" },
-            -- Class = { "", "@type" },
-            -- Method = { "", "@method" },
-            -- Property = { "", "LineNr" },
-            -- Field = { "", "@field" },
-            -- Constructor = { "", "@constructor" },
-            -- Enum = { "", "@type" },
-            -- Interface = { "", "@type" },
-            -- Function = { "", "@function" },
-            -- Variable = { "", "@constant" },
-            -- Constant = { "", "@constant" },
-            -- String = { "", "@string" },
-            -- Number = { "", "@number" },
-            -- Boolean = { "", "@boolean" },
-            -- Array = { "", "@constant" },
-            -- Object = { "", "@type" },
-            -- Key = { "", "@type" },
-            -- Null = { "", "@type" },
-            -- EnumMember = { "", "@field" },
-            -- Struct = { "", "@type" },
-            -- Event = { "", "@type" },
-            -- Operator = { "", "@operator" },
-            -- TypeParameter = { "", "@parameter" },
-            -- Parameter = { "", "@parameter" },
-            -- }}
-            -- defau{{
-            Folder = { " " },
-            Module = { " ", "@namespace" },
-            Namespace = { " ", "@namespace" },
-            Package = { " ", "@namespace" },
-            Class = { " ", "@type" },
-            Method = { " ", "@method" },
-            Property = { " ", "LineNr" },
-            Field = { " ", "@field" },
-            Constructor = { " ", "@constructor" },
-            Enum = { " ", "@type" },
-            Interface = { " ", "@type" },
-            Function = { " ", "@function" },
-            Variable = { " ", "@constant" },
-            Constant = { " ", "@constant" },
-            String = { " ", "@string" },
-            Number = { " ", "@number" },
-            Boolean = { " ", "@boolean" },
-            Array = { " ", "@constant" },
-            Object = { " ", "@type" },
-            Key = { " ", "@type" },
-            Null = { "N ", "@type" },
-            EnumMember = { " ", "@field" },
-            Struct = { " ", "@type" },
-            Event = { " ", "@type" },
-            Operator = { " ", "@operator" },
-            TypeParameter = { " ", "@parameter" },
-            Parameter = { " ", "@parameter" },
-            -- }}
-          },
-        },
-      })
-    end,
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter', -- optional
-      -- 'nvim-tree/nvim-web-devicons',     -- optional
-    }
-  },
-
-
-    -- utils
     -- {
-    --     don't know why but this plugin removes the startup message of neovim
-    --     "folke/todo-comments.nvim",
-    --     dependencies = { "nvim-lua/plenary.nvim" },
-    --     opts = {}
+    --     'phaazon/mind.nvim',
+    --     version = 'v2.2',
+    --     dependencies = { 'nvim-lua/plenary.nvim' },
+    --     init = function()
+    --         require('mind').setup()
+    --     end
     -- },
+    -- 'tyru/open-browser.vim',
+    -- { 'github/copilot.vim' },
+    -- 'nvim-telescope/telescope-symbols.nvim',
+    -- {
+    --   'edluffy/hologram.nvim',
+    --   init = function ()
+    --     require('hologram').setup{
+    --       auto_display = true -- WIP automatic markdown image display, may be prone to breaking
+    --     }
+    --   end
+    -- },
+    -- {
+    --   'nvim-telescope/telescope-media-files.nvim',
+    --   init = function()
+    --     require('telescope').setup({
+    --       extensions = {
+    --         media_files = {
+    --           -- filetypes whitelist
+    --           -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
+    --           filetypes = {"png", "webp", "jpg", "jpeg"},
+    --           -- find command (defaults to `fd`)
+    --           find_cmd = "rg"
+    --         }
+    --       },
+    --     })
+    --   end
+    -- },
+    -- {
+    --     'simrat39/symbols-outline.nvim',
+    --     init = function()
+    --         require("symbols-outline").setup({
+    --             show_symbol_details = true,
+    --         })
+    --     end
+    -- },
+    -- {
+    --     "ludovicchabant/vim-gutentags",
+    -- },
+    -- {
+    --     -- work with multiple cases of a word
+    --     -- :%Subvert/facilit{y,ies}/building{,s}/g
+    --     'tpope/vim-abolish',
+    -- },
+    -- {
+    --     -- Spawning interactive processes
+    --     'tpope/vim-dispatch',
+    -- },
+    -- 'tpope/vim-markdown',
+    -- 'sbulav/nredir.nvim',
+    -- 'tpope/vim-surround',
+
 }
 -- vim: ts=2 sts=2 sw=2 et tw=0
