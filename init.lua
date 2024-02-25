@@ -60,7 +60,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  -- { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim', opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -152,13 +152,8 @@ require('lazy').setup({
     branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
-      -- Fuzzy Finder Algorithm which requires local dependencies to be built.
-      -- Only load if `make` is available. Make sure you have the system
-      -- requirements installed.
       {
         'nvim-telescope/telescope-fzf-native.nvim',
-        -- NOTE: If you are having trouble with this installation,
-        --       refer to the README for telescope-fzf-native for more instructions.
         build = 'make',
         cond = function()
           return vim.fn.executable 'make' == 1
@@ -406,15 +401,15 @@ local on_attach = function(_, bufnr)
 end
 
 -- -- document existing key chains
--- require('which-key').register {
---   ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
---   ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
---   ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
---   ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
---   ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
---   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
---   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
--- }
+require('which-key').register {
+  ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
+  ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
+  ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
+  ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
+  ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
+  ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
+  ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+}
 
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
@@ -789,13 +784,14 @@ vim.keymap.set('n', '<leader>yf', ':let @+ = expand("%:p")<cr>', { noremap = tru
 
 -- reload
 vim.keymap.set('n', '<leader><cr>', ':source ~/.config/nvim/init.lua<cr>', { noremap = true })
-vim.keymap.set('n', '<leader>rc', ':new ~/.config/nvim/init.lua<cr>', { noremap = true })
+vim.keymap.set('n', '<leader>rc', ':vnew ~/.config/nvim/init.lua<cr>', { noremap = true })
 
 
 -- replace in all file
 vim.keymap.set('n', '<leader>s', ':%s/<C-r><C-w>/<C-r><C-w>/gI<left><left><left>',
   { noremap = true, desc = 'search and replace word under cursor' })
 -- vim.keymap.set('n', 'gs', ':%s//g<left><left>', {noremap = true, desc = 'search and replace' })
+vim.keymap.set("n", "<leader>gw", ":grep '<C-R><C-W>'", { desc = "Find word using grep command" })
 --
 vim.keymap.set('i', '<C-J>', '<esc>:.m+1 | startinsert<cr>', { noremap = true, desc = 'move line down' })
 vim.keymap.set('i', '<C-K>', '<esc>:.m-2 | startinsert<cr>', { noremap = true, desc = 'move line up' })
@@ -807,7 +803,6 @@ vim.keymap.set('n', '<leader>cn', ':cnext<cr>', { noremap = true, desc = 'next e
 vim.keymap.set('n', '<leader>cp', ':cprev<cr>', { noremap = true, desc = 'previous error' })
 -- }}
 --
-
 
 vim.cmd[[
 augroup Latex
@@ -823,168 +818,14 @@ vim.cmd([[autocmd BufRead,BufNewFile *.hcl set filetype=hcl]])
 vim.cmd([[autocmd BufRead,BufNewFile .terraformrc,terraform.rc set filetype=hcl]])
 vim.cmd([[autocmd BufRead,BufNewFile *.tf,*.tfvars set filetype=terraform]])
 vim.cmd([[autocmd BufRead,BufNewFile *.tfstate,*.tfstate.backup set filetype=json]])
-
 vim.keymap.set("n", "<leader>ti", ":!terraform init<CR>", { noremap = true, desc = "Terraform init" })
 vim.keymap.set("n", "<leader>tv", ":!terraform validate<CR>", { noremap = true, desc = "Terraform validate" })
 vim.keymap.set("n", "<leader>tp", ":!terraform plan<CR>", { noremap = true, desc = "Terraform plan" })
 vim.keymap.set("n", "<leader>taa", ":!terraform apply -auto-approve<CR>", { noremap = true, desc = "Terraform apply auto approve" })
-
 require('lspconfig').terraformls.setup{}
 require('lspconfig').tflint.setup{}
 -- }}
 
--- {{
--- require("oil").setup({
---   -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
---   -- Set to false if you still want to use netrw.
---   default_file_explorer = false,
---   -- Id is automatically added at the beginning, and name at the end
---   -- See :help oil-columns
---   columns = {
---     -- "icon",
---     -- "permissions",
---     -- "size",
---     -- "mtime",
---   },
---   -- Buffer-local options to use for oil buffers
---   buf_options = {
---     buflisted = false,
---     bufhidden = "hide",
---   },
---   -- Window-local options to use for oil buffers
---   win_options = {
---     wrap = false,
---     signcolumn = "no",
---     cursorcolumn = false,
---     foldcolumn = "0",
---     spell = false,
---     list = false,
---     conceallevel = 3,
---     concealcursor = "nvic",
---   },
---   -- Send deleted files to the trash instead of permanently deleting them (:help oil-trash)
---   delete_to_trash = false,
---   -- Skip the confirmation popup for simple operations (:help oil.skip_confirm_for_simple_edits)
---   skip_confirm_for_simple_edits = false,
---   -- Selecting a new/moved/renamed file or directory will prompt you to save changes first
---   -- (:help prompt_save_on_select_new_entry)
---   prompt_save_on_select_new_entry = true,
---   -- Oil will automatically delete hidden buffers after this delay
---   -- You can set the delay to false to disable cleanup entirely
---   -- Note that the cleanup process only starts when none of the oil buffers are currently displayed
---   cleanup_delay_ms = 2000,
---   -- Set to true to autosave buffers that are updated with LSP willRenameFiles
---   -- Set to "unmodified" to only save unmodified buffers
---   lsp_rename_autosave = false,
---   -- Constrain the cursor to the editable parts of the oil buffer
---   -- Set to `false` to disable, or "name" to keep it on the file names
---   constrain_cursor = "editable",
---   -- Keymaps in oil buffer. Can be any value that `vim.keymap.set` accepts OR a table of keymap
---   -- options with a `callback` (e.g. { callback = function() ... end, desc = "", mode = "n" })
---   -- Additionally, if it is a string that matches "actions.<name>",
---   -- it will use the mapping at require("oil.actions").<name>
---   -- Set to `false` to remove a keymap
---   -- See :help oil-actions for a list of all available actions
---   keymaps = {
---     ["g?"] = "actions.show_help",
---     ["<CR>"] = "actions.select",
---     ["<C-s>"] = "actions.select_vsplit",
---     ["<C-h>"] = "actions.select_split",
---     ["<C-t>"] = "actions.select_tab",
---     -- ["<C-w>"] = "actions.preview",
---     ["<C-c>"] = "actions.close",
---     ["<C-l>"] = "actions.refresh",
---     ["-"] = "actions.parent",
---     ["_"] = "actions.open_cwd",
---     ["`"] = "actions.cd",
---     ["~"] = "actions.tcd",
---     ["gs"] = "actions.change_sort",
---     ["gx"] = "actions.open_external",
---     ["g."] = "actions.toggle_hidden",
---     ["g\\"] = "actions.toggle_trash",
---   },
---   -- Set to false to disable all of the above keymaps
---   use_default_keymaps = false,
---   view_options = {
---     -- Show files and directories that start with "."
---     show_hidden = true,
---     -- This function defines what is considered a "hidden" file
---     is_hidden_file = function(name, bufnr)
---       return vim.startswith(name, ".")
---     end,
---     -- This function defines what will never be shown, even when `show_hidden` is set
---     is_always_hidden = function(name, bufnr)
---       return false
---     end,
---     sort = {
---       -- sort order can be "asc" or "desc"
---       -- see :help oil-columns to see which columns are sortable
---       { "type", "asc" },
---       { "name", "asc" },
---     },
---   },
---   -- Configuration for the floating window in oil.open_float
---   float = {
---     -- Padding around the floating window
---     padding = 2,
---     max_width = 0,
---     max_height = 0,
---     border = "rounded",
---     win_options = {
---       winblend = 0,
---     },
---     -- This is the config that will be passed to nvim_open_win.
---     -- Change values here to customize the layout
---     override = function(conf)
---       return conf
---     end,
---   },
---   -- Configuration for the actions floating preview window
---   preview = {
---     -- Width dimensions can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
---     -- min_width and max_width can be a single value or a list of mixed integer/float types.
---     -- max_width = {100, 0.8} means "the lesser of 100 columns or 80% of total"
---     max_width = 0.6,
---     -- min_width = {40, 0.4} means "the greater of 40 columns or 40% of total"
---     min_width = { 40, 0.4 },
---     -- optionally define an integer/float for the exact width of the preview window
---     width = nil,
---     -- Height dimensions can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
---     -- min_height and max_height can be a single value or a list of mixed integer/float types.
---     -- max_height = {80, 0.9} means "the lesser of 80 columns or 90% of total"
---     max_height = 0.9,
---     -- min_height = {5, 0.1} means "the greater of 5 columns or 10% of total"
---     min_height = { 5, 0.1 },
---     -- optionally define an integer/float for the exact height of the preview window
---     height = nil,
---     border = "rounded",
---     win_options = {
---       winblend = 0,
---     },
---     -- Whether the preview window is automatically updated when the cursor is moved
---     update_on_cursor_moved = true,
---   },
---   -- Configuration for the floating progress window
---   progress = {
---     max_width = 0.9,
---     min_width = { 40, 0.4 },
---     width = nil,
---     max_height = { 10, 0.9 },
---     min_height = { 5, 0.1 },
---     height = nil,
---     border = "rounded",
---     minimized_border = "none",
---     win_options = {
---       winblend = 0,
---     },
---   },
--- })
--- vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
--- -- }}
-
-
---
-vim.keymap.set("n", "<leader>gw", ":grep '<C-R><C-W>'", { desc = "Find word using grep command" })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et tw=0
