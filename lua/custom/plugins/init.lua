@@ -8,6 +8,30 @@ end
 
 return {
   {
+    "Rawnly/gist.nvim",
+    cmd = { "GistCreate", "GistCreateFromFile", "GistsList" },
+    dependencies = {
+      {
+        "samjwill/nvim-unception",
+        lazy = false,
+        init = function() vim.g.unception_block_while_host_edits = true end
+      },
+    },
+    init = function ()
+      require("gist").setup({
+        private = false, -- All gists will be private, you won't be prompted again
+        clipboard = "+", -- The registry to use for copying the Gist URL
+        list = {
+          mappings = {
+            next_file = "<C-n>",
+            prev_file = "<C-p>"
+          }
+        }
+      })
+
+    end
+  },
+  {
     "robitx/gp.nvim",
     init = function()
       require("gp").setup()
