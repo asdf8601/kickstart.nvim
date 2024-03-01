@@ -503,6 +503,10 @@ return {
     'echasnovski/mini.files',
     init = function ()
       require('mini.files').setup({
+        options = {
+          permanent_delete = false,
+          use_as_default_explorer = false,
+        },
         mappings = {
             close       = 'q',
             go_in       = 'l',
