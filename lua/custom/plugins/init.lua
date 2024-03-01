@@ -42,45 +42,24 @@ return {
     'echasnovski/mini.map',
     version = false,
     init = function()
-      -- minimap {{
       require('mini.map').setup(
         {
-          -- Highlight integrations (none by default)
           integrations = nil,
-
-          -- Symbols used to display data
           symbols = {
-            -- Encode symbols. See `:h MiniMap.config` for specification and
-            -- `:h MiniMap.gen_encode_symbols` for pre-built ones.
-            -- Default: solid blocks with 3x2 resolution.
             encode = require('mini.map').gen_encode_symbols.dot('3x2'),
-
-            -- Scrollbar parts for view and line. Use empty string to disable any.
             scroll_line = '█',
             scroll_view = '┃',
           },
           window = {
-            -- Whether window is focusable in normal way (with `wincmd` or mouse)
             focusable = false,
-
-            -- Side to stick ('left' or 'right')
             side = 'right',
-
-            -- Whether to show count of multiple integration highlights
             show_integration_count = true,
-
-            -- Total width
             width = 12,
-
-            -- Value of 'winblend' option
             winblend = 25,
-
-            -- Z-index
             zindex = 10,
           },
         }
       )
-      -- }}
     end,
   },
   {
@@ -520,7 +499,28 @@ return {
       'nvim-treesitter/nvim-treesitter', -- optional
     }
   },
-  { 'echasnovski/mini.files', version = '*' },
+  {
+    'echasnovski/mini.files',
+    init = function ()
+      require('mini.files').setup({
+        mappings = {
+            close       = 'q',
+            go_in       = 'l',
+            go_in_plus  = 'L',
+            go_out      = 'h',
+            go_out_plus = 'H',
+            reset       = '<BS>',
+            reveal_cwd  = '@',
+            show_help   = 'g?',
+            synchronize = '=',
+            trim_left   = '<',
+            trim_right  = '>',
+          },
+
+      })
+    end,
+    version = '*',
+  },
   {
     -- work with multiple cases of a word
     -- :%Subvert/facilit{y,ies}/building{,s}/g
