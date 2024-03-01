@@ -509,7 +509,7 @@ return {
             go_in_plus  = 'L',
             go_out      = 'h',
             go_out_plus = 'H',
-            reset       = '<BS>',
+            reset       = '<C-r>',
             reveal_cwd  = '@',
             show_help   = 'g?',
             synchronize = '=',
