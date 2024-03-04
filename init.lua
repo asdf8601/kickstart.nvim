@@ -24,8 +24,6 @@ require('lazy').setup({
 
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
-
-  -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
   {
@@ -520,8 +518,6 @@ cmp.setup({
     -- { name = 'orgmode' },
   },
 })
-
-
 
 
 
