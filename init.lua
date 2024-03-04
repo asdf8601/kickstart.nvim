@@ -65,8 +65,13 @@ require('lazy').setup({
     opts = {},
     init = function ()
         vim.o.timeout = true
-        vim.o.timeoutlen = 1000
-        require("which-key").setup({})
+        require("which-key").setup({
+        icons = {
+          breadcrumb = "»",
+          separator = ">",
+          group = "+",
+        },
+      })
     end,
   },
   {
@@ -412,7 +417,7 @@ end
 require('which-key').register {
   ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
   ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-  ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
+  -- ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
   ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
   ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
@@ -566,7 +571,7 @@ vim.o.incsearch = true
 vim.o.scrolloff = 8
 -- vim.o.signcolumn='no'
 vim.o.cmdheight = 1
-vim.o.timeoutlen = 200
+vim.o.timeoutlen = 1000
 vim.o.updatetime = 50
 -- vim.o.shortmess = vim.o.shortmess .. 'c'
 vim.o.textwidth = 79
