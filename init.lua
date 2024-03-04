@@ -67,8 +67,8 @@ require('lazy').setup({
         vim.o.timeout = true
         require("which-key").setup({
         icons = {
-          breadcrumb = "»",
-          separator = ">",
+          breadcrumb = ">>",
+          separator = "->",
           group = "+",
         },
       })
@@ -808,7 +808,6 @@ vim.keymap.set("n", "<leader>taa", ":!terraform apply -auto-approve<CR>", { nore
 require('lspconfig').terraformls.setup{}
 require('lspconfig').tflint.setup{}
 -- }}
-
 
 vim.api.nvim_create_user_command('PushAirflow', '!gsutil cp -r % gs://europe-west1-data-cloud-com-831c7a66-bucket/%', {})
 
