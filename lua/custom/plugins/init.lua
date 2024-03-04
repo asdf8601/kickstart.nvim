@@ -7,7 +7,40 @@ local executable = function(x)
 end
 
 return {
-  { "miikanissi/modus-themes.nvim", priority = 1000 },
+  {
+    "miikanissi/modus-themes.nvim",
+    priority = 1000,
+    init = function ()
+      require("modus-themes").setup({
+        -- Theme comes in two styles `modus_operandi` and `modus_vivendi`
+        -- `auto` will automatically set style based on background set with vim.o.background
+        style = "auto",
+        variant = "default", -- Theme comes in four variants `default`, `tinted`, `deuteranopia`, and `tritanopia`
+        transparent = false, -- Transparent background (as supported by the terminal)
+        dim_inactive = false, -- "non-current" windows are dimmed
+        styles = {
+          -- Style to be applied to different syntax groups
+          -- Value is any valid attr-list value for `:help nvim_set_hl`
+          comments = { italic = true },
+          keywords = { italic = true },
+          functions = {},
+          variables = {},
+        },
+
+        --- You can override specific color groups to use other groups or a hex color
+        --- function will be called with a ColorScheme table
+        ---@param colors ColorScheme
+        on_colors = function(colors) end,
+
+        --- You can override specific highlights to use other groups or a hex color
+        --- function will be called with a Highlights and ColorScheme table
+        ---@param highlights Highlights
+        ---@param colors ColorScheme
+        on_highlights = function(highlights, colors) end,
+      })
+
+    end
+  },
   {
     "Rawnly/gist.nvim",
     cmd = { "GistCreate", "GistCreateFromFile", "GistsList" },
@@ -117,28 +150,6 @@ return {
     end
   },
   {
-    "ray-x/go.nvim",
-    dependencies = {     -- optional packages
-      "ray-x/guihua.lua",
-      "neovim/nvim-lspconfig",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    init = function()
-      require("go").setup()
-      local go_utils = vim.api.nvim_create_augroup("GoImport", {})
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        pattern = "*.go",
-        callback = function()
-         require('go.format').goimport()
-        end,
-        group = go_utils,
-      })
-    end,
-    event = { "CmdlineEnter" },
-    ft = { "go", 'gomod' },
-    build = ':lua require("go.install").update_all_sync()'     -- if you need to install/update all binaries
-  },
-  {
     -- scala lsp
     'scalameta/nvim-metals',
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -192,7 +203,6 @@ return {
   'junegunn/vim-easy-align',
   'alec-gibson/nvim-tetris',
 
-  -- better quick fix
   {
     -- better quickfix
     'kevinhwang91/nvim-bqf',
@@ -206,12 +216,13 @@ return {
     -- unix commands in vim
     'tpope/vim-eunuch',
   },
-
   {
     -- database support in vim
     'tpope/vim-dadbod',
+    dependencies = {
+      'kristijanhusak/vim-dadbod-ui',
+    }
   },
-  'kristijanhusak/vim-dadbod-ui',
   'tpope/vim-fugitive',   -- git wrapper
   'tpope/vim-obsession',
   'tpope/vim-repeat',     -- better repeat
@@ -270,23 +281,28 @@ return {
     end
   },
   {
-    "zbirenbaum/copilot.lua",
-    init = function()
-      require('copilot').setup()
-    end,
-  },
-  {
     'hrsh7th/nvim-cmp',
-    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline' },
+    dependencies = {
+      'hrsh7th/cmp-nvim-lsp',
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+      {
+        "zbirenbaum/copilot-cmp",
+        dependencies = { "copilot.lua" },
+        init = function()
+          require("copilot_cmp").setup()
+        end,
+      },
+      {
+        "zbirenbaum/copilot.lua",
+        init = function()
+          require('copilot').setup()
+        end,
+      },
+    },
   },
-  {
-    "zbirenbaum/copilot-cmp",
-    dependencies = { "copilot.lua" },
-    init = function()
-      require("copilot_cmp").setup()
-    end,
-  },
-
   {
     "NTBBloodbath/rest.nvim",
     enable = executable "jq",
@@ -563,7 +579,30 @@ return {
   },
 
   -- {
-  -- suspecious: this was causing lost the startup message
+  --   NOTE: this was causing lost the startup message
+  --   "ray-x/go.nvim",
+  --   dependencies = {     -- optional packages
+  --     "ray-x/guihua.lua",
+  --     "neovim/nvim-lspconfig",
+  --     "nvim-treesitter/nvim-treesitter",
+  --   },
+  --   init = function()
+  --     require("go").setup()
+  --     local go_utils = vim.api.nvim_create_augroup("GoImport", {})
+  --     vim.api.nvim_create_autocmd("BufWritePre", {
+  --       pattern = "*.go",
+  --       callback = function()
+  --        require('go.format').goimport()
+  --       end,
+  --       group = go_utils,
+  --     })
+  --   end,
+  --   event = { "CmdlineEnter" },
+  --   ft = { "go", 'gomod' },
+  --   build = ':lua require("go.install").update_all_sync()'     -- if you need to install/update all binaries
+  -- },
+  -- {
+  --     NOTE: this was causing lost the startup message
   --     "kylechui/nvim-surround",
   --     version = "*", -- Use for stability; omit to use `main` branch for the latest features
   --     event = "VeryLazy",

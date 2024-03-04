@@ -115,7 +115,7 @@ require('lazy').setup({
     -- Theme inspired by Atom
     'navarasu/onedark.nvim',
     priority = 1000,
-    config = function()
+    init = function()
       require('onedark').setup({
         term_colors = true,
         style = 'darker',
@@ -127,7 +127,7 @@ require('lazy').setup({
           background = false,     -- use background color for virtual text
         },
       })
-      vim.cmd.colorscheme 'onedark'
+      -- vim.cmd.colorscheme 'onedark'
     end,
   },
 
@@ -805,7 +805,32 @@ require('lspconfig').terraformls.setup{}
 require('lspconfig').tflint.setup{}
 -- }}
 
+
+-- GOLANG {{
+-- wrap go command into a Go neovim command so I can call it from lua.
+local function gofix()
+    -- fix inplace
+    vim.api.nvim_command('silent !gofmt -w %')
+    vim.api.nvim_command('silent !goimports -w %')
+    vim.api.nvim_command('silent !golines -w %')
+end
+
+vim.api.nvim_create_user_command('Gofix', gofix, {})
+vim.api.nvim_create_user_command('Gorun', '!go run %', {})
+vim.api.nvim_create_user_command('Gotest', '!go test %', {})
+vim.api.nvim_create_user_command('Gobuild', '!go build %', {})
+vim.api.nvim_create_user_command('Govet', '!go vet %', {})
+
+local golang = vim.api.nvim_create_augroup('GoLang', { clear = true })
+vim.api.nvim_create_autocmd('BufWritePost', {
+  callback = gofix,
+  group = golang,
+  pattern = '*.go',
+})
+-- }}
+
 vim.api.nvim_create_user_command('PushAirflow', '!gsutil cp -r % gs://europe-west1-data-cloud-com-831c7a66-bucket/%', {})
+vim.cmd.colorscheme 'modus_vivendi'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et tw=0
