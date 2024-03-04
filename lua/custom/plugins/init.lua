@@ -7,6 +7,7 @@ local executable = function(x)
 end
 
 return {
+  { "miikanissi/modus-themes.nvim", priority = 1000 },
   {
     "Rawnly/gist.nvim",
     cmd = { "GistCreate", "GistCreateFromFile", "GistsList" },
