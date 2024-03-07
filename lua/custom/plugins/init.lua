@@ -16,7 +16,7 @@ return {
         -- `auto` will automatically set style based on background set with vim.o.background
         style = "auto",
         variant = "default", -- Theme comes in four variants `default`, `tinted`, `deuteranopia`, and `tritanopia`
-        transparent = false, -- Transparent background (as supported by the terminal)
+        transparent = true, -- Transparent background (as supported by the terminal)
         dim_inactive = false, -- "non-current" windows are dimmed
         styles = {
           -- Style to be applied to different syntax groups
@@ -30,13 +30,13 @@ return {
         --- You can override specific color groups to use other groups or a hex color
         --- function will be called with a ColorScheme table
         ---@param colors ColorScheme
-        on_colors = function(colors) end,
+        -- on_colors = function(colors) end,
 
         --- You can override specific highlights to use other groups or a hex color
         --- function will be called with a Highlights and ColorScheme table
         ---@param highlights Highlights
         ---@param colors ColorScheme
-        on_highlights = function(highlights, colors) end,
+        -- on_highlights = function(highlights, colors) end,
       })
 
     end

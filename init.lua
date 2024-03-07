@@ -19,7 +19,9 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
   { 'mbbill/undotree', },
-  { 'jpalardy/vim-slime', },
+  {
+    'jpalardy/vim-slime',
+  },
   { 'ThePrimeagen/harpoon', },
 
   'tpope/vim-fugitive',
@@ -567,7 +569,6 @@ vim.o.incsearch = true
 vim.o.scrolloff = 8
 -- vim.o.signcolumn='no'
 vim.o.cmdheight = 1
-vim.o.timeoutlen = 1000
 vim.o.updatetime = 50
 -- vim.o.shortmess = vim.o.shortmess .. 'c'
 vim.o.textwidth = 79
@@ -697,7 +698,7 @@ end
 local function slime_use_neovim()
   vim.g.slime_target = "neovim"
   vim.g.slime_bracketed_paste = 1
-  vim.g.slime_python_ipython = 0
+  vim.g.slime_python_ipython = 1
   vim.g.slime_no_mappings = 1
   -- vim.g.slime_default_config = nil
   -- vim.g.slime_dont_ask_default = 0
