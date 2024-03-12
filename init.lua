@@ -809,25 +809,41 @@ require('lspconfig').tflint.setup{}
 
 -- GOLANG {{
 -- wrap go command into a Go neovim command so I can call it from lua.
-local function gofix()
-    -- fix inplace
-    vim.api.nvim_command('silent !gofmt -w %')
-    vim.api.nvim_command('silent !goimports -w %')
-    vim.api.nvim_command('silent !golines -w %')
-end
+-- local function gofix()
+--     -- fix inplace
+--     vim.api.nvim_command('silent !gofmt -w %')
+--     vim.api.nvim_command('silent !goimports -w %')
+--     vim.api.nvim_command('silent !golines -w %')
+-- end
+-- local golang = vim.api.nvim_create_augroup('GoLang', { clear = true })
+-- vim.api.nvim_create_autocmd('BufWritePost', {
+--   group = golang,
+--   pattern = 'go.mod',
+--   callback = function()
+--     vim.api.nvim_command('!go mod tidy')
+--   end
+-- })
+-- vim.api.nvim_create_autocmd('BufWritePost', {
+--   callback = gofix,
+--   group = golang,
+--   pattern = '*.go',
+-- })
+-- vim.api.nvim_create_user_command('Gofix', gofix, {})
+-- vim.api.nvim_create_user_command('Gorun', '!go run %', {})
+-- vim.api.nvim_create_user_command('Gotest', '!go test %', {})
+-- vim.api.nvim_create_user_command('Gobuild', '!go build %', {})
+-- vim.api.nvim_create_user_command('Govet', '!go vet %', {})
 
-vim.api.nvim_create_user_command('Gofix', gofix, {})
-vim.api.nvim_create_user_command('Gorun', '!go run %', {})
-vim.api.nvim_create_user_command('Gotest', '!go test %', {})
-vim.api.nvim_create_user_command('Gobuild', '!go build %', {})
-vim.api.nvim_create_user_command('Govet', '!go vet %', {})
+vim.cmd([[
+" GoLang
+augroup golang
+  autocmd!
+  autocmd BufRead go.mod setlocal filetype=go
+  autocmd BufWritePost go.mod silent !go mod tidy
+  autocmd BufWritePost *.go execute "silent !gofmt -w %" | execute "silent !goimports -w %" | execute "silent !golines -w %"
+augroup END
+]])
 
-local golang = vim.api.nvim_create_augroup('GoLang', { clear = true })
-vim.api.nvim_create_autocmd('BufWritePost', {
-  callback = gofix,
-  group = golang,
-  pattern = '*.go',
-})
 -- }}
 
 vim.api.nvim_create_user_command('PushAirflow', '!gsutil cp -r % gs://europe-west1-data-cloud-com-831c7a66-bucket/%', {})
