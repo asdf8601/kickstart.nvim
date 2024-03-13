@@ -834,14 +834,25 @@ require('lspconfig').tflint.setup{}
 -- vim.api.nvim_create_user_command('Gobuild', '!go build %', {})
 -- vim.api.nvim_create_user_command('Govet', '!go vet %', {})
 
+-- local golangcmd = function ()
+--   -- find .git directory
+--   local cwd = vim.fn.getcwd()
+--   local parent = ""
+--   -- build cmd
+--   cmd = "golangci-lint run -c " .. cwd .. "/.golangci.yml go/..."
+--   -- execute cmd
+--   vim.cmd(cmd)
+--   -- autocmd BufWritePost *.go execute "!golang cilint -c ""> /tmp/quickfix" | execute "e /tmp/quickfix"
+-- end
+
 vim.cmd([[
-" GoLang
-augroup golang
-  autocmd!
-  autocmd BufRead go.mod setlocal filetype=go
-  autocmd BufWritePost go.mod silent !go mod tidy
-  autocmd BufWritePost *.go execute "silent !gofmt -w %" | execute "silent !goimports -w %" | execute "silent !golines -w %"
-augroup END
+  " GoLang
+  augroup golang
+    autocmd! " clean previous autocommands
+    autocmd BufRead go.mod setlocal filetype=go
+    autocmd BufWritePost go.mod silent !go mod tidy
+    autocmd BufWritePost *.go execute "silent !gofmt -w %" | execute "silent !goimports -w %" | execute "silent !golines -w %"
+  augroup END
 ]])
 
 -- }}
