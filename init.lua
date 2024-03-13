@@ -848,12 +848,24 @@ require('lspconfig').tflint.setup{}
 vim.cmd([[
   " GoLang
   augroup golang
-    autocmd! " clean previous autocommands
+    autocmd!
     autocmd BufRead go.mod setlocal filetype=go
     autocmd BufWritePost go.mod silent !go mod tidy
     autocmd BufWritePost *.go execute "silent !gofmt -w %" | execute "silent !goimports -w %" | execute "silent !golines -w %"
   augroup END
 ]])
+
+
+-- if macos then
+if vim.fn.has('mac') == 1 then
+  vim.cmd([[
+    augroup macos
+      autocmd!
+      autocmd BufWritePost yabairc silent !yabai --restart-service
+      autocmd BufWritePost skhdrc silent !skhd --restart-service
+    augroup END
+  ]])
+end
 
 -- }}
 
