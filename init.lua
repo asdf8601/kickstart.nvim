@@ -147,7 +147,7 @@ require('lazy').setup({
 				---@param colors ColorScheme
 				on_highlights = function(highlights, colors) end,
 			})
-      vim.cmd.colorscheme 'tokyonight-night'
+      -- vim.cmd.colorscheme 'tokyonight-night'
       -- vim.cmd.hi 'Comment gui=none'
     end,
   },
@@ -168,7 +168,7 @@ require('lazy').setup({
           background = false,     -- use background color for virtual text
         },
       })
-      vim.cmd.colorscheme 'onedark'
+      -- vim.cmd.colorscheme 'onedark'
     end,
   },
 
@@ -526,14 +526,6 @@ cmp.setup({
 })
 
 
-
-
-
-
-
-
-
-
 -- [settings] {{
 function UseZsh()
   local handle = io.popen("which zsh")
@@ -751,8 +743,7 @@ vim.keymap.set('n', '<c-s><c-s>', ':.!sh<cr>', { noremap = true, desc = 'Execute
 
 -- Explore
 -- vim.keymap.set('n', '-', ':Ex<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
-vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>',
-  { desc = "Open the current file's directory in the file explorer", silent = false })
+vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
 
 -- paste / yank / copy
 vim.keymap.set('n', '<leader>0', '"0p', { desc = "Paste from register 0", silent = false })
@@ -800,7 +791,7 @@ augroup end
 vim.cmd([[
 augroup terraform
   autocmd!
-	autocmd filetypedetect BufRead,BufNewFile *.tf
+	silent! autocmd! filetypedetect BufRead,BufNewFile *.tf
 	autocmd BufRead,BufNewFile *.hcl set filetype=hcl
 	autocmd BufRead,BufNewFile .terraformrc,terraform.rc set filetype=hcl
 	autocmd BufRead,BufNewFile *.tf,*.tfvars set filetype=terraform
@@ -882,6 +873,7 @@ vim.api.nvim_create_user_command('PushAirflow', '!gsutil cp -r % gs://europe-wes
 
 -- vim.cmd.colorscheme 'modus_vivendi'
 -- vim.cmd.colorscheme 'modus-vivendi'
+vim.cmd.colorscheme 'tokyonight-night'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et tw=0
