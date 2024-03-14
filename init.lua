@@ -891,7 +891,8 @@ end
 
 vim.api.nvim_create_user_command('PushAirflow', '!gsutil cp -r % gs://europe-west1-data-cloud-com-831c7a66-bucket/%', {})
 
-vim.cmd.colorscheme 'modus_vivendi'
+-- vim.cmd.colorscheme 'modus_vivendi'
+vim.cmd.colorscheme 'modus-vivendi'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et tw=0
