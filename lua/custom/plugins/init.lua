@@ -7,51 +7,51 @@ local executable = function(x)
 end
 
 return {
-  {
-    'ishan9299/modus-theme-vim',
-    init = function ()
-      vim.g.modus_yellow_comments = 0
-      vim.g.modus_green_strings = 0
-      vim.g.modus_faint_syntax = 0
-      vim.g.modus_cursorline_intense = 1
-      vim.g.modus_termtrans_enable = 1
-      vim.g.modus_dim_inactive_window = 0
-    end,
-  },
   -- {
-  --   "miikanissi/modus-themes.nvim",
-  --   priority = 1000,
+  --   'ishan9299/modus-theme-vim',
   --   init = function ()
-  --     require("modus-themes").setup({
-  --       -- Theme comes in two styles `modus_operandi` and `modus_vivendi`
-  --       -- `auto` will automatically set style based on background set with vim.o.background
-  --       style = "auto",
-  --       variant = "default", -- Theme comes in four variants `default`, `tinted`, `deuteranopia`, and `tritanopia`
-  --       transparent = true, -- Transparent background (as supported by the terminal)
-  --       dim_inactive = false, -- "non-current" windows are dimmed
-  --       styles = {
-  --         -- Style to be applied to different syntax groups
-  --         -- Value is any valid attr-list value for `:help nvim_set_hl`
-  --         comments = { italic = true },
-  --         keywords = { italic = true },
-  --         functions = {},
-  --         variables = {},
-  --       },
-  --
-  --       --- You can override specific color groups to use other groups or a hex color
-  --       --- function will be called with a ColorScheme table
-  --       ---@param colors ColorScheme
-  --       -- on_colors = function(colors) end,
-  --
-  --       --- You can override specific highlights to use other groups or a hex color
-  --       --- function will be called with a Highlights and ColorScheme table
-  --       ---@param highlights Highlights
-  --       ---@param colors ColorScheme
-  --       -- on_highlights = function(highlights, colors) end,
-  --     })
-  --
-  --   end
+  --     vim.g.modus_yellow_comments = 0
+  --     vim.g.modus_green_strings = 0
+  --     vim.g.modus_faint_syntax = 0
+  --     vim.g.modus_cursorline_intense = 1
+  --     vim.g.modus_termtrans_enable = 1
+  --     vim.g.modus_dim_inactive_window = 0
+  --   end,
   -- },
+  {
+    "miikanissi/modus-themes.nvim",
+    priority = 1000,
+    init = function ()
+      require("modus-themes").setup({
+        -- Theme comes in two styles `modus_operandi` and `modus_vivendi`
+        -- `auto` will automatically set style based on background set with vim.o.background
+        style = "auto",
+        variant = "default", -- Theme comes in four variants `default`, `tinted`, `deuteranopia`, and `tritanopia`
+        transparent = true, -- Transparent background (as supported by the terminal)
+        dim_inactive = false, -- "non-current" windows are dimmed
+        styles = {
+          -- Style to be applied to different syntax groups
+          -- Value is any valid attr-list value for `:help nvim_set_hl`
+          comments = { italic = false },
+          keywords = { italic = false },
+          functions = {},
+          variables = {},
+        },
+
+        --- You can override specific color groups to use other groups or a hex color
+        --- function will be called with a ColorScheme table
+        ---@param colors ColorScheme
+        on_colors = function(colors) end,
+
+        --- You can override specific highlights to use other groups or a hex color
+        --- function will be called with a Highlights and ColorScheme table
+        ---@param highlights Highlights
+        ---@param colors ColorScheme
+        on_highlights = function(highlights, colors) end,
+      })
+
+    end
+  },
   {
     "Rawnly/gist.nvim",
     cmd = { "GistCreate", "GistCreateFromFile", "GistsList" },
