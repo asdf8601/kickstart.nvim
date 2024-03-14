@@ -63,9 +63,9 @@ require('lazy').setup({
   {
     'folke/which-key.nvim',
     opts = {},
-    init = function ()
-        vim.o.timeout = true
-        require("which-key").setup({
+    init = function()
+      vim.o.timeout = true
+      require("which-key").setup({
         icons = {
           breadcrumb = ">>",
           separator = ">",
@@ -299,7 +299,25 @@ vim.keymap.set('n', '<leader>fk', ':Telescope keymaps<cr>', { noremap = true, de
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'http', 'json', 'yaml' },
+    ensure_installed = {
+      'c',
+      'cpp',
+      'go',
+      'lua',
+      'python',
+      'rust',
+      'tsx',
+      'javascript',
+      'typescript',
+      'vimdoc',
+      'vim',
+      'bash',
+      'http',
+      'json',
+      'yaml',
+      'markdown',
+      'toml',
+    },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -634,7 +652,7 @@ ls.add_snippets('all', {
 
 
 -- {{ slime
-vim.g.slime_last_channel = {nil}
+vim.g.slime_last_channel = { nil }
 vim.g.slime_cell_delimiter = '\\s*#\\s*%%'
 vim.g.slime_paste_file = os.getenv("HOME") .. "/.slime_paste"
 
@@ -658,7 +676,7 @@ vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', { noremap = true, desc 
 vim.g.slime_get_jobid = function()
   local buffers = vim.api.nvim_list_bufs()
   -- local terminal_buffers = {}
-  local terminal_buffers = {"Select terminal:\nbuffer\tjobid\tname",}
+  local terminal_buffers = { "Select terminal:\nbuffer\tjobid\tname", }
   local name = ""
   local jid = 1
 
@@ -741,7 +759,8 @@ vim.keymap.set('n', '<leader>sh', ":0<cr>O#!/usr/bin/env bash<esc><C-o>", { desc
 
 -- commands
 vim.keymap.set('n', 'sh', ':.!sh ', { noremap = true, desc = 'Fill command to execute sh using current line' })
-vim.keymap.set('n', '<c-s><c-l>', ':!<C-R><C-L>', { noremap = true, desc = 'Fill command to execute sh using current line' })
+vim.keymap.set('n', '<c-s><c-l>', ':!<C-R><C-L>',
+  { noremap = true, desc = 'Fill command to execute sh using current line' })
 vim.keymap.set('n', '<c-s><c-s>', ':.!sh<cr>', { noremap = true, desc = 'Execute sh current line' })
 
 -- Explore
@@ -784,7 +803,7 @@ vim.keymap.set('n', '<leader>cp', ':cprev<cr>', { noremap = true, desc = 'previo
 -- }}
 --
 
-vim.cmd[[
+vim.cmd [[
 augroup Latex
   au!
   au BufWritePost *.tex silent !dex pdflatex % && firefox %:t:r.pdf
@@ -801,9 +820,10 @@ vim.cmd([[autocmd BufRead,BufNewFile *.tfstate,*.tfstate.backup set filetype=jso
 vim.keymap.set("n", "<leader>ti", ":!terraform init<CR>", { noremap = true, desc = "Terraform init" })
 vim.keymap.set("n", "<leader>tv", ":!terraform validate<CR>", { noremap = true, desc = "Terraform validate" })
 vim.keymap.set("n", "<leader>tp", ":!terraform plan<CR>", { noremap = true, desc = "Terraform plan" })
-vim.keymap.set("n", "<leader>taa", ":!terraform apply -auto-approve<CR>", { noremap = true, desc = "Terraform apply auto approve" })
-require('lspconfig').terraformls.setup{}
-require('lspconfig').tflint.setup{}
+vim.keymap.set("n", "<leader>taa", ":!terraform apply -auto-approve<CR>",
+  { noremap = true, desc = "Terraform apply auto approve" })
+require('lspconfig').terraformls.setup {}
+require('lspconfig').tflint.setup {}
 -- }}
 
 
