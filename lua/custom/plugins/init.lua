@@ -49,7 +49,6 @@ return {
         ---@param colors ColorScheme
         on_highlights = function(highlights, colors) end,
       })
-
     end
   },
   {
@@ -585,9 +584,9 @@ return {
     -- Spawning interactive processes
     'tpope/vim-dispatch',
   },
-  -- {
-  --   'tpope/vim-markdown',
-  -- },
+  {
+    'tpope/vim-markdown',
+  },
 
   -- {
   --   NOTE: this was causing lost the startup message
