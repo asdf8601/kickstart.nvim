@@ -835,7 +835,7 @@ require('lspconfig').tflint.setup {}
 -- vim.api.nvim_create_user_command('Gotest', '!go test %', {})
 -- vim.api.nvim_create_user_command('Gobuild', '!go build %', {})
 -- vim.api.nvim_create_user_command('Govet', '!go vet %', {})
-
+--
 -- local golangcmd = function ()
 --   -- find .git directory
 --   local cwd = vim.fn.getcwd()

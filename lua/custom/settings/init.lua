@@ -137,7 +137,10 @@ autocmd({ 'BufWritePost' }, {
 local AutoCommitVimFiles = vim.api.nvim_create_augroup('AutoCommitVimFiles', { clear = true })
 autocmd({'WinClosed', 'VimLeavePre'}, {
   callback = function()
-    vim.cmd("Git commit -a -m 'Auto commit' | Git push")
+    vim.cmd([[
+    silent! Git commit -a -m 'Auto commit'
+    silent! Git push
+    ]])
   end,
   group = AutoCommitVimFiles,
   pattern = '*/.config/nvim/*',
