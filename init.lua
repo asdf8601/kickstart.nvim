@@ -61,7 +61,7 @@ require('lazy').setup({
     'folke/which-key.nvim',
     opts = {},
     init = function()
-      vim.o.timeout = true
+      vim.opt.timeout = true
       require("which-key").setup({
         icons = {
           breadcrumb = ">>",
@@ -127,8 +127,8 @@ require('lazy').setup({
 					functions = {},
 					variables = {},
 					-- Background styles. Can be "dark", "transparent" or "normal"
-					sidebars = "dark", -- style for sidebars, see below
-					floats = "dark", -- style for floating windows
+					sidebars = "transparent", -- style for sidebars, see below
+					floats = "transparent", -- style for floating windows
 				},
 				sidebars = { "qf", "help" }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
 				day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
@@ -154,7 +154,6 @@ require('lazy').setup({
   {
     -- Theme inspired by Atom
     'navarasu/onedark.nvim',
-    enabled = false,
     priority = 1000,
     init = function()
       require('onedark').setup({
@@ -168,7 +167,6 @@ require('lazy').setup({
           background = false,     -- use background color for virtual text
         },
       })
-      -- vim.cmd.colorscheme 'onedark'
     end,
   },
 
@@ -309,41 +307,43 @@ require('lazy').setup({
 -- NOTE: You can change these options as you wish!
 
 -- Set highlight on search
-vim.o.hlsearch = false
-
--- Make line numbers default
+vim.opt.hlsearch = false
+vim.opt.breakindent = true
 vim.wo.number = true
 
+vim.opt.list = true
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+
 -- Enable mouse mode
-vim.o.mouse = 'a'
+vim.opt.mouse = 'a'
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
--- vim.o.clipboard = 'unnamedplus'
+-- vim.opt.clipboard = 'unnamedplus'
 
 -- Enable break indent
-vim.o.breakindent = true
+vim.opt.breakindent = true
 
 -- Save undo history
-vim.o.undofile = true
+vim.opt.undofile = true
 
 -- Case-insensitive searching UNLESS \C or capital in search
-vim.o.ignorecase = true
-vim.o.smartcase = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
 -- Keep signcolumn on by default
 vim.wo.signcolumn = 'yes'
 
 -- Decrease update time
-vim.o.updatetime = 250
-vim.o.timeoutlen = 300
+vim.opt.updatetime = 250
+vim.opt.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect'
+vim.opt.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
-vim.o.termguicolors = true
+vim.opt.termguicolors = true
 
 -- [[ Basic Keymaps ]]
 
@@ -537,45 +537,47 @@ function UseZsh()
 
   if result ~= '' then
     -- Esto elimina los espacios en blanco
-    vim.o.shell = result:match("^%s*(.-)%s*$")
+    vim.opt.shell = result:match("^%s*(.-)%s*$")
   end
 end
 
 UseZsh()
 
-vim.o.t_Co = 256
-vim.o.scrollback = 20000
--- vim.o.guicursor=""
--- vim.o.nohlsearch = true
--- vim.o.hidden = true
--- vim.o.noerrorbells = true
-vim.o.tabstop = 4
-vim.o.softtabstop = 4
-vim.o.shiftwidth = 4
-vim.o.expandtab = true
-vim.o.smartindent = true
--- vim.o.number = true
-vim.o.relativenumber = true
-vim.o.wrap = false
--- vim.o.noswapfile = true
--- vim.o.nobackup = true
-vim.o.undodir = os.getenv("HOME") .. '/.vim/undodir'
-vim.o.undofile = true
-vim.o.incsearch = true
-vim.o.scrolloff = 8
--- vim.o.signcolumn='no'
-vim.o.cmdheight = 1
-vim.o.updatetime = 50
--- vim.o.shortmess = vim.o.shortmess .. 'c'
-vim.o.textwidth = 79
-vim.o.cursorline = true
-vim.o.colorcolumn = "80" -- works! (using integer will fail)
-vim.o.completeopt = 'menuone,noselect'
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+-- vim.o.t_Co = 256
+vim.opt.scrollback = 20000
+-- vim.opt.guicursor=""
+-- vim.opt.nohlsearch = true
+-- vim.opt.hidden = true
+-- vim.opt.noerrorbells = true
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+vim.opt.smartindent = true
+-- vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.wrap = false
+-- vim.opt.noswapfile = true
+-- vim.opt.nobackup = true
+vim.opt.undodir = os.getenv("HOME") .. '/.vim/undodir'
+vim.opt.undofile = true
+vim.opt.incsearch = true
+vim.opt.scrolloff = 8
+-- vim.opt.signcolumn='no'
+vim.opt.cmdheight = 1
+vim.opt.updatetime = 50
+-- vim.opt.shortmess = vim.opt.shortmess .. 'c'
+vim.opt.textwidth = 79
+vim.opt.cursorline = true
+vim.opt.colorcolumn = "80" -- works! (using integer will fail)
+vim.opt.completeopt = 'menuone,noselect'
 vim.g.netrw_hide = 0
 vim.g.netrw_nogx = 1
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 20
-vim.o.laststatus = 2
+vim.opt.laststatus = 2
 -- }}
 
 -- [[ fugitive ]] {{
@@ -588,7 +590,7 @@ vim.keymap.set('v', '<C-G>', ':GBrowse!<cr>', { noremap = true, desc = 'yank git
 -- }}
 
 -- terminal settings {{
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true, desc = "Switch to normal mode" })
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { noremap = true, desc = "Switch to normal mode from terminal" })
 vim.keymap.set('t', '<C-w>h', '<C-\\><C-n><C-w>h', { noremap = true, desc = "Move cursor to the left window" })
 vim.keymap.set('t', '<C-w>j', '<C-\\><C-n><C-w>j', { noremap = true, desc = "Move cursor to the below window" })
 vim.keymap.set('t', '<C-w>k', '<C-\\><C-n><C-w>k', { noremap = true, desc = "Move cursor to the above window" })
