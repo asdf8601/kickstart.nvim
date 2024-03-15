@@ -1,5 +1,3 @@
-local M = {}
-
 function GetVisual(mode)
   local data
   local _, ls, cs = unpack(vim.fn.getpos('v'))
@@ -11,7 +9,6 @@ function GetVisual(mode)
   end
   return table.concat(data, '\\n')
 end
-
 
 vim.g.openurl_command = 'open'
 
@@ -46,4 +43,4 @@ end
 vim.keymap.set('n', 'gx', OpenUrl, { noremap = true, silent = true })
 vim.keymap.set('v', 'gx', OpenUrl, { noremap = true, silent = false })
 
-return M
+return {}

@@ -37,17 +37,6 @@ return {
           functions = {},
           variables = {},
         },
-
-        --- You can override specific color groups to use other groups or a hex color
-        --- function will be called with a ColorScheme table
-        ---@param colors ColorScheme
-        on_colors = function(colors) end,
-
-        --- You can override specific highlights to use other groups or a hex color
-        --- function will be called with a Highlights and ColorScheme table
-        ---@param highlights Highlights
-        ---@param colors ColorScheme
-        on_highlights = function(highlights, colors) end,
       })
     end
   },
@@ -244,6 +233,7 @@ return {
   },
   'tpope/vim-unimpaired',
   'goerz/jupytext.vim',
+
   {
     'ThePrimeagen/harpoon',
     init = function()
@@ -390,8 +380,7 @@ return {
       vim.keymap.set('n', '<leader>tf', vim.cmd.TestFile, { noremap = true, desc = 'Run current file tests' })
       vim.keymap.set('n', '<leader>ts', vim.cmd.TestSuite, { noremap = true, desc = 'Run test suite' })
       vim.keymap.set('n', '<leader>tl', vim.cmd.TestLast, { noremap = true, desc = 'Run last test' })
-      vim.keymap.set('n', '<leader>td', function() require("neotest").run.run({ strategy = "dap" }) end,
-        { noremap = true, desc = 'Run test debug mode' })
+      vim.keymap.set('n', '<leader>td', function() require("neotest").run.run({ strategy = "dap" }) end, { noremap = true, desc = 'Run test debug mode' })
     end
   },
   {
@@ -441,8 +430,7 @@ return {
         },
       })
       local dap = require('dap')
-      vim.keymap.set('n', '<leader>B', function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
-        { noremap = true, desc = 'dap set breakpoint condition' })
+      vim.keymap.set('n', '<leader>B', function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end, { noremap = true, desc = 'dap set breakpoint condition' })
       vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { noremap = true, desc = 'dap toggle breakpoint' })
       vim.keymap.set('n', '<leader>dc', dap.continue, { noremap = true, desc = 'dap continue' })
       vim.keymap.set('n', '<leader>dh', dap.step_out, { noremap = true, desc = 'dap step out ←' })
@@ -537,11 +525,13 @@ return {
           },
         },
       })
+      vim.keymap.set('n', '<leader>t', ':Lspsaga outline<cr>', { desc = "Symbols outline", silent = false })
     end,
     dependencies = {
       'nvim-treesitter/nvim-treesitter', -- optional
     }
   },
+
   {
     'echasnovski/mini.files',
     init = function ()
