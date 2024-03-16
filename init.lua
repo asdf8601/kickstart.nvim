@@ -15,10 +15,13 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
+
   { 'mbbill/undotree', },
+
   {
     'jpalardy/vim-slime',
   },
+
   { 'ThePrimeagen/harpoon', },
 
   'tpope/vim-fugitive',
@@ -39,6 +42,8 @@ require('lazy').setup({
       'folke/neodev.nvim',
     },
   },
+
+    { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
   {
     -- Autocompletion
@@ -71,6 +76,7 @@ require('lazy').setup({
       })
     end,
   },
+
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -151,6 +157,7 @@ require('lazy').setup({
       -- vim.cmd.hi 'Comment gui=none'
     end,
   },
+
   {
     -- Theme inspired by Atom
     'navarasu/onedark.nvim',
