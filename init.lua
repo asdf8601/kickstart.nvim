@@ -218,7 +218,18 @@ require('lazy').setup({
       },
     },
     init = function()
+      local actions = require('telescope.actions')
       require('telescope').setup {
+        pickers = {
+          find_files = {
+            theme = "ivy",
+          },
+          git_branches = {
+            mappings = {
+              i = { ["<cr>"] = actions.git_switch_branch },
+            },
+          },
+        },
         defaults = {
           mappings = {
             i = {
