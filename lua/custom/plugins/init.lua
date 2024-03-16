@@ -7,6 +7,11 @@ local executable = function(x)
 end
 
 return {
+  {
+    "chrisgrieser/nvim-origami",
+    event = "BufReadPost", -- later or on keypress would prevent saving folds
+    opts = true, -- needed even when using default config
+  },
   -- {
   --   'nvim-treesitter/nvim-treesitter-context',
   --   init=function ()
