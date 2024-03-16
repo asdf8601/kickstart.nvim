@@ -25,7 +25,7 @@ return {
         on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
       })
     end
-  }
+  },
   -- {
   --   'ishan9299/modus-theme-vim',
   --   init = function ()
