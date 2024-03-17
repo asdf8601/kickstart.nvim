@@ -255,8 +255,16 @@ return {
     -- better netrw
     'tpope/vim-vinegar',
   },
-  'tpope/vim-unimpaired',
-  'goerz/jupytext.vim',
+  {
+    'tpope/vim-unimpaired',
+  },
+
+  {
+    'goerz/jupytext.vim',
+    init=function ()
+      vim.g.jupytext_fmt = 'py:percent'
+    end
+  },
 
   {
     'ThePrimeagen/harpoon',
