@@ -618,10 +618,11 @@ cmp.setup({
     },
   },
   sources = {
-    { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'copilot' },
+    { name = "codeium" },
     { name = 'path' },
+    { name = 'nvim_lsp' },
     -- { name = 'buffer' },
     -- { name = 'nvim_lsp_signature_help' },
     -- { name = 'neorg' },
