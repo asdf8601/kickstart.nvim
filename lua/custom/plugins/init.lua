@@ -64,8 +64,8 @@ return {
       require("modus-themes").setup({
         -- Theme comes in two styles `modus_operandi` and `modus_vivendi`
         -- `auto` will automatically set style based on background set with vim.o.background
-        style = "auto",
-        variant = "default", -- Theme comes in four variants `default`, `tinted`, `deuteranopia`, and `tritanopia`
+        style = "modus_vivendi",
+        variant = "deuteranopia", -- Theme comes in four variants `default`, `tinted`, `deuteranopia`, and `tritanopia`
         transparent = true, -- Transparent background (as supported by the terminal)
         dim_inactive = false, -- "non-current" windows are dimmed
         styles = {
@@ -76,9 +76,13 @@ return {
           functions = {},
           variables = {},
         },
+        on_colors = function(colors)
+            colors.error = colors.red_faint
+        end,
       })
     end
   },
+
   {
     "Rawnly/gist.nvim",
     cmd = { "GistCreate", "GistCreateFromFile", "GistsList" },
