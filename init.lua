@@ -129,7 +129,12 @@ require('lazy').setup({
     },
   },
 
-    { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  {
+    'folke/todo-comments.nvim',
+    event = 'VimEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = { signs = false }
+  },
 
   {
     -- Autocompletion
@@ -1029,8 +1034,8 @@ local AutoCommitVimFiles = vim.api.nvim_create_augroup('AutoCommitVimFiles', { c
 autocmd({'WinClosed', 'VimLeavePre'}, {
   callback = function()
     vim.cmd([[
-    silent! Git commit -a -m 'Auto commit'
-    silent! Git push
+    silent! !git commit -a -m 'Auto commit'
+    silent! !git push &> /dev/null &
     ]])
   end,
   group = AutoCommitVimFiles,
