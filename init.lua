@@ -244,7 +244,8 @@ require('lazy').setup({
     init = function()
       require('onedark').setup({
         term_colors = true,
-        style = 'darker',
+        style = 'deep',
+        -- toggle_style_list = {'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'}, -- List of styles to toggle between
         toggle_style_key = ',ts', -- keybind to toggle theme style. Leave it nil to disable it, or set it to a string, for example "<leader>ts"
         transparent = true,       -- Show/hide background
         diagnostics = {
