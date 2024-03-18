@@ -65,7 +65,7 @@ return {
         -- Theme comes in two styles `modus_operandi` and `modus_vivendi`
         -- `auto` will automatically set style based on background set with vim.o.background
         style = "modus_vivendi",
-        variant = "tinted", -- Theme comes in four variants `default`, `tinted`, `deuteranopia`, and `tritanopia`
+        variant = "default", -- Theme comes in four variants `default`, `tinted`, `deuteranopia`, and `tritanopia`
         transparent = true, -- Transparent background (as supported by the terminal)
         dim_inactive = false, -- "non-current" windows are dimmed
         styles = {
