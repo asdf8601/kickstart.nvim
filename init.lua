@@ -1048,7 +1048,8 @@ end
 -- [[ colorscheme ]] {{
 -- vim.cmd.colorscheme 'modus_vivendi'
 -- vim.cmd.colorscheme 'modus-vivendi'
-vim.cmd.colorscheme 'tokyonight-night'
+-- vim.cmd.colorscheme 'tokyonight-night'
+vim.cmd.colorscheme 'onedark'
 -- }}
 
 -- vim: ts=2 sts=2 sw=2 et tw=0
