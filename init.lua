@@ -984,7 +984,7 @@ local mmngreco = vim.api.nvim_create_augroup('mmngreco', { clear = true })
 vim.api.nvim_create_autocmd('BufWritePre', { group = mmngreco, pattern = '*', command = '%s/\\s\\+$//e' })
 -- vim.api.nvim_create_autocmd('BufWritePre', { group = mmngreco, pattern = '*.go', command = 'GoFmt' })
 -- vim.api.nvim_create_autocmd('BufEnter', { group = mmngreco, pattern = '*.dbout', command = 'norm zR' })
-vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'markdown', command = 'setl conceallevel=2 spl=en,es | TSDisable highlight' })
+vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'markdown', command = 'setl conceallevel=2 spl=en,es | TSBufDisable highlight' })
 vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'make', command = 'setl noexpandtab shiftwidth=4 softtabstop=0' })
 vim.api.nvim_create_autocmd('TermOpen', { group = mmngreco, pattern = '*', command = 'setl nonumber norelativenumber' })
 vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'fugitive', command = 'setl nonumber norelativenumber' })
@@ -1052,10 +1052,11 @@ end
 
 
 -- [[ colorscheme ]] {{
-vim.cmd.colorscheme 'modus_vivendi'
+-- vim.cmd.colorscheme 'modus_vivendi'
 -- vim.cmd.colorscheme 'modus-vivendi'
 -- vim.cmd.colorscheme 'tokyonight-night'
--- vim.cmd.colorscheme 'onedark'
+-- vim.cmd.colorscheme 'tokyonight-moon'
+vim.cmd.colorscheme 'onedark'
 -- }}
 
 -- vim: ts=2 sts=2 sw=2 et tw=0
