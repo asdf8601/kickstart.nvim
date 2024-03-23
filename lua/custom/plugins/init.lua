@@ -366,6 +366,7 @@ return {
       },
     },
   },
+
   {
     "NTBBloodbath/rest.nvim",
     enable = executable "jq",
@@ -377,7 +378,7 @@ return {
         config = true,
       },
     },
-    init = function()
+    config = function()
       require("rest-nvim").setup({})
       vim.api.nvim_set_keymap("n", "<leader>rr", "<Plug>RestNvim", { noremap = true, silent = true })
     end,
