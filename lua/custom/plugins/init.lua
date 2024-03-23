@@ -370,7 +370,13 @@ return {
     "NTBBloodbath/rest.nvim",
     enable = executable "jq",
     ft = { "http" },
-    dependencies = { "luarocks.nvim" },
+    dependencies = {
+      {
+        "vhyrro/luarocks.nvim",
+        priority = 1000,
+        config = true,
+      },
+    },
     init = function()
       require("rest-nvim").setup({})
       vim.api.nvim_set_keymap("n", "<leader>rr", "<Plug>RestNvim", { noremap = true, silent = true })
