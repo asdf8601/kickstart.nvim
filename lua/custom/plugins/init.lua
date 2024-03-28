@@ -381,8 +381,34 @@ return {
       },
     },
     config = function()
-      require("rest-nvim").setup()
-      vim.api.nvim_set_keymap("n", "<leader>rr", "<Plug>RestNvim", { noremap = true, silent = true })
+      require("rest-nvim").setup({
+        result = {
+          split = {
+            horizontal = true,
+          }
+        },
+        formatters = {
+          json = "jq",
+          html = function(body)
+            if vim.fn.executable("tidy") == 0 then
+              return body, { found = false, name = "tidy" }
+            end
+            local fmt_body = vim.fn.system({
+              "tidy",
+              "-i",
+              "-q",
+              "--tidy-mark",      "no",
+              "--show-body-only", "auto",
+              "--show-errors",    "0",
+              "--show-warnings",  "0",
+              "-",
+            }, body):gsub("\n$", "")
+
+            return fmt_body, { found = true, name = "tidy" }
+          end,
+        },
+      })
+      vim.api.nvim_set_keymap("n", "<leader>rr", "<cmd>Rest run<cr><cr>", { noremap = true, silent = true, desc = "Rest run http request" })
     end,
   },
 
