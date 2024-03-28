@@ -604,9 +604,6 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnos
 -- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
--- [[ Configure LSP ]]
---  This function gets run when an LSP connects to a particular buffer.
-
 
 -- [settings] {{
 function UseZsh()
@@ -940,6 +937,9 @@ vim.keymap.set('n', '<leader>cO', 'o%%<esc>:norm gcc<cr>k', { noremap = true, de
 vim.keymap.set('n', '<leader>c-', 'O<esc>77i-<esc>:norm gcc<cr>j', { noremap = true, desc = 'Insert a horizontal line of dashes above the current line' })
 vim.keymap.set('n', 'vic', 'V?%%<cr>o/%%<cr>koj', { noremap = true, desc = 'Visually select a cell and insert a comment before and after it' })
 
+-- file operations
+vim.keymap.set("n", "<leader>cd", ":lcd %:p:h<cr>", { noremap = true, silent = true, desc = "Change to the directory of the current file" })
+
 -- markdown {{
 vim.g.markdown_fenced_languages = { 'html', 'python', 'bash=sh', 'sql', 'mermaid' }
 vim.g.markdown_minlines = 50
@@ -995,6 +995,7 @@ autocmd({ 'FileType' }, {
   pattern = "dbui",
   command = "nmap <buffer> <leader>w <Plug>(DBUI_SaveQuery)",
 })
+vim.keymap.set('n', '<leader>sq', '<Plug>(DBUI_SaveQuery)', { noremap = true })
 
 autocmd({ 'FileType' }, {
   group = Mgreco,
@@ -1002,7 +1003,6 @@ autocmd({ 'FileType' }, {
   command = "normal zR",
 })
 
-vim.keymap.set('n', '<leader>sq', '<Plug>(DBUI_SaveQuery)', { noremap = true })
 
 autocmd({ 'FileType' }, {
   group = Mgreco,
