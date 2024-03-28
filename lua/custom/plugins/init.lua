@@ -2,11 +2,13 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
+---@diagnostic disable: undefined-field
 local executable = function(x)
     return vim.fn.executable(x) == 1
 end
 
 return {
+
 
   {
     'MeanderingProgrammer/markdown.nvim',
@@ -379,7 +381,7 @@ return {
       },
     },
     config = function()
-      require("rest-nvim").setup({})
+      require("rest-nvim").setup()
       vim.api.nvim_set_keymap("n", "<leader>rr", "<Plug>RestNvim", { noremap = true, silent = true })
     end,
   },
@@ -387,6 +389,7 @@ return {
   {
     "nvim-neotest/neotest",
     dependencies = {
+      "nvim-neotest/nvim-nio",
       "nvim-neotest/neotest-vim-test",
       "nvim-neotest/neotest-python",
       "nvim-neotest/neotest-plenary",
