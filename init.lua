@@ -16,10 +16,11 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
 
-    {
+  {
     'echasnovski/mini.nvim',
     init = function()
       require('mini.ai').setup({ n_lines = 500 })
+      -- require('mini.statusline').setup()
       require('mini.operators').setup()
       require('mini.surround').setup()
       require('mini.map').setup(
@@ -496,14 +497,14 @@ require('lazy').setup({
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
-    opts = {
-      options = {
-        icons_enabled = false,
-        -- theme = 'tokyonight',
-        component_separators = '|',
-        section_separators = '',
-      },
-    },
+    -- opts = {
+    --   options = {
+    --     icons_enabled = false,
+    --     component_separators = '|',
+    --     section_separators = '',
+    --   },
+    -- },
+    opts = {},
   },
 
   {
