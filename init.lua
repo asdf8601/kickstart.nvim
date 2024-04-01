@@ -16,6 +16,70 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
 
+    {
+    'echasnovski/mini.nvim',
+    init = function()
+      require('mini.ai').setup({ n_lines = 500 })
+      require('mini.operators').setup()
+      require('mini.surround').setup()
+      require('mini.map').setup(
+        {
+          integrations = nil,
+          symbols = {
+            encode = require('mini.map').gen_encode_symbols.dot('3x2'),
+            scroll_line = '█',
+            scroll_view = '┃',
+          },
+          window = {
+            focusable = false,
+            side = 'right',
+            show_integration_count = true,
+            width = 12,
+            winblend = 25,
+            zindex = 10,
+          },
+        }
+      )
+      require('mini.files').setup({
+        options = {
+          permanent_delete = false,
+          use_as_default_explorer = false,
+        },
+        mappings = {
+            close       = 'q',
+            go_in       = 'l',
+            go_in_plus  = 'L',
+            go_out      = 'h',
+            go_out_plus = 'H',
+            reset       = '<C-r>',
+            reveal_cwd  = '@',
+            show_help   = 'g?',
+            synchronize = '=',
+            trim_left   = '<',
+            trim_right  = '>',
+          },
+        windows = {
+          max_number = math.huge,
+          preview = false,
+          width_focus = 50,
+          width_nofocus = 15,
+          width_preview = 25,
+        },
+
+      })
+      local statusline = require 'mini.statusline'
+      statusline.setup { use_icons = vim.g.have_nerd_font }
+      ---@diagnostic disable-next-line: duplicate-set-field
+      statusline.section_location = function()
+        return '%2l:%-2v'
+      end
+
+      vim.keymap.set("n", "<leader>mf", MiniFiles.open, {desc = "Open file explorer"})
+      vim.keymap.set("n", "<leader>mm", MiniMap.toggle, {desc = "Toggle Mini Map"})
+
+    end,
+  },
+
   { 'mbbill/undotree', },
 
   {
@@ -107,7 +171,23 @@ require('lazy').setup({
     end
   },
 
-  { 'ThePrimeagen/harpoon', },
+  {
+    'ThePrimeagen/harpoon',
+    init = function()
+      vim.keymap.set('n', '<C-s><C-h>', ':lua SendToHarpoon(1, 0)<CR>', { noremap = true, desc = "Send to Harpoon (normal mode)" })
+      vim.keymap.set('v', '<C-s><C-h>', ':lua SendToHarpoon(1, 1)<CR>', { noremap = true, desc = "Send to Harpoon (visual mode)" })
+      vim.keymap.set('n', '<C-h>', ':lua require("harpoon.ui").nav_file(1)<cr>', { noremap = true, desc = 'Harpoon file 1' })
+      vim.keymap.set('n', '<C-j>', ':lua require("harpoon.ui").nav_file(2)<cr>', { noremap = true, desc = 'Harpoon file 2' })
+      vim.keymap.set('n', '<C-k>', ':lua require("harpoon.ui").nav_file(3)<cr>', { noremap = true, desc = 'Harpoon file 3' })
+      vim.keymap.set('n', '<C-l>', ':lua require("harpoon.ui").nav_file(4)<cr>', { noremap = true, desc = 'Harpoon file 4' })
+      vim.keymap.set('n', '<C-h><C-h>', ':lua require("harpoon.term").gotoTerminal(1)<cr>i', { noremap = true, desc = "Harpoon Terminal 1" })
+      vim.keymap.set('n', '<C-j><C-j>', ':lua require("harpoon.term").gotoTerminal(2)<cr>i', { noremap = true, desc = "Harpoon Terminal 2" })
+      vim.keymap.set('n', '<C-k><C-k>', ':lua require("harpoon.term").gotoTerminal(3)<cr>i', { noremap = true, desc = "Harpoon Terminal 3" })
+      vim.keymap.set('n', '<C-l><C-l>', ':lua require("harpoon.term").gotoTerminal(4)<cr>i', { noremap = true, desc = "Harpoon Terminal 4" })
+      vim.keymap.set('n', '<leader>hh', ':lua require("harpoon.mark").add_file()<CR>', { desc = "Add file to Harpoon marks" })
+      vim.keymap.set('n', '<leader>hm', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true, desc = "Harpoon's quick menu" })
+    end,
+  },
 
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
@@ -244,9 +324,16 @@ require('lazy').setup({
     -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = {
-      'saadparwaiz1/cmp_luasnip',
       'L3MON4D3/LuaSnip',
+      'hrsh7th/cmp-cmdline',
       'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-path',
+      'saadparwaiz1/cmp_luasnip',
+      {
+        "zbirenbaum/copilot-cmp",
+        dependencies = { {"zbirenbaum/copilot.lua", opts = {}} },
+        opts = {},
+      },
       -- 'rafamadriz/friendly-snippets',
     },
     config = function()
@@ -315,7 +402,21 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
       on_attach = function(bufnr)
+        local gs = package.loaded.gitsigns
         vim.keymap.set('n', '<leader>hp', require('gitsigns').preview_hunk, { buffer = bufnr, desc = 'Preview git hunk' })
+        vim.keymap.set('n', '<leader>hs', gs.stage_hunk, {desc = 'Stage git hunk'})
+        vim.keymap.set('n', '<leader>hr', gs.reset_hunk, {desc = 'Reset git hunk'})
+        vim.keymap.set('v', '<leader>hs', function() gs.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end, {desc = 'Stage git hunk in visual mode'})
+        vim.keymap.set('v', '<leader>hr', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end, {desc = 'Reset git hunk in visual mode'})
+        vim.keymap.set('n', '<leader>hS', gs.stage_buffer, {desc = 'Stage buffer'})
+        vim.keymap.set('n', '<leader>hu', gs.undo_stage_hunk, {desc = 'Undo stage git hunk'})
+        vim.keymap.set('n', '<leader>hR', gs.reset_buffer, {desc = 'Reset buffer'})
+        vim.keymap.set('n', '<leader>hp', gs.preview_hunk, {desc = 'Preview git hunk'})
+        vim.keymap.set('n', '<leader>hb', function() gs.blame_line{full=true} end, {desc = 'Blame line full'} )
+        vim.keymap.set('n', '<leader>tb', gs.toggle_current_line_blame, {desc = 'Toggle current line blame'})
+        vim.keymap.set('n', '<leader>hd', gs.diffthis, {desc = 'Diff this'})
+        vim.keymap.set('n', '<leader>hD', function() gs.diffthis('~') end, {desc = 'Diff this with tilde'})
+        vim.keymap.set('n', '<leader>td', gs.toggle_deleted, {desc = 'Toggle deleted'})
 
         -- don't override the built-in and fugitive keymaps
         local gs = package.loaded.gitsigns
@@ -939,6 +1040,7 @@ vim.keymap.set('n', 'vic', 'V?%%<cr>o/%%<cr>koj', { noremap = true, desc = 'Visu
 
 -- file operations
 vim.keymap.set("n", "<leader>cd", ":lcd %:p:h<cr>", { noremap = true, silent = true, desc = "Change to the directory of the current file" })
+
 
 -- markdown {{
 vim.g.markdown_fenced_languages = { 'html', 'python', 'bash=sh', 'sql', 'mermaid' }

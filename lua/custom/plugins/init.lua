@@ -9,7 +9,6 @@ end
 
 return {
 
-
   {
     'MeanderingProgrammer/markdown.nvim',
     name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
@@ -33,41 +32,23 @@ return {
   },
 
   {
+    -- foldings
     "chrisgrieser/nvim-origami",
     event = "BufReadPost", -- later or on keypress would prevent saving folds
     opts = true, -- needed even when using default config
   },
 
-  -- {
-  --   'nvim-treesitter/nvim-treesitter-context',
-  --   init=function ()
-  --     require('treesitter-context').setup({
-  --       enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-  --       max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
-  --       min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
-  --       line_numbers = true,
-  --       multiline_threshold = 20, -- Maximum number of lines to show for a single context
-  --       trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-  --       mode = 'cursor',  -- Line used to calculate context. Choices: 'cursor', 'topline'
-  --       -- Separator between context and content. Should be a single character string, like '-'.
-  --       -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
-  --       separator = nil,
-  --       zindex = 20, -- The Z-index of the context window
-  --       on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
-  --     })
-  --   end
-  -- },
-  -- {
-  --   'ishan9299/modus-theme-vim',
-  --   init = function ()
-  --     vim.g.modus_yellow_comments = 0
-  --     vim.g.modus_green_strings = 0
-  --     vim.g.modus_faint_syntax = 0
-  --     vim.g.modus_cursorline_intense = 1
-  --     vim.g.modus_termtrans_enable = 1
-  --     vim.g.modus_dim_inactive_window = 0
-  --   end,
-  -- },
+  {
+    'ishan9299/modus-theme-vim',
+    init = function ()
+      vim.g.modus_yellow_comments = 0
+      vim.g.modus_green_strings = 0
+      vim.g.modus_faint_syntax = 0
+      vim.g.modus_cursorline_intense = 1
+      vim.g.modus_termtrans_enable = 1
+      vim.g.modus_dim_inactive_window = 0
+    end,
+  },
 
   {
     "miikanissi/modus-themes.nvim",
@@ -121,6 +102,7 @@ return {
 
     end
   },
+
   {
     "robitx/gp.nvim",
     init = function()
@@ -128,46 +110,27 @@ return {
       -- https://github.com/Robitx/gp.nvim?tab=readme-ov-file#4-configuration
     end,
   },
-  {
-    'echasnovski/mini.map',
-    version = false,
-    init = function()
-      require('mini.map').setup(
-        {
-          integrations = nil,
-          symbols = {
-            encode = require('mini.map').gen_encode_symbols.dot('3x2'),
-            scroll_line = '█',
-            scroll_view = '┃',
-          },
-          window = {
-            focusable = false,
-            side = 'right',
-            show_integration_count = true,
-            width = 12,
-            winblend = 25,
-            zindex = 10,
-          },
-        }
-      )
-    end,
-  },
+
   {
     "lunarVim/bigfile.nvim",
     opts = {},
   },
+
   {
     "windwp/nvim-ts-autotag",
     init = function()
       require('nvim-ts-autotag').setup()
     end
   },
+
   {
     "wuelnerdotexe/vim-astro",
   },
+
   {
     "virchau13/tree-sitter-astro",
   },
+
   {
     "folke/zen-mode.nvim",
     opts = {
@@ -198,18 +161,21 @@ return {
           color_9 = { "#7d5c34", "smart" },           -- Fallow brown
         }
       })
-      vim.api.nvim_set_keymap("v", "<leader>h1", ":<c-u>HSHighlight 1<CR>", { noremap = true, silent = true })
-      vim.api.nvim_set_keymap("v", "<leader>h2", ":<c-u>HSHighlight 2<CR>", { noremap = true, silent = true })
-      vim.api.nvim_set_keymap("v", "<leader>h3", ":<c-u>HSHighlight 3<CR>", { noremap = true, silent = true })
-      vim.api.nvim_set_keymap("v", "<leader>h4", ":<c-u>HSHighlight 4<CR>", { noremap = true, silent = true })
-      vim.api.nvim_set_keymap("v", "<leader>h0", ":<c-u>HSRmHighlight<CR>", { noremap = true, silent = true })
+
+      vim.api.nvim_set_keymap("v", "<leader>h1", ":<c-u>HSHighlight 1<CR>", { noremap = true, silent = true, desc = "Highlight text with color 1"})
+      vim.api.nvim_set_keymap("v", "<leader>h2", ":<c-u>HSHighlight 2<CR>", { noremap = true, silent = true, desc = "Highlight text with color 2"})
+      vim.api.nvim_set_keymap("v", "<leader>h3", ":<c-u>HSHighlight 3<CR>", { noremap = true, silent = true, desc = "Highlight text with color 3"})
+      vim.api.nvim_set_keymap("v", "<leader>h4", ":<c-u>HSHighlight 4<CR>", { noremap = true, silent = true, desc = "Highlight text with color 4"})
+      vim.api.nvim_set_keymap("v", "<leader>h0", ":<c-u>HSRmHighlight<CR>", { noremap = true, silent = true, desc = "Remove text highlight"})
+
     end
   },
+
   {
     -- scala lsp
     'scalameta/nvim-metals',
     dependencies = { "nvim-lua/plenary.nvim" },
-    init = function()
+    config = function()
       local metals_config = require("metals").bare_config()
 
       -- Example of settings
@@ -272,6 +238,7 @@ return {
     -- unix commands in vim
     'tpope/vim-eunuch',
   },
+
   {
     -- database support in vim
     'tpope/vim-dadbod',
@@ -279,15 +246,14 @@ return {
       'kristijanhusak/vim-dadbod-ui',
     }
   },
-  'tpope/vim-fugitive',   -- git wrapper
   'tpope/vim-obsession',
   'tpope/vim-repeat',     -- better repeat
-  'tpope/vim-rhubarb',    -- github extension for fugitive
   'tpope/vim-speeddating',
   {
     -- better netrw
     'tpope/vim-vinegar',
   },
+
   {
     'tpope/vim-unimpaired',
   },
@@ -299,23 +265,6 @@ return {
     end
   },
 
-  {
-    'ThePrimeagen/harpoon',
-    init = function()
-      vim.keymap.set('n', '<C-s><C-h>', ':lua SendToHarpoon(1, 0)<CR>', { noremap = true, desc = "Send to Harpoon (normal mode)" })
-      vim.keymap.set('v', '<C-s><C-h>', ':lua SendToHarpoon(1, 1)<CR>', { noremap = true, desc = "Send to Harpoon (visual mode)" })
-      vim.keymap.set('n', '<C-h>', ':lua require("harpoon.ui").nav_file(1)<cr>', { noremap = true, desc = 'Harpoon file 1' })
-      vim.keymap.set('n', '<C-j>', ':lua require("harpoon.ui").nav_file(2)<cr>', { noremap = true, desc = 'Harpoon file 2' })
-      vim.keymap.set('n', '<C-k>', ':lua require("harpoon.ui").nav_file(3)<cr>', { noremap = true, desc = 'Harpoon file 3' })
-      vim.keymap.set('n', '<C-l>', ':lua require("harpoon.ui").nav_file(4)<cr>', { noremap = true, desc = 'Harpoon file 4' })
-      vim.keymap.set('n', '<C-h><C-h>', ':lua require("harpoon.term").gotoTerminal(1)<cr>i', { noremap = true, desc = "Harpoon Terminal 1" })
-      vim.keymap.set('n', '<C-j><C-j>', ':lua require("harpoon.term").gotoTerminal(2)<cr>i', { noremap = true, desc = "Harpoon Terminal 2" })
-      vim.keymap.set('n', '<C-k><C-k>', ':lua require("harpoon.term").gotoTerminal(3)<cr>i', { noremap = true, desc = "Harpoon Terminal 3" })
-      vim.keymap.set('n', '<C-l><C-l>', ':lua require("harpoon.term").gotoTerminal(4)<cr>i', { noremap = true, desc = "Harpoon Terminal 4" })
-      vim.keymap.set('n', '<leader>hh', ':lua require("harpoon.mark").add_file()<CR>', { desc = "Add file to Harpoon marks" })
-      vim.keymap.set('n', '<leader>hm', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true, desc = "Harpoon's quick menu" })
-    end,
-  },
   'szw/vim-maximizer',
   'RRethy/vim-illuminate',
   {
@@ -345,29 +294,30 @@ return {
       end, { range = true })
     end
   },
-  {
-    'hrsh7th/nvim-cmp',
-    dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
-      'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-cmdline',
-      {
-        "zbirenbaum/copilot-cmp",
-        dependencies = { "copilot.lua" },
-        init = function()
-          require("copilot_cmp").setup()
-        end,
-      },
-      {
-        "zbirenbaum/copilot.lua",
-        init = function()
-          require('copilot').setup()
-        end,
-      },
-    },
-  },
+
+  -- {
+  --   'hrsh7th/nvim-cmp',
+  --   dependencies = {
+  --     'hrsh7th/cmp-nvim-lsp',
+  --     'L3MON4D3/LuaSnip',
+  --     'saadparwaiz1/cmp_luasnip',
+  --     'hrsh7th/cmp-path',
+  --     'hrsh7th/cmp-cmdline',
+  --     {
+  --       "zbirenbaum/copilot-cmp",
+  --       dependencies = { "copilot.lua" },
+  --       init = function()
+  --         require("copilot_cmp").setup()
+  --       end,
+  --     },
+  --     {
+  --       "zbirenbaum/copilot.lua",
+  --       init = function()
+  --         require('copilot').setup()
+  --       end,
+  --     },
+  --   },
+  -- },
 
   {
     "NTBBloodbath/rest.nvim",
@@ -443,20 +393,25 @@ return {
       vim.keymap.set('n', '<leader>td', function() require("neotest").run.run({ strategy = "dap" }) end, { noremap = true, desc = 'Run test debug mode' })
     end
   },
+
   {
     "klen/nvim-test",
     init = function()
       require('nvim-test').setup({})
     end
   },
+
   { 'mracos/mermaid.vim' },
+
   { 'mzlogin/vim-markdown-toc', },
+
   {
     "iamcco/markdown-preview.nvim",
     build = "cd app && npm install",
     init = function() vim.g.mkdp_filetypes = { "markdown" } end,
     ft = { "markdown" },
   },
+
   {
     "rcarriga/nvim-dap-ui",
     dependencies = {
@@ -506,6 +461,7 @@ return {
       vim.keymap.set('n', '<leader>dx', dapui.close, { noremap = true, desc = 'toggle dap ui' })
     end,
   },
+
   {
     'nvimdev/lspsaga.nvim',
     init = function()
@@ -593,47 +549,16 @@ return {
   },
 
   {
-    'echasnovski/mini.files',
-    init = function ()
-      require('mini.files').setup({
-        options = {
-          permanent_delete = false,
-          use_as_default_explorer = false,
-        },
-        mappings = {
-            close       = 'q',
-            go_in       = 'l',
-            go_in_plus  = 'L',
-            go_out      = 'h',
-            go_out_plus = 'H',
-            reset       = '<C-r>',
-            reveal_cwd  = '@',
-            show_help   = 'g?',
-            synchronize = '=',
-            trim_left   = '<',
-            trim_right  = '>',
-          },
-        windows = {
-          max_number = math.huge,
-          preview = false,
-          width_focus = 50,
-          width_nofocus = 15,
-          width_preview = 25,
-        },
-
-      })
-    end,
-    version = '*',
-  },
-  {
     -- work with multiple cases of a word
     -- :%Subvert/facilit{y,ies}/building{,s}/g
     'tpope/vim-abolish',
   },
+
   {
     -- Spawning interactive processes
     'tpope/vim-dispatch',
   },
+
   {
     'tpope/vim-markdown',
   },
@@ -654,122 +579,112 @@ return {
     build = ':lua require("go.install").update_all_sync()'
   },
 
+  -- utils
   -- {
-  --     NOTE: this was causing lost the startup message
-  --     "kylechui/nvim-surround",
-  --     version = "*", -- Use for stability; omit to use `main` branch for the latest features
-  --     event = "VeryLazy",
+  --     don't know why but this plugin removes the startup message of neovim
+  --     "folke/todo-comments.nvim",
+  --     dependencies = { "nvim-lua/plenary.nvim" },
+  --     opts = {}
+  -- },
+  -- 'mhartington/formatter.nvim',
+  -- chatgpt
+  -- {
+  --     "jackMort/ChatGPT.nvim",
+  --     dependencies = {
+  --         "MunifTanjim/nui.nvim",
+  --         "nvim-lua/plenary.nvim",
+  --         "nvim-telescope/telescope.nvim",
+  --     },
   --     init = function()
-  --         require("nvim-surround").setup({
-  --             -- Configuration here, or leave empty to use defaults
-  --             keymaps = {
-  --                 insert = "<C-g>s",
-  --                 insert_line = "<C-g>S",
-  --                 normal = "ys",
-  --                 normal_cur = "yss",
-  --                 normal_line = "yS",
-  --                 normal_cur_line = "ySS",
-  --                 visual = "S",
-  --                 visual_line = "gS",
-  --                 delete = "ds",
-  --                 change = "cs",
+  --         require("chatgpt").setup({
+  --             openai_params = {
+  --                 model = "gpt-4",
+  --                 frequency_penalty = 0,
+  --                 presence_penalty = 0,
+  --                 max_tokens = 300,
+  --                 temperature = 0,
+  --                 top_p = 1,
+  --                 n = 1,
   --             },
+  --             -- openai_edit_params = {
+  --             --   model = "code-davinci-edit-001",
+  --             --   temperature = 0,
+  --             --   top_p = 1,
+  --             --   n = 1,
+  --             -- },
+  --             chat = {
+  --                 keymaps = {
+  --                     close = { "<C-c>", },
+  --                     yank_last = "<C-y>",
+  --                     scroll_up = "<C-u>",
+  --                     scroll_down = "<C-d>",
+  --                     toggle_settings = "<C-o>",
+  --                     new_session = "<C-n>",
+  --                     cycle_windows = "<Tab>",
+  --                 },
+  --             },
+  --             popup_input = {
+  --                 submit = "<C-s>",
+  --             },
+  --         })
+  --     end,
+  -- },
+  -- {
+  --     "dpayne/CodeGPT.nvim",
+  --     dependencies = {
+  --         "MunifTanjim/nui.nvim",
+  --         "nvim-lua/plenary.nvim",
+  --     },
+  --     init = function()
+  --         require("codegpt.config")
+  --     end
+  -- },
+  -- {
+  --     "nvim-treesitter/nvim-treesitter-context",
+  -- },
+  -- {
+  --   "SmiteshP/nvim-navic",
+  --   init = function()
+  --     local navic = require("nvim-navic")
+  --
+  --     require("lspconfig").pyright.setup {
+  --       on_attach = function(client, bufnr)
+  --         navic.attach(client, bufnr)
+  --       end
+  --     }
+  --   end
+  -- },
+  -- 'tyru/open-browser.vim',
+  -- { 'github/copilot.vim' },
+  -- 'nvim-telescope/telescope-symbols.nvim',
+  -- {
+  --     'simrat39/symbols-outline.nvim',
+  --     init = function()
+  --         require("symbols-outline").setup({
+  --             show_symbol_details = true,
   --         })
   --     end
   -- },
-
-
-    -- utils
-    -- {
-    --     don't know why but this plugin removes the startup message of neovim
-    --     "folke/todo-comments.nvim",
-    --     dependencies = { "nvim-lua/plenary.nvim" },
-    --     opts = {}
-    -- },
-    -- 'mhartington/formatter.nvim',
-    -- chatgpt
-    -- {
-    --     "jackMort/ChatGPT.nvim",
-    --     dependencies = {
-    --         "MunifTanjim/nui.nvim",
-    --         "nvim-lua/plenary.nvim",
-    --         "nvim-telescope/telescope.nvim",
-    --     },
-    --     init = function()
-    --         require("chatgpt").setup({
-    --             openai_params = {
-    --                 model = "gpt-4",
-    --                 frequency_penalty = 0,
-    --                 presence_penalty = 0,
-    --                 max_tokens = 300,
-    --                 temperature = 0,
-    --                 top_p = 1,
-    --                 n = 1,
-    --             },
-    --             -- openai_edit_params = {
-    --             --   model = "code-davinci-edit-001",
-    --             --   temperature = 0,
-    --             --   top_p = 1,
-    --             --   n = 1,
-    --             -- },
-    --             chat = {
-    --                 keymaps = {
-    --                     close = { "<C-c>", },
-    --                     yank_last = "<C-y>",
-    --                     scroll_up = "<C-u>",
-    --                     scroll_down = "<C-d>",
-    --                     toggle_settings = "<C-o>",
-    --                     new_session = "<C-n>",
-    --                     cycle_windows = "<Tab>",
-    --                 },
-    --             },
-    --             popup_input = {
-    --                 submit = "<C-s>",
-    --             },
-    --         })
-    --     end,
-    -- },
-    -- {
-    --     "dpayne/CodeGPT.nvim",
-    --     dependencies = {
-    --         "MunifTanjim/nui.nvim",
-    --         "nvim-lua/plenary.nvim",
-    --     },
-    --     init = function()
-    --         require("codegpt.config")
-    --     end
-    -- },
-    -- {
-    --     "nvim-treesitter/nvim-treesitter-context",
-    -- },
-    -- {
-    --   "SmiteshP/nvim-navic",
-    --   init = function()
-    --     local navic = require("nvim-navic")
-    --
-    --     require("lspconfig").pyright.setup {
-    --       on_attach = function(client, bufnr)
-    --         navic.attach(client, bufnr)
-    --       end
-    --     }
-    --   end
-    -- },
-    -- 'tyru/open-browser.vim',
-    -- { 'github/copilot.vim' },
-    -- 'nvim-telescope/telescope-symbols.nvim',
-    -- {
-    --     'simrat39/symbols-outline.nvim',
-    --     init = function()
-    --         require("symbols-outline").setup({
-    --             show_symbol_details = true,
-    --         })
-    --     end
-    -- },
-    -- {
-    --     "ludovicchabant/vim-gutentags",
-    -- },
-    -- 'sbulav/nredir.nvim',
-    -- 'tpope/vim-surround',
+  -- 'sbulav/nredir.nvim',
+  -- {
+  --   'nvim-treesitter/nvim-treesitter-context',
+  --   init=function ()
+  --     require('treesitter-context').setup({
+  --       enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+  --       max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+  --       min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+  --       line_numbers = true,
+  --       multiline_threshold = 20, -- Maximum number of lines to show for a single context
+  --       trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+  --       mode = 'cursor',  -- Line used to calculate context. Choices: 'cursor', 'topline'
+  --       -- Separator between context and content. Should be a single character string, like '-'.
+  --       -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+  --       separator = nil,
+  --       zindex = 20, -- The Z-index of the context window
+  --       on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+  --     })
+  --   end
+  -- },
 
 }
 -- vim: ts=2 sts=2 sw=2 et tw=0
