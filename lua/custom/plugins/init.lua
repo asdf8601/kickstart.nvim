@@ -160,6 +160,7 @@ return {
       -- refer to the configuration section below
     },
   },
+
   {
     -- Highlight text
     'Pocco81/HighStr.nvim',
@@ -288,6 +289,7 @@ return {
 
   'szw/vim-maximizer',
   'RRethy/vim-illuminate',
+
   {
     'stevearc/conform.nvim',
     opts = {},
@@ -315,30 +317,6 @@ return {
       end, { range = true })
     end
   },
-
-  -- {
-  --   'hrsh7th/nvim-cmp',
-  --   dependencies = {
-  --     'hrsh7th/cmp-nvim-lsp',
-  --     'L3MON4D3/LuaSnip',
-  --     'saadparwaiz1/cmp_luasnip',
-  --     'hrsh7th/cmp-path',
-  --     'hrsh7th/cmp-cmdline',
-  --     {
-  --       "zbirenbaum/copilot-cmp",
-  --       dependencies = { "copilot.lua" },
-  --       init = function()
-  --         require("copilot_cmp").setup()
-  --       end,
-  --     },
-  --     {
-  --       "zbirenbaum/copilot.lua",
-  --       init = function()
-  --         require('copilot').setup()
-  --       end,
-  --     },
-  --   },
-  -- },
 
   {
     "NTBBloodbath/rest.nvim",
@@ -635,120 +613,11 @@ return {
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
     },
-    init = function()
-      require("go").setup()
-    end,
+    opts = {},
     event = { "CmdlineEnter" },
     ft = { "go", 'gomod' },
     build = ':lua require("go.install").update_all_sync()'
   },
-
-  -- utils
-  -- {
-  --     don't know why but this plugin removes the startup message of neovim
-  --     "folke/todo-comments.nvim",
-  --     dependencies = { "nvim-lua/plenary.nvim" },
-  --     opts = {}
-  -- },
-  -- 'mhartington/formatter.nvim',
-  -- chatgpt
-  -- {
-  --     "jackMort/ChatGPT.nvim",
-  --     dependencies = {
-  --         "MunifTanjim/nui.nvim",
-  --         "nvim-lua/plenary.nvim",
-  --         "nvim-telescope/telescope.nvim",
-  --     },
-  --     init = function()
-  --         require("chatgpt").setup({
-  --             openai_params = {
-  --                 model = "gpt-4",
-  --                 frequency_penalty = 0,
-  --                 presence_penalty = 0,
-  --                 max_tokens = 300,
-  --                 temperature = 0,
-  --                 top_p = 1,
-  --                 n = 1,
-  --             },
-  --             -- openai_edit_params = {
-  --             --   model = "code-davinci-edit-001",
-  --             --   temperature = 0,
-  --             --   top_p = 1,
-  --             --   n = 1,
-  --             -- },
-  --             chat = {
-  --                 keymaps = {
-  --                     close = { "<C-c>", },
-  --                     yank_last = "<C-y>",
-  --                     scroll_up = "<C-u>",
-  --                     scroll_down = "<C-d>",
-  --                     toggle_settings = "<C-o>",
-  --                     new_session = "<C-n>",
-  --                     cycle_windows = "<Tab>",
-  --                 },
-  --             },
-  --             popup_input = {
-  --                 submit = "<C-s>",
-  --             },
-  --         })
-  --     end,
-  -- },
-  -- {
-  --     "dpayne/CodeGPT.nvim",
-  --     dependencies = {
-  --         "MunifTanjim/nui.nvim",
-  --         "nvim-lua/plenary.nvim",
-  --     },
-  --     init = function()
-  --         require("codegpt.config")
-  --     end
-  -- },
-  -- {
-  --     "nvim-treesitter/nvim-treesitter-context",
-  -- },
-  -- {
-  --   "SmiteshP/nvim-navic",
-  --   init = function()
-  --     local navic = require("nvim-navic")
-  --
-  --     require("lspconfig").pyright.setup {
-  --       on_attach = function(client, bufnr)
-  --         navic.attach(client, bufnr)
-  --       end
-  --     }
-  --   end
-  -- },
-  -- 'tyru/open-browser.vim',
-  -- { 'github/copilot.vim' },
-  -- 'nvim-telescope/telescope-symbols.nvim',
-  -- {
-  --     'simrat39/symbols-outline.nvim',
-  --     init = function()
-  --         require("symbols-outline").setup({
-  --             show_symbol_details = true,
-  --         })
-  --     end
-  -- },
-  -- 'sbulav/nredir.nvim',
-  -- {
-  --   'nvim-treesitter/nvim-treesitter-context',
-  --   init=function ()
-  --     require('treesitter-context').setup({
-  --       enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-  --       max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
-  --       min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
-  --       line_numbers = true,
-  --       multiline_threshold = 20, -- Maximum number of lines to show for a single context
-  --       trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-  --       mode = 'cursor',  -- Line used to calculate context. Choices: 'cursor', 'topline'
-  --       -- Separator between context and content. Should be a single character string, like '-'.
-  --       -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
-  --       separator = nil,
-  --       zindex = 20, -- The Z-index of the context window
-  --       on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
-  --     })
-  --   end
-  -- },
 
 }
 -- vim: ts=2 sts=2 sw=2 et tw=0

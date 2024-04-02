@@ -20,7 +20,6 @@ require('lazy').setup({
     'echasnovski/mini.nvim',
     init = function()
       require('mini.ai').setup({ n_lines = 500 })
-      -- require('mini.statusline').setup()
       require('mini.operators').setup()
       require('mini.surround').setup()
       require('mini.map').setup(
@@ -68,12 +67,6 @@ require('lazy').setup({
         },
 
       })
-      local statusline = require 'mini.statusline'
-      statusline.setup { use_icons = vim.g.have_nerd_font }
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
 
       vim.keymap.set("n", "<leader>mf", MiniFiles.open, {desc = "Open file explorer"})
       vim.keymap.set("n", "<leader>mm", MiniMap.toggle, {desc = "Toggle Mini Map"})
@@ -313,14 +306,6 @@ require('lazy').setup({
     end
 
   },
-
-  {
-    'folke/todo-comments.nvim',
-    event = 'VimEnter',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    opts = { signs = false }
-  },
-
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -339,7 +324,32 @@ require('lazy').setup({
     },
     config = function()
         local cmp = require('cmp')
+
         local luasnip = require('luasnip')
+        local ls = require("luasnip")
+        local s = ls.snippet
+        local t = ls.text_node
+        ls.add_snippets('all', {
+          s('hola', t 'hola mundo!')
+        })
+
+        ls.add_snippets('python', {
+          s('pdb', t 'breakpoint()')
+        })
+
+        ls.add_snippets('python', {
+          s('pm', t '__import__("pdb").pm()')
+        })
+
+        -- date
+        ls.add_snippets('all', {
+          s('date', t(os.date('%Y-%m-%d')))
+        })
+
+        ls.add_snippets('all', {
+          s('time', t(os.date('%H:%M:%S')))
+        })
+
         luasnip.config.setup({})
 
         cmp.setup({
@@ -389,6 +399,14 @@ require('lazy').setup({
       })
     end,
   },
+
+  {
+    'folke/todo-comments.nvim',
+    event = 'VimEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = { signs = false }
+  },
+
 
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
@@ -497,14 +515,13 @@ require('lazy').setup({
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
-    -- opts = {
-    --   options = {
-    --     icons_enabled = false,
-    --     component_separators = '|',
-    --     section_separators = '',
-    --   },
-    -- },
-    opts = {},
+    opts = {
+      options = {
+        icons_enabled = true,
+        component_separators = '|',
+        section_separators = '',
+      },
+    },
   },
 
   {
@@ -783,30 +800,6 @@ vim.keymap.set('t', '<C-w>w', '<C-\\><C-n><C-w>w', { noremap = true, desc = "Swi
 
 
 -- [[ luasnip:snippets ]] {{
-local ls = require("luasnip")
-local s = ls.snippet
-local t = ls.text_node
-
-ls.add_snippets('all', {
-  s('hola', t 'hola mundo!')
-})
-
-ls.add_snippets('python', {
-  s('pdb', t 'breakpoint()')
-})
-
-ls.add_snippets('python', {
-  s('pm', t '__import__("pdb").pm()')
-})
-
--- date
-ls.add_snippets('all', {
-  s('date', t(os.date('%Y-%m-%d')))
-})
-
-ls.add_snippets('all', {
-  s('time', t(os.date('%H:%M:%S')))
-})
 
 
 -- }}
@@ -913,48 +906,10 @@ vim.keymap.set("n", "<leader>tv", ":!terraform validate<CR>", { noremap = true, 
 vim.keymap.set("n", "<leader>tp", ":!terraform plan<CR>", { noremap = true, desc = "Terraform plan" })
 vim.keymap.set("n", "<leader>taa", ":!terraform apply -auto-approve<CR>", { noremap = true, desc = "Terraform apply auto approve" })
 
-require('lspconfig').terraformls.setup {}
-require('lspconfig').tflint.setup {}
+-- require('lspconfig').terraformls.setup({})
+-- require('lspconfig').tflint.setup({})
 -- }}
 
-
--- GOLANG {{
--- wrap go command into a Go neovim command so I can call it from lua.
--- local function gofix()
---     -- fix inplace
---     vim.api.nvim_command('silent !gofmt -w %')
---     vim.api.nvim_command('silent !goimports -w %')
---     vim.api.nvim_command('silent !golines -w %')
--- end
--- local golang = vim.api.nvim_create_augroup('GoLang', { clear = true })
--- vim.api.nvim_create_autocmd('BufWritePost', {
---   group = golang,
---   pattern = 'go.mod',
---   callback = function()
---     vim.api.nvim_command('!go mod tidy')
---   end
--- })
--- vim.api.nvim_create_autocmd('BufWritePost', {
---   callback = gofix,
---   group = golang,
---   pattern = '*.go',
--- })
--- vim.api.nvim_create_user_command('Gofix', gofix, {})
--- vim.api.nvim_create_user_command('Gorun', '!go run %', {})
--- vim.api.nvim_create_user_command('Gotest', '!go test %', {})
--- vim.api.nvim_create_user_command('Gobuild', '!go build %', {})
--- vim.api.nvim_create_user_command('Govet', '!go vet %', {})
---
--- local golangcmd = function ()
---   -- find .git directory
---   local cwd = vim.fn.getcwd()
---   local parent = ""
---   -- build cmd
---   cmd = "golangci-lint run -c " .. cwd .. "/.golangci.yml go/..."
---   -- execute cmd
---   vim.cmd(cmd)
---   -- autocmd BufWritePost *.go execute "!golang cilint -c ""> /tmp/quickfix" | execute "e /tmp/quickfix"
--- end
 
 vim.cmd([[
   " GoLang
