@@ -1088,7 +1088,7 @@ autocmd({'BufReadPost'}, {
 })
 
 local SyncVimRC = vim.api.nvim_create_augroup('SyncVimRC', { clear = true })
-autocmd({'WinClosed', 'VimLeavePre', 'BufLeave', 'BufDelete'}, {
+autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
   callback = function()
     vim.cmd([[
       !git commit -a -m 'Auto commit' &
