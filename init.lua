@@ -517,7 +517,7 @@ require('lazy').setup({
     -- See `:help lualine.txt`
     opts = {
       options = {
-        icons_enabled = true,
+        icons_enabled = false,
         component_separators = '|',
         section_separators = '',
       },
@@ -1076,15 +1076,18 @@ autocmd({ 'BufWritePost' }, {
 
 -- autocommand to automatically commit and push modifications on init.lua file using lua api
 local AutoCommitVimFiles = vim.api.nvim_create_augroup('AutoCommitVimFiles', { clear = true })
-autocmd({'WinClosed', 'VimLeavePre'}, {
+autocmd({'WinClosed', 'VimLeavePre', 'BufDelete'}, {
   callback = function()
     vim.cmd([[
-    silent! !git commit -a -m 'Auto commit'
-    silent! !git push &> /dev/null &
+    !git commit -a -m 'Auto commit'
+    !git push &> /dev/null &
     ]])
+    -- vim.cmd([[
+    -- !git push &> /dev/null &
+    -- ]])
   end,
   group = AutoCommitVimFiles,
-  pattern = '*/.config/nvim/*',
+  pattern = {'*/.config/nvim/*', '*/mmngreco/kickstart.nvim/*' },
 })
 -- }}
 
