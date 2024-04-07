@@ -1076,16 +1076,18 @@ autocmd({ 'BufWritePost' }, {
 })
 
 -- autocommand to automatically commit and push modifications on init.lua file using lua api
-local AutoCommitVimFiles = vim.api.nvim_create_augroup('AutoCommitVimFiles', { clear = true })
-autocmd({'BufEnter'}, {
+local VimRC = vim.api.nvim_create_augroup('VimRC', { clear = true })
+autocmd({'BufRead'}, {
   callback = function()
     vim.cmd([[
       lcd %:p:h
     ]])
   end,
-  group = AutoCommitVimFiles,
+  group = VimRC,
   pattern = {'*/.config/nvim/*', '*/mmngreco/kickstart.nvim/*' },
 })
+
+local SyncVimRC = vim.api.nvim_create_augroup('SyncVimRC', { clear = true })
 autocmd({'WinClosed', 'VimLeavePre', 'BufLeave', 'BufDelete'}, {
   callback = function()
     vim.cmd([[
@@ -1093,7 +1095,7 @@ autocmd({'WinClosed', 'VimLeavePre', 'BufLeave', 'BufDelete'}, {
       !git push &> /dev/null &
     ]])
   end,
-  group = AutoCommitVimFiles,
+  group = SyncVimRC,
   pattern = {'*/.config/nvim/*', '*/mmngreco/kickstart.nvim/*' },
 })
 -- }}
