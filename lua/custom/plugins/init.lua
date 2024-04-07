@@ -15,7 +15,7 @@ return {
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
       require('render-markdown').setup({
-        headings = { '#', ' # ', '  # ', '   # ', '    # ', '     # ' },
+        headings = { '#', '#', '#', '#', '#', '#' },
       })
     end,
   },
