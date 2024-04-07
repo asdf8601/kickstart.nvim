@@ -1077,7 +1077,7 @@ autocmd({ 'BufWritePost' }, {
 
 -- autocommand to automatically commit and push modifications on init.lua file using lua api
 local VimRC = vim.api.nvim_create_augroup('VimRC', { clear = true })
-autocmd({'BufRead'}, {
+autocmd({'BufReadPost'}, {
   callback = function()
     vim.cmd([[
       lcd %:p:h
@@ -1091,7 +1091,7 @@ local SyncVimRC = vim.api.nvim_create_augroup('SyncVimRC', { clear = true })
 autocmd({'WinClosed', 'VimLeavePre', 'BufLeave', 'BufDelete'}, {
   callback = function()
     vim.cmd([[
-      !git commit -a -m 'Auto commit'
+      !git commit -a -m 'Auto commit' &
       !git push &> /dev/null &
     ]])
   end,
