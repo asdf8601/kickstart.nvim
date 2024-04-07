@@ -21,6 +21,7 @@ require('lazy').setup({
     init = function()
       require('mini.ai').setup({ n_lines = 500 })
       require('mini.operators').setup()
+      require('mini.statusline').setup()
       require('mini.surround').setup()
       require('mini.map').setup(
         {
@@ -511,18 +512,18 @@ require('lazy').setup({
     end,
   },
 
-  {
-    -- Set lualine as statusline
-    'nvim-lualine/lualine.nvim',
-    -- See `:help lualine.txt`
-    opts = {
-      options = {
-        icons_enabled = false,
-        component_separators = '|',
-        section_separators = '',
-      },
-    },
-  },
+  -- {
+  --   -- Set lualine as statusline
+  --   'nvim-lualine/lualine.nvim',
+  --   -- See `:help lualine.txt`
+  --   opts = {
+  --     options = {
+  --       icons_enabled = true,
+  --       component_separators = '|',
+  --       section_separators = '',
+  --     },
+  --   },
+  -- },
 
   {
     -- Add indentation guides even on blank lines
@@ -1076,7 +1077,16 @@ autocmd({ 'BufWritePost' }, {
 
 -- autocommand to automatically commit and push modifications on init.lua file using lua api
 local AutoCommitVimFiles = vim.api.nvim_create_augroup('AutoCommitVimFiles', { clear = true })
-autocmd({'WinClosed', 'VimLeavePre', 'BufDelete'}, {
+autocmd({'BufEnter'}, {
+  callback = function()
+    vim.cmd([[
+      lcd %:p:h
+    ]])
+  end,
+  group = AutoCommitVimFiles,
+  pattern = {'*/.config/nvim/*', '*/mmngreco/kickstart.nvim/*' },
+})
+autocmd({'WinClosed', 'VimLeavePre', 'BufLeave', 'BufDelete'}, {
   callback = function()
     vim.cmd([[
       !git commit -a -m 'Auto commit'
