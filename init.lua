@@ -1077,7 +1077,7 @@ autocmd({ 'BufWritePost' }, {
 
 -- autocommand to automatically commit and push modifications on init.lua file using lua api
 local VimRC = vim.api.nvim_create_augroup('VimRC', { clear = true })
-autocmd({'BufAdd'}, {
+autocmd({'BufRead'}, {
   callback = function()
     vim.cmd([[
       lcd %:p:h
