@@ -1091,7 +1091,7 @@ local SyncVimRC = vim.api.nvim_create_augroup('SyncVimRC', { clear = true })
 autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
   callback = function()
     vim.cmd([[
-      !git commit -a -m 'Auto commit' &
+      !git commit -a -m 'Auto commit'
       !git push &> /dev/null &
     ]])
   end,
