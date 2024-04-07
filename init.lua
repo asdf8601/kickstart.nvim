@@ -21,7 +21,7 @@ require('lazy').setup({
     init = function()
       require('mini.ai').setup({ n_lines = 500 })
       require('mini.operators').setup()
-      require('mini.statusline').setup()
+      -- require('mini.statusline').setup()
       require('mini.surround').setup()
       require('mini.map').setup(
         {
@@ -512,18 +512,18 @@ require('lazy').setup({
     end,
   },
 
-  -- {
-  --   -- Set lualine as statusline
-  --   'nvim-lualine/lualine.nvim',
-  --   -- See `:help lualine.txt`
-  --   opts = {
-  --     options = {
-  --       icons_enabled = true,
-  --       component_separators = '|',
-  --       section_separators = '',
-  --     },
-  --   },
-  -- },
+  {
+    -- Set lualine as statusline
+    'nvim-lualine/lualine.nvim',
+    -- See `:help lualine.txt`
+    opts = {
+      options = {
+        icons_enabled = true,
+        component_separators = '|',
+        section_separators = '',
+      },
+    },
+  },
 
   {
     -- Add indentation guides even on blank lines
