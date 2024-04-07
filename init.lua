@@ -83,6 +83,7 @@ require('lazy').setup({
       "nvim-lua/plenary.nvim",
       "hrsh7th/nvim-cmp",
     },
+    enable = false,
     config = function()
       require("codeium").setup({
       })
