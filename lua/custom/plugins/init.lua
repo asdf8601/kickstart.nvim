@@ -16,6 +16,7 @@ return {
     config = function()
       require('render-markdown').setup({
         headings = { '#', '#', '#', '#', '#', '#' },
+        bullet = '○',
       })
     end,
   },
