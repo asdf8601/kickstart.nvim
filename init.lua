@@ -1079,12 +1079,9 @@ local AutoCommitVimFiles = vim.api.nvim_create_augroup('AutoCommitVimFiles', { c
 autocmd({'WinClosed', 'VimLeavePre', 'BufDelete'}, {
   callback = function()
     vim.cmd([[
-    !git commit -a -m 'Auto commit'
-    !git push &> /dev/null &
+      !git commit -a -m 'Auto commit'
+      !git push &> /dev/null &
     ]])
-    -- vim.cmd([[
-    -- !git push &> /dev/null &
-    -- ]])
   end,
   group = AutoCommitVimFiles,
   pattern = {'*/.config/nvim/*', '*/mmngreco/kickstart.nvim/*' },
