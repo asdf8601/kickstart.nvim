@@ -998,6 +998,7 @@ vim.keymap.set('n', 'vic', 'V?%%<cr>o/%%<cr>koj', { noremap = true, desc = 'Visu
 
 -- file operations
 vim.keymap.set("n", "<leader>cd", ":lcd %:p:h<cr>", { noremap = true, silent = true, desc = "Change to the directory of the current file" })
+vim.keymap.set('n', '<leader>fn', ":echo expand('%')<cr>", { noremap = true })
 
 
 -- markdown {{
