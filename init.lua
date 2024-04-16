@@ -1083,7 +1083,7 @@ autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
   callback = function()
     vim.cmd([[
       !cd %:p:h && git commit -a -m 'Auto commit' || true
-      !cd %:p:h && git push &> /dev/null &
+      !cd %:p:h && git push &> /dev/null || true &
     ]])
   end,
   group = SyncVimRC,
