@@ -77,18 +77,18 @@ require('lazy').setup({
 
   { 'mbbill/undotree', },
 
-  {
-    "Exafunction/codeium.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "hrsh7th/nvim-cmp",
-    },
-    enable = false,
-    config = function()
-      require("codeium").setup({
-      })
-    end
-  },
+  -- {
+  --   "Exafunction/codeium.nvim",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "hrsh7th/nvim-cmp",
+  --   },
+  --   enable = false,
+  --   config = function()
+  --     require("codeium").setup({
+  --     })
+  --   end
+  -- },
 
   {
     'jpalardy/vim-slime',
