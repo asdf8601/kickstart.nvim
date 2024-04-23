@@ -655,15 +655,16 @@ require('lazy').setup({
 
 }, {})
 
--- [[ Setting options ]]
+-- [[ Setting options ]] {{{
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 
--- Set highlight on search
+-- search highlight
 vim.opt.hlsearch = false
 vim.opt.breakindent = true
 vim.wo.number = true
 
+vim.opt.foldmethod = 'marker'
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
@@ -698,6 +699,8 @@ vim.opt.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.opt.termguicolors = true
 
+-- }}}
+--
 -- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience
