@@ -1084,14 +1084,16 @@ autocmd({ 'BufWritePost' }, {
 local Takt = vim.api.nvim_create_augroup('Takt', { clear = true })
 autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
   callback = function()
-    vim.input('<esc>')
+    vim.echo('Auto commit')
+    vim.input("press enter")
     vim.cmd([[
       !cd %:p:h && git commit -a -m 'Auto commit' &> /dev/null; git push &> /dev/null &
     ]])
   end,
   group = Takt,
-  pattern = {'*takt*.csv'},
+  pattern = {'**/*takt*/*.csv'},
 })
+
 -- autocommand to automatically commit and push modifications on init.lua file using lua api
 local SyncVimRC = vim.api.nvim_create_augroup('SyncVimRC', { clear = true })
 autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
