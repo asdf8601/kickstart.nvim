@@ -1082,10 +1082,9 @@ autocmd({ 'BufWritePost' }, {
 
 -- autocommand to automatically commit and push modifications on init.lua file using lua api
 local Takt = vim.api.nvim_create_augroup('Takt', { clear = true })
-autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
+autocmd({'BufWritePost',}, {
   callback = function()
-    vim.echo('Auto commit')
-    vim.input("press enter")
+    vim.fn.input("press enter")
     vim.cmd([[
       !cd %:p:h && git commit -a -m 'Auto commit' &> /dev/null; git push &> /dev/null &
     ]])
