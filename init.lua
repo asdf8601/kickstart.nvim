@@ -1029,7 +1029,7 @@ end
 -- }}
 
 
--- [[ autocomands ]] {{
+-- [[ autocomands ]] {{{
 local mmngreco = vim.api.nvim_create_augroup('mmngreco', { clear = true })
 vim.api.nvim_create_autocmd('BufWritePre', { group = mmngreco, pattern = '*', command = '%s/\\s\\+$//e' })
 -- vim.api.nvim_create_autocmd('BufWritePre', { group = mmngreco, pattern = '*.go', command = 'GoFmt' })
@@ -1081,6 +1081,17 @@ autocmd({ 'BufWritePost' }, {
 })
 
 -- autocommand to automatically commit and push modifications on init.lua file using lua api
+local Takt = vim.api.nvim_create_augroup('Takt', { clear = true })
+autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
+  callback = function()
+    vim.cmd([[
+      !cd %:p:h && git commit -a -m 'Auto commit' &> /dev/null; git push &> /dev/null &
+    ]])
+  end,
+  group = Takt,
+  pattern = {'*takt*.csv'},
+})
+-- autocommand to automatically commit and push modifications on init.lua file using lua api
 local SyncVimRC = vim.api.nvim_create_augroup('SyncVimRC', { clear = true })
 autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
   callback = function()
@@ -1089,23 +1100,25 @@ autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
     ]])
   end,
   group = SyncVimRC,
-  pattern = {'*/.config/nvim/*', '*/mmngreco/kickstart.nvim/*' },
+  pattern = {'*/.config/nvim/*', '*/mmngreco/kickstart.nvim/*'},
 })
--- }}
 
--- [[ neovim-remote ]] {{
+
+-- }}}
+
+-- [[ neovim-remote ]] {{{
 if vim.fn.has('nvim') then
   vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'
 end
--- }}
+-- }}}
 
 
--- [[ colorscheme ]] {{
+-- [[ colorscheme ]] {{{
 -- vim.cmd.colorscheme 'modus-vivendi' -- not installed
 -- vim.cmd.colorscheme 'tokyonight-night'
 -- vim.cmd.colorscheme 'tokyonight-moon'
 vim.cmd.colorscheme 'modus_vivendi'
 -- vim.cmd.colorscheme 'onedark'
--- }}
+-- }}}
 
 -- vim: ts=2 sts=2 sw=2 et tw=0
