@@ -1084,7 +1084,6 @@ autocmd({ 'BufWritePost' }, {
 local Takt = vim.api.nvim_create_augroup('Takt', { clear = true })
 autocmd({'BufWritePost',}, {
   callback = function()
-    vim.fn.input("press enter")
     vim.cmd([[
       !cd %:p:h && git commit -a -m 'Auto commit' &> /dev/null; git push &> /dev/null &
     ]])
