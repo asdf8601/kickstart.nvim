@@ -1098,6 +1098,8 @@ autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
   callback = function()
     vim.cmd([[
       !cd %:p:h && git commit -a -m 'Auto commit' &> /dev/null
+    ]])
+    vim.cmd([[
       !git push &> /dev/null &
     ]])
   end,
