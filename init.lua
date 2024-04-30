@@ -987,7 +987,7 @@ vim.keymap.set('n', '<leader>tu', 'yypvawr-', { noremap = true, desc = 'underlin
 vim.keymap.set('n', '<leader>tx', ':s/\\[\\s\\?\\]/[x]/<cr>', { noremap = true, desc = 'check a box in markdown' })
 vim.keymap.set('n', '<leader>t<space>', ':s/\\[x\\]/[ ]/<cr>', { noremap = true, desc = 'uncheck a box in markdown' })
 vim.keymap.set('n', '<leader>/', '/<C-r><C-w>', { desc = '[S]earch [R]esume' })
-vim.keymap.set('v', '<leader>/', function() vim.print(vim.fn.expand("'<,'>")); vim.fn.search(vim.fn.expand("'<,'>")) end, { desc = '[S]earch [R]esume' })
+
 vim.keymap.set('n', '<leader>ta', 'I- [ ] <esc>', { noremap = true, desc = 'append empty checkbox in markdown' })
 vim.keymap.set('n', '<leader>m', ':MaximizerToggle<cr>', { noremap = true, desc = 'Maximize current window' })
 
