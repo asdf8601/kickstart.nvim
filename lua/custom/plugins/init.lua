@@ -23,7 +23,7 @@ return {
 
   {
     'laytan/cloak.nvim',
-    init=function()
+    config=function()
       require('cloak').setup({
         enabled = true,
         cloak_character = '*',
@@ -44,7 +44,7 @@ return {
 
   {
     'nvim-pack/nvim-spectre',
-    init=function ()
+    config=function ()
       require('spectre').setup()
       vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', { desc = "Toggle Spectre" })
       vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', { desc = "Search current word" })
@@ -64,7 +64,7 @@ return {
 
   {
     'ishan9299/modus-theme-vim',
-    init = function ()
+    config = function ()
       vim.g.modus_yellow_comments = 0
       vim.g.modus_green_strings = 0
       vim.g.modus_faint_syntax = 0
@@ -77,7 +77,7 @@ return {
   {
     "miikanissi/modus-themes.nvim",
     priority = 1000,
-    init = function ()
+    config = function ()
       require("modus-themes").setup({
         -- Theme comes in two styles `modus_operandi` and `modus_vivendi`
         -- `auto` will automatically set style based on background set with vim.o.background
@@ -109,10 +109,10 @@ return {
       {
         "samjwill/nvim-unception",
         lazy = false,
-        init = function() vim.g.unception_block_while_host_edits = true end
+        config = function() vim.g.unception_block_while_host_edits = true end
       },
     },
-    init = function ()
+    config = function ()
       require("gist").setup({
         private = false, -- All gists will be private, you won't be prompted again
         clipboard = "+", -- The registry to use for copying the Gist URL
@@ -129,8 +129,8 @@ return {
 
   {
     "robitx/gp.nvim",
-    init = function()
-      config = require("gp.config")
+    config = function()
+      local config = require("gp").config
       vim.print(config.agents[0])
       -- table.insert(config.agents, {})
       require("gp").setup()
@@ -145,7 +145,7 @@ return {
 
   {
     "windwp/nvim-ts-autotag",
-    init = function()
+    config = function()
       require('nvim-ts-autotag').setup()
     end
   },
@@ -170,7 +170,7 @@ return {
   {
     -- Highlight text
     'Pocco81/HighStr.nvim',
-    init = function()
+    config = function()
       local high_str = require("high-str")
       high_str.setup({
         verbosity = 0,
@@ -258,7 +258,7 @@ return {
     'kevinhwang91/nvim-bqf',
     dependencies = {
       'junegunn/fzf',
-      -- init = function() vim.fn['fzf#install']() end,
+      -- config = function() vim.fn['fzf#install']() end,
     },
   },
 
@@ -288,7 +288,7 @@ return {
 
   {
     'goerz/jupytext.vim',
-    init=function ()
+    config=function ()
       vim.g.jupytext_fmt = 'py:percent'
     end
   },
@@ -299,7 +299,7 @@ return {
   {
     'stevearc/conform.nvim',
     opts = {},
-    init = function()
+    config = function()
       require("conform").setup({
         formatters_by_ft = {
           lua = { "stylua" },
@@ -421,7 +421,7 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "antoinemadec/FixCursorHold.nvim"
     },
-    init = function()
+    config = function()
       require("neotest").setup({
         adapters = {
           require("neotest-python")({
@@ -444,7 +444,7 @@ return {
 
   {
     "klen/nvim-test",
-    init = function()
+    config = function()
       require('nvim-test').setup({})
     end
   },
@@ -456,7 +456,7 @@ return {
   {
     "iamcco/markdown-preview.nvim",
     build = "cd app && npm install",
-    init = function() vim.g.mkdp_filetypes = { "markdown" } end,
+    config = function() vim.g.mkdp_filetypes = { "markdown" } end,
     ft = { "markdown" },
   },
 
@@ -468,7 +468,7 @@ return {
       'mfussenegger/nvim-dap-python',
       'leoluz/nvim-dap-go',
     },
-    init = function()
+    config = function()
       require("dapui").setup()
       require("dapui").setup()
       require("nvim-dap-virtual-text").setup({})
@@ -512,7 +512,7 @@ return {
 
   {
     'nvimdev/lspsaga.nvim',
-    init = function()
+    config = function()
       require('lspsaga').setup({
         symbol_in_winbar = {
           enable = true,
