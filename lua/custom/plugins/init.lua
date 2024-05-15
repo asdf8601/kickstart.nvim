@@ -130,8 +130,8 @@ return {
   {
     "robitx/gp.nvim",
     config = function()
-      local config = require("gp").config
       require("gp").setup()
+      local config = require("gp").config
       config.agents[0].model = "gpt-4o"
       vim.print(config)
       -- https://github.com/Robitx/gp.nvim?tab=readme-ov-file#4-configuration
