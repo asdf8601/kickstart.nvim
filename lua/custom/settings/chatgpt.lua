@@ -13,32 +13,27 @@ function Gpt_command(args)
   local prefix = 'You are a ' .. filetype .. ' developer/writer expert. '
   prefix = prefix .. 'Avoid comments and explanations unless I ask for it. '
   prefix = prefix .. 'You should make changes using the same language as the input.'
+
   local cmd = ''
   if prompt == nil then
     prompt = ''
   end
   local _cmd = ''
-  -- detect visual mode
+
   if mod == '%' then
-    -- file
-    _cmd = '%!chatgpt -p "'
+    _cmd = '%!sgpt --model "gpt-4o" "'
   elseif mod == '.' then
-    -- line
-    _cmd = '.!chatgpt -p "'
+    _cmd = '.!sgpt --model "gpt-4o" "'
   else
     prompt = mod .. " " .. prompt
     if args.line1 ~= nil then
-        -- visual
-        -- vim.print("visual mode")
-        _cmd = '\'<,\'>!chatgpt -p "'
+        _cmd = '\'<,\'>!sgpt --model "gpt-4o" "'
     else
-        -- vim.print("normal mode")
-        _cmd = '!chatgpt -p "'
+        _cmd = '!sgpt --model "gpt-4o" "'
     end
   end
+
   cmd = _cmd .. prefix .. prompt .. '"'
-  -- debug
-  -- vim.print(cmd)
   vim.cmd(cmd)
 end
 
