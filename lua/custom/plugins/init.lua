@@ -130,6 +130,9 @@ return {
   {
     "robitx/gp.nvim",
     init = function()
+      config = require("gp.config")
+      vim.print(config.agents[0])
+      -- table.insert(config.agents, {})
       require("gp").setup()
       -- https://github.com/Robitx/gp.nvim?tab=readme-ov-file#4-configuration
     end,
