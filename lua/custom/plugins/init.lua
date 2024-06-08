@@ -207,10 +207,6 @@ return {
   },
 
   {
-    "wuelnerdotexe/vim-astro",
-  },
-
-  {
     "virchau13/tree-sitter-astro",
   },
 

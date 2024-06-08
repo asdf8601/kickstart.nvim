@@ -608,13 +608,14 @@ require('lazy').setup({
     build = ':TSUpdate',
     opts = {
       ensure_installed = {
+        'astro',   -- astro
         'c',
         'cpp',
         'go',
         'python',
         'lua',
         'rust',
-        'tsx',
+        'tsx',   -- astro
         'javascript',
         'typescript',
         'vimdoc',
@@ -911,9 +912,11 @@ vim.keymap.set("n", "<leader>tv", ":!terraform validate<CR>", { noremap = true, 
 vim.keymap.set("n", "<leader>tp", ":!terraform plan<CR>", { noremap = true, desc = "Terraform plan" })
 vim.keymap.set("n", "<leader>taa", ":!terraform apply -auto-approve<CR>", { noremap = true, desc = "Terraform apply auto approve" })
 
--- require('lspconfig').terraformls.setup({})
--- require('lspconfig').tflint.setup({})
+require('lspconfig').terraformls.setup({})
+require('lspconfig').tflint.setup({})
+require("lspconfig").astro.setup({})
 -- }}
+
 
 
 vim.cmd([[
@@ -1109,6 +1112,17 @@ autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
   pattern = {'*/.config/nvim/*', '*/mmngreco/kickstart.nvim/*'},
 })
 
+
+-- }}}
+--
+-- [[ astro ]] {{{
+--
+vim.filetype.add({
+  extension = {
+    mdx = "mdx",
+  },
+})
+vim.treesitter.language.register("markdown", "mdx") -- the mdx filetype will use the markdown parser and queries.
 
 -- }}}
 
