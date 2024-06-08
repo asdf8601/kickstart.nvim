@@ -1097,6 +1097,18 @@ autocmd({'BufWritePost',}, {
   pattern = {'**/*takt*/*.csv'},
 })
 
+-- autocommand for WebDev
+local JS = vim.api.nvim_create_augroup('JS', { clear = true })
+autocmd({'BufWritePost',}, {
+  callback = function()
+    vim.cmd([[
+      silent execute('!npx prettier . --write --plugin=prettier-plugin-astro > /dev/null &')
+    ]])
+  end,
+  group = JS,
+  pattern = {'*.css', '*.js', '*.json', '*.html', '*.md', '*.astro'},
+})
+
 -- autocommand to automatically commit and push modifications on init.lua file using lua api
 local SyncVimRC = vim.api.nvim_create_augroup('SyncVimRC', { clear = true })
 autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
