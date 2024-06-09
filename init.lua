@@ -665,7 +665,8 @@ vim.opt.hlsearch = false
 vim.opt.breakindent = true
 vim.wo.number = true
 
-vim.opt.foldmethod = 'marker'
+-- vim.opt.foldmethod = 'marker'
+vim.opt.foldmethod = 'syntax'
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
@@ -712,7 +713,7 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
--- [[ Highlight on yank ]]
+-- [[ Highlight on yank ]] {{{
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -722,15 +723,17 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+-- }}}
 
--- Diagnostic keymaps
+-- Diagnostic keymaps {{{
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 -- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+-- }}}
 
 
--- [settings] {{
+-- [settings] {{{
 function UseZsh()
   local handle = io.popen("which zsh")
   if handle == nil then
@@ -746,6 +749,7 @@ function UseZsh()
 end
 
 UseZsh()
+-- }}}
 
 vim.opt.splitright = true
 vim.opt.splitbelow = true
@@ -782,18 +786,18 @@ vim.g.netrw_nogx = 1
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 20
 vim.opt.laststatus = 2
--- }}
+-- }}}
 
--- [[ fugitive ]] {{
+-- [[ fugitive ]] {{{
 vim.keymap.set("n", "<leader>w", ":Git<cr>", { noremap = true, desc = "Open Git status" })
 vim.keymap.set("n", "<leader>W", ":tab Git<cr>", { noremap = true, desc = "Open Git status in a new tab" })
 vim.keymap.set('n', '<C-g>', ':GBrowse<cr>', { noremap = true, desc = 'browse current file on github' })
 vim.keymap.set('v', '<C-g>', ':GBrowse<cr>', { noremap = true, desc = 'browse current file and line on github' })
 vim.keymap.set('n', '<C-G>', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current file' })
 vim.keymap.set('v', '<C-G>', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current line' })
--- }}
+-- }}}
 
--- terminal settings {{
+-- terminal settings {{{
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { noremap = true, desc = "Switch to normal mode from terminal" })
 vim.keymap.set('t', '<C-w>h', '<C-\\><C-n><C-w>h', { noremap = true, desc = "Move cursor to the left window" })
 vim.keymap.set('t', '<C-w>j', '<C-\\><C-n><C-w>j', { noremap = true, desc = "Move cursor to the below window" })
@@ -802,18 +806,15 @@ vim.keymap.set('t', '<C-w>l', '<C-\\><C-n><C-w>l', { noremap = true, desc = "Mov
 vim.keymap.set('t', '<C-w>w', '<C-\\><C-n><C-w>w', { noremap = true, desc = "Switch to the next window" })
 -- vim.keymap.set('t', '<C-P>', '<C-\\><C-n>pi<cr>', { noremap = true })
 -- vim.keymap.set('n', '<C-l>', 'i<C-l>', {noremap = true})
--- }}
+-- }}}
 
 
--- [[ luasnip:snippets ]] {{
-
-
--- }}
+-- [[ luasnip:snippets ]] {{{
+-- }}}
 
 
 
--- {{
--- [[ pdbrc ]] {{
+-- [[ pdbrc ]] {{{
 local pdbrc_win
 local current_win
 
@@ -833,8 +834,10 @@ function AddPdbrc()
   vim.cmd('norm G')
   vim.api.nvim_set_current_win(current_win)
 end
+-- }}}
 
 -- keymaps
+-- {{{
 vim.keymap.set('n', 'bp', AddPdbrc, { noremap = true, silent = true, desc = 'Add pdbrc' })
 
 vim.keymap.set('i', 'kj', '<esc>', { noremap = true, silent = true })
@@ -884,8 +887,8 @@ vim.keymap.set('n', '<leader>j', ':m .+1<cr>==', { noremap = true, desc = 'move 
 
 vim.keymap.set('n', '<leader>cn', ':cnext<cr>', { noremap = true, desc = 'next error' })
 vim.keymap.set('n', '<leader>cp', ':cprev<cr>', { noremap = true, desc = 'previous error' })
--- }}
---
+-- }}}
+
 
 vim.cmd [[
 augroup Latex
@@ -894,7 +897,7 @@ augroup Latex
 augroup end
 ]]
 
--- terraform {{
+-- terraform {{{
 -- https://www.mukeshsharma.dev/2022/02/08/neovim-workflow-for-terraform.html
 vim.cmd([[
 augroup terraform
@@ -915,7 +918,7 @@ vim.keymap.set("n", "<leader>taa", ":!terraform apply -auto-approve<CR>", { nore
 require('lspconfig').terraformls.setup({})
 require('lspconfig').tflint.setup({})
 require("lspconfig").astro.setup({})
--- }}
+-- }}}
 
 
 
@@ -941,11 +944,11 @@ if vim.fn.has('mac') == 1 then
   ]])
 end
 
--- }}
+-- }}}
 
 vim.api.nvim_create_user_command('PushAirflow', '!gsutil cp -r % gs://europe-west1-data-cloud-com-831c7a66-bucket/%', {})
 
--- [[ Setting options ]] {{
+-- [[ Setting options ]] {{{
 if vim.fn.has('mac') == 1 then
   vim.g.netrw_browsex_viewer = 'open'
 else
@@ -953,16 +956,16 @@ else
   vim.g.netrw_browsex_viewer = 'xdg-open'
 end
 
--- }}
+-- }}}
 
--- [[ gist ]] {{
+-- [[ gist ]] {{{
 vim.g.gist_clip_command = 'xclip -selection clipboard'
 vim.g.gist_detect_filetype = 1
 vim.g.gist_open_browser_after_post = 1
 vim.g.gist_show_privates = 1
 vim.g.gist_user = "mmngreco"
 vim.g.gist_token = os.getenv('GH_GIST_TOKEN')
--- }}
+-- }}}
 
 
 
@@ -998,18 +1001,19 @@ vim.keymap.set('n', '<leader>zz', '<cmd>ZenMode<cr>', { noremap = true, desc = '
 vim.keymap.set("v", "<leader>h", ":<c-u>HSHighlight 2<cr>", { noremap = true, desc = 'high-str' })
 -- vim.keymap.set("n", "<leader>h", ":<c-u>HSHighlight 2<cr>", {noremap = true, desc = 'high-str'})
 
--- add python cells
+-- add python cells {{{
 vim.keymap.set('n', '<leader>co', 'O%%<esc>:norm gcc<cr>j', { noremap = true, desc = 'Insert a cell comment above the current line' })
 vim.keymap.set('n', '<leader>cO', 'o%%<esc>:norm gcc<cr>k', { noremap = true, desc = 'Insert a cell comment below the current line' })
 vim.keymap.set('n', '<leader>c-', 'O<esc>77i-<esc>:norm gcc<cr>j', { noremap = true, desc = 'Insert a horizontal line of dashes above the current line' })
 vim.keymap.set('n', 'vic', 'V?%%<cr>o/%%<cr>koj', { noremap = true, desc = 'Visually select a cell and insert a comment before and after it' })
+-- }}}
 
--- file operations
+-- file operations {{{
 vim.keymap.set("n", "<leader>cd", ":lcd %:p:h<cr>", { noremap = true, silent = true, desc = "Change to the directory of the current file" })
 vim.keymap.set('n', '<leader>fn', ":echo expand('%')<cr>", { noremap = true })
+-- }}}
 
-
--- markdown {{
+-- markdown {{{
 vim.g.markdown_fenced_languages = { 'html', 'python', 'bash=sh', 'sql', 'mermaid' }
 vim.g.markdown_minlines = 50
 -- TODO: fill this
@@ -1018,20 +1022,20 @@ vim.g.mkdp_auto_start = 0
 vim.g.mkdp_auto_close = 0
 vim.g.mkdp_page_title = "${name}"
 vim.g.mkdp_theme = 'light'
--- }}
+-- }}}
 
--- {{ Create command to call jq '.' % and replace the buffer with the output
+-- Create command to call jq '.' % and replace the buffer with the output {{{
 -- vim.api.nvim_command('command! -buffer Jq %!jq "."')
 vim.api.nvim_create_user_command('Jq', '%!jq', { nargs = 0 })
--- }}
+-- }}}
 
--- {{ grep program
+-- grep program {{{
 if vim.fn.executable('rg') == 1 then
   vim.o.grepprg = 'rg --vimgrep'
   vim.o.grepformat = '%f:%l:%c:%m'
 end
--- }}
--- }}
+-- }}}
+-- }}}
 
 
 -- [[ autocomands ]] {{{
