@@ -15,6 +15,16 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
+  {
+    "kylechui/nvim-surround",
+    version = "*", -- Use for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup({
+        -- Configuration here, or leave empty to use defaults
+      })
+    end
+  },
 
   {
     'echasnovski/mini.nvim',
@@ -22,7 +32,7 @@ require('lazy').setup({
       require('mini.ai').setup({ n_lines = 500 })
       require('mini.operators').setup()
       -- require('mini.statusline').setup()
-      require('mini.surround').setup()
+      -- require('mini.surround').setup()
       require('mini.map').setup(
         {
           integrations = nil,
@@ -689,6 +699,8 @@ vim.opt.breakindent = true
 vim.wo.number = true
 
 -- vim.opt.foldmethod = 'marker'
+vim.opt.foldlevelstart = 99
+vim.opt.foldlevel = 99
 vim.opt.foldmethod = 'syntax'
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
