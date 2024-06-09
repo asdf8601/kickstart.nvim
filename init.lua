@@ -18,6 +18,9 @@ require('lazy').setup({
   {
     -- resize window automatically
     "nvim-focus/focus.nvim",
+    config = function()
+      require('focus').setup()
+    end,
   },
 
   {
