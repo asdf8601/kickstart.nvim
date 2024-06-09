@@ -208,7 +208,7 @@ return {
 
   {
     'kevinhwang91/nvim-ufo',
-    requires = 'kevinhwang91/promise-async',
+    dependencies = 'kevinhwang91/promise-async',
     config=function()
 
       vim.o.foldcolumn = '1' -- '0' is not bad
@@ -224,7 +224,7 @@ return {
           return {'treesitter', 'indent'}
         end
       })
-    end
+    end,
 
   },
 
