@@ -1168,7 +1168,7 @@ autocmd({'FileType',}, {
 autocmd({'BufWritePost',}, {
   callback = function()
     vim.cmd([[
-      silent execute('!npx prettier . --write --plugin=prettier-plugin-astro > /dev/null &')
+      silent execute('!npx prettier --write . --plugin=prettier-plugin-astro')
     ]])
   end,
   group = JS,
