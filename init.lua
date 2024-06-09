@@ -16,6 +16,11 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
   {
+    -- resize window automatically
+    "nvim-focus/focus.nvim",
+  },
+
+  {
     "kylechui/nvim-surround",
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
@@ -699,8 +704,6 @@ vim.opt.breakindent = true
 vim.wo.number = true
 
 -- vim.opt.foldmethod = 'marker'
-vim.opt.foldlevelstart = 99
-vim.opt.foldlevel = 99
 vim.opt.foldmethod = 'syntax'
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
@@ -1136,8 +1139,29 @@ autocmd({'BufWritePost',}, {
   pattern = {'**/*takt*/*.csv'},
 })
 
--- autocommand for WebDev
+-- autocommand for WebDev {{{
+
+-- [[ astro ]] {{{
+vim.filetype.add({
+  extension = {
+    mdx = "mdx",
+  },
+})
+vim.treesitter.language.register("markdown", "mdx") -- the mdx filetype will use the markdown parser and queries.
+-- }}}
+
+-- [[ JS ]]  {{{
 local JS = vim.api.nvim_create_augroup('JS', { clear = true })
+autocmd({'FileType',}, {
+  callback = function()
+    vim.cmd([[
+      colorscheme onedark
+    ]])
+  end,
+  group = JS,
+  pattern = {'*.css', '*.js', '*.json', '*.html', '*.md', '*.astro'},
+})
+
 autocmd({'BufWritePost',}, {
   callback = function()
     vim.cmd([[
@@ -1147,8 +1171,10 @@ autocmd({'BufWritePost',}, {
   group = JS,
   pattern = {'*.css', '*.js', '*.json', '*.html', '*.md', '*.astro'},
 })
+-- }}}
+-- }}}
 
--- autocommand to automatically commit and push modifications on init.lua file using lua api
+-- commit and push on init.lua file using lua api {{{
 local SyncVimRC = vim.api.nvim_create_augroup('SyncVimRC', { clear = true })
 autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
   callback = function()
@@ -1162,20 +1188,10 @@ autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
   group = SyncVimRC,
   pattern = {'*/.config/nvim/*', '*/mmngreco/kickstart.nvim/*'},
 })
-
-
 -- }}}
---
--- [[ astro ]] {{{
---
-vim.filetype.add({
-  extension = {
-    mdx = "mdx",
-  },
-})
-vim.treesitter.language.register("markdown", "mdx") -- the mdx filetype will use the markdown parser and queries.
-
 -- }}}
+
+
 
 -- [[ neovim-remote ]] {{{
 if vim.fn.has('nvim') then
@@ -1192,4 +1208,6 @@ vim.cmd.colorscheme 'modus_vivendi'
 -- vim.cmd.colorscheme 'onedark'
 -- }}}
 
+vim.opt.foldlevelstart = 99
+vim.opt.foldlevel = 99
 -- vim: ts=2 sts=2 sw=2 et tw=0
