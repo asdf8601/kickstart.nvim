@@ -963,15 +963,15 @@ require("lspconfig").astro.setup({})
 
 
 
-vim.cmd([[
-  " GoLang
-  augroup golang
-    autocmd!
-    autocmd BufRead go.mod setlocal filetype=go
-    autocmd BufWritePost go.mod silent !go mod tidy
-    autocmd BufWritePost *.go execute "silent !gofmt -w %" | execute "silent !goimports -w %" | execute "silent !golines -w %"
-  augroup END
-]])
+-- vim.cmd([[
+--   " GoLang
+--   augroup golang
+--     autocmd!
+--     autocmd BufRead go.mod setlocal filetype=go
+--     autocmd BufWritePost go.mod silent !go mod tidy
+--     autocmd BufWritePost *.go execute "silent !gofmt -w %" | execute "silent !goimports -w %" | execute "silent !golines -w %"
+--   augroup END
+-- ]])
 
 
 -- if macos then
