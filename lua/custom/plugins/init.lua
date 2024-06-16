@@ -552,7 +552,6 @@ return {
       require('dap-go').setup({
         dap_configurations = {
           {
-            -- Must be "go" or it will be ignored by the plugin
             type = "go",
             name = "Attach remote",
             mode = "remote",
@@ -689,7 +688,7 @@ return {
   {
     -- NOTE: this was causing lost the startup message
     "ray-x/go.nvim",
-    dependencies = {     -- optional packages
+    dependencies = {
       "ray-x/guihua.lua",
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
