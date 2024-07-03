@@ -167,7 +167,10 @@ require('lazy').setup({
         vim.g.slime_bracketed_paste = 1
         vim.g.slime_python_ipython = 1
         vim.g.slime_no_mappings = 1
-        vim.g.slime_get_jobid = slime_get_jobid
+
+        if vim.fn.has('mac') == 0 then
+          vim.g.slime_get_jobid = slime_get_jobid
+        end
         -- vim.g.slime_default_config = nil
         -- vim.g.slime_dont_ask_default = 0
       end
