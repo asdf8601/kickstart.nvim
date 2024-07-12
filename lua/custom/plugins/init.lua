@@ -132,7 +132,16 @@ return {
     config = function()
 
       require("gp").setup({
+        -- providers = {},
         agents = {
+          {
+            name = "qwen",
+            chat = true,
+            provider = "ollama",
+            command = false,
+            model = { model = "qwen:0.5b" },
+            system_prompt = "Your are a general AI assistant better than ChatGPT4.",
+          },
           {
             name = "ChatGPT4",
             chat = true,
@@ -188,6 +197,7 @@ return {
               .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
               .. "START AND END YOUR ANSWER WITH:\n\n```",
           },
+
         },
       })
       -- https://github.com/Robitx/gp.nvim?tab=readme-ov-file#4-configuration
