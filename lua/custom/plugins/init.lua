@@ -132,13 +132,18 @@ return {
     config = function()
 
       require("gp").setup({
-        -- providers = {},
+        providers = {
+          ollama = {
+            endpoint = 'http://localhost:11434/api/generate'
+          },
+        },
+
         agents = {
           {
             name = "qwen",
             chat = true,
+            command = true,
             provider = "ollama",
-            command = false,
             model = { model = "qwen:0.5b" },
             system_prompt = "Your are a general AI assistant better than ChatGPT4.",
           },
