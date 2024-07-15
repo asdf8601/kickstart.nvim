@@ -129,20 +129,32 @@ return {
 
   {
     "robitx/gp.nvim",
+    lazy = false,
     config = function()
 
       require("gp").setup({
-        providers = {
-          ollama = {
-            endpoint = 'http://localhost:11434/api/generate'
-          },
-        },
+        -- providers = {
+        --   myollama = {
+        --     endpoint = 'http://localhost:11434/api/chat'
+        --   },
+        --   ollama = {
+        --     endpoint = 'http://localhost:11434/api/chat'
+        --   },
+        -- },
 
         agents = {
           {
-            name = "qwen",
+            name = "Llama3",
             chat = true,
-            command = true,
+            command = false,
+            provider = "ollama",
+            model = { model = "llama3", stream = false },
+            system_prompt = "Your are a general AI assistant better than ChatGPT4.",
+          },
+          {
+            name = "Qwen",
+            chat = true,
+            command = false,
             provider = "ollama",
             model = { model = "qwen:0.5b" },
             system_prompt = "Your are a general AI assistant better than ChatGPT4.",
