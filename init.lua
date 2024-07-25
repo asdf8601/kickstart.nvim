@@ -1136,16 +1136,16 @@ autocmd({ 'BufWritePost' }, {
 })
 
 -- autocommand to automatically commit and push modifications on init.lua file using lua api
-local Takt = vim.api.nvim_create_augroup('Takt', { clear = true })
-autocmd({'BufWritePost',}, {
-  callback = function()
-    vim.cmd([[
-      !cd %:p:h && git commit -a -m 'Auto commit' &> /dev/null; git push &> /dev/null &
-    ]])
-  end,
-  group = Takt,
-  pattern = {'**/*takt*/*.csv'},
-})
+-- local Takt = vim.api.nvim_create_augroup('Takt', { clear = true })
+-- autocmd({'BufWritePost',}, {
+--   callback = function()
+--     vim.cmd([[
+--       !cd %:p:h && git commit -a -m 'Auto commit' &> /dev/null; git push &> /dev/null &
+--     ]])
+--   end,
+--   group = Takt,
+--   pattern = {'**/*takt*/*.csv'},
+-- })
 
 -- autocommand for WebDev {{{
 
