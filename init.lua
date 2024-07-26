@@ -1213,7 +1213,7 @@ end
 -- vim.cmd.colorscheme 'tokyonight-night'
 -- vim.cmd.colorscheme 'tokyonight-moon'
 -- vim.cmd.colorscheme 'modus_vivendi'
--- vim.cmd.colorscheme 'onedark'
+vim.cmd.colorscheme 'onedark'
 -- }}}
 
 vim.opt.foldlevelstart = 99
