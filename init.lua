@@ -258,7 +258,6 @@ require('lazy').setup({
           efm = {},
           gopls = {},
           golangci_lint_ls = {},
-          iferr = {},
           jsonls = {},
           clangd = {},
           rust_analyzer = {},
