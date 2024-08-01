@@ -1185,19 +1185,19 @@ autocmd({'BufWritePost',}, {
 -- }}}
 
 -- commit and push on init.lua file using lua api {{{
-local SyncVimRC = vim.api.nvim_create_augroup('SyncVimRC', { clear = true })
-autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
-  callback = function()
-    vim.cmd([[
-      !cd %:p:h && git commit -a -m 'Auto commit' &> /dev/null
-    ]])
-    vim.cmd([[
-      !git push &> /dev/null &
-    ]])
-  end,
-  group = SyncVimRC,
-  pattern = {'*/.config/nvim/*', '*/mmngreco/kickstart.nvim/*'},
-})
+-- local SyncVimRC = vim.api.nvim_create_augroup('SyncVimRC', { clear = true })
+-- autocmd({'WinClosed', 'VimLeavePre', 'BufHidden', 'BufDelete'}, {
+--   callback = function()
+--     vim.cmd([[
+--       !cd %:p:h && git commit -a -m 'Auto commit' &> /dev/null
+--     ]])
+--     vim.cmd([[
+--       !git push &> /dev/null &
+--     ]])
+--   end,
+--   group = SyncVimRC,
+--   pattern = {'*/.config/nvim/*', '*/mmngreco/kickstart.nvim/*'},
+-- })
 -- }}}
 -- }}}
 
