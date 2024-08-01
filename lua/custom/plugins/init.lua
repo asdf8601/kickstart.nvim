@@ -521,7 +521,7 @@ return {
         "nvim-neotest/neotest-python",
         opts={
           args = { "--capture", "no" },
-        }
+        },
       },
       "nvim-neotest/neotest-plenary",
       "nvim-lua/plenary.nvim",
