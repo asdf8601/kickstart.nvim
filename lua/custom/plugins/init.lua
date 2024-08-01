@@ -523,7 +523,7 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "antoinemadec/FixCursorHold.nvim"
     },
-    config = function()
+    init = function()
       require("neotest").setup({
         adapters = {
           require("neotest-python")({
@@ -532,7 +532,7 @@ return {
             dap = { justMyCode = false },
             args = { "--log-level", "DEBUG", "--capture", "no" },
             runner = "pytest",
-            python = ".venv/bin/python",
+            -- python = ".venv/bin/python",
           })
         }
       })
