@@ -517,12 +517,7 @@ return {
     dependencies = {
       "nvim-neotest/nvim-nio",
       "nvim-neotest/neotest-vim-test",
-      {
-        "nvim-neotest/neotest-python",
-        opts={
-          args = { "--capture", "no" },
-        },
-      },
+      "nvim-neotest/neotest-python",
       "nvim-neotest/neotest-plenary",
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
@@ -537,7 +532,9 @@ return {
             dap = { justMyCode = false },
             args = { "--log-level", "DEBUG", "--capture", "no" },
             runner = "pytest",
-            -- python = ".venv/bin/python",
+            python = ".venv/bin/python",
+            pytest_discover_instances = true,
+
           })
         }
       })
@@ -549,12 +546,12 @@ return {
     end
   },
 
-  {
-    "klen/nvim-test",
-    config = function()
-      require('nvim-test').setup({})
-    end
-  },
+  -- {
+  --   "klen/nvim-test",
+  --   config = function()
+  --     require('nvim-test').setup({})
+  --   end
+  -- },
 
   { 'mracos/mermaid.vim' },
 
