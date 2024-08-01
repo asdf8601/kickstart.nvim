@@ -532,7 +532,7 @@ return {
             dap = { justMyCode = false },
             args = { "--log-level", "DEBUG", "--capture", "no" },
             runner = "pytest",
-            -- python = ".venv/bin/python",
+            python = ".venv/bin/python",
           })
         }
       })
