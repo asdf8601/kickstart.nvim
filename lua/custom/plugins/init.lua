@@ -517,7 +517,12 @@ return {
     dependencies = {
       "nvim-neotest/nvim-nio",
       "nvim-neotest/neotest-vim-test",
-      "nvim-neotest/neotest-python",
+      {
+        "nvim-neotest/neotest-python",
+        opts={
+          args = { "--capture", "no" },
+        }
+      },
       "nvim-neotest/neotest-plenary",
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
