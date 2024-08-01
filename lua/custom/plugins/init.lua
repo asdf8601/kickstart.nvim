@@ -530,7 +530,7 @@ return {
             -- Extra arguments for nvim-dap configuration
             -- See https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for values
             dap = { justMyCode = false },
-            args = { "--log-level", "DEBUG" },
+            args = { "--log-level", "DEBUG", "--capture", "no" },
             runner = "pytest",
             -- python = ".venv/bin/python",
           })
