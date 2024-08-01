@@ -525,23 +525,25 @@ return {
     },
     init = function()
       require("neotest").setup({
+        log_level=1,
         adapters = {
           require("neotest-python")({
             -- Extra arguments for nvim-dap configuration
             -- See https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for values
             dap = { justMyCode = false },
-            args = { "--log-level", "DEBUG", "--capture", "no" },
+            args = { "--capture", "no" },
             runner = "pytest",
             python = ".venv/bin/python",
-            pytest_discover_instances = true,
 
-          })
+          }),
         }
       })
-      vim.keymap.set('n', '<leader>tn', vim.cmd.TestNearest, { noremap = true, desc = 'Run nearest test' })
-      vim.keymap.set('n', '<leader>tf', vim.cmd.TestFile, { noremap = true, desc = 'Run current file tests' })
-      vim.keymap.set('n', '<leader>ts', vim.cmd.TestSuite, { noremap = true, desc = 'Run test suite' })
-      vim.keymap.set('n', '<leader>tl', vim.cmd.TestLast, { noremap = true, desc = 'Run last test' })
+    end,
+    config = function ()
+      vim.keymap.set('n', '<leader>tn', function() require("neotest").run.run() end, { noremap = true, desc = 'Run nearest test' })
+      vim.keymap.set('n', '<leader>tf', function() require("neotest").run.run(vim.fn.expand("%")) end, { noremap = true, desc = 'Run current file tests' })
+      vim.keymap.set('n', '<leader>to', function() require("neotest").output_panel.toggle() end, { noremap = true, desc = 'Toggle output panel' })
+      vim.keymap.set('n', '<leader>tl', function() require("neotest").run.run_last() end, { noremap = true, desc = 'Run last test' })
       vim.keymap.set('n', '<leader>td', function() require("neotest").run.run({ strategy = "dap" }) end, { noremap = true, desc = 'Run test debug mode' })
     end
   },
