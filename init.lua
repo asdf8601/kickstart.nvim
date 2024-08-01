@@ -1218,8 +1218,6 @@ end
 vim.cmd.colorscheme 'onedark'
 -- }}}
 
-vim.opt.foldlevelstart = 99
-vim.opt.foldlevel = 99
 
 
 -- Run gofmt + goimports on save
@@ -1232,5 +1230,9 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
   group = format_sync_grp,
 })
+
+
+vim.opt.foldlevelstart = 99
+vim.opt.foldlevel = 99
 
 -- vim: ts=2 sts=2 sw=2 et tw=0
