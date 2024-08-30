@@ -1210,7 +1210,7 @@ end
 -- }}}
 
 
--- [[ colorscheme ]] {{{
+-- [[ colorschemes ]] {{{
 -- vim.cmd.colorscheme 'modus-vivendi' -- not installed
 -- vim.cmd.colorscheme 'tokyonight-night'
 -- vim.cmd.colorscheme 'tokyonight-moon'
@@ -1226,7 +1226,9 @@ local format_sync_grp = vim.api.nvim_create_augroup("goimports", {})
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*.go",
   callback = function()
-   require('go.format').goimports()
+    require('go.format').goimports()
+    require('go.format').gofmt()
+    require('go.format').org_imports()
   end,
   group = format_sync_grp,
 })

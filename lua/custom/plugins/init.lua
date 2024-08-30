@@ -133,30 +133,19 @@ return {
     config = function()
 
       require("gp").setup({
-        -- providers = {
-        --   myollama = {
-        --     endpoint = 'http://localhost:11434/api/chat'
-        --   },
-        --   ollama = {
-        --     endpoint = 'http://localhost:11434/api/chat'
-        --   },
-        -- },
+        providers = {
+          ollama = {
+            endpoint = "http://localhost:11434/v1/chat/completions",
+          },
+        },
 
         agents = {
           {
             name = "Llama3",
             chat = true,
-            command = false,
+            command = true,
             provider = "ollama",
             model = { model = "llama3", stream = false },
-            system_prompt = "Your are a general AI assistant better than ChatGPT4.",
-          },
-          {
-            name = "Qwen",
-            chat = true,
-            command = false,
-            provider = "ollama",
-            model = { model = "qwen:0.5b" },
             system_prompt = "Your are a general AI assistant better than ChatGPT4.",
           },
           {
@@ -521,11 +510,10 @@ return {
       "nvim-neotest/neotest-plenary",
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "antoinemadec/FixCursorHold.nvim"
+      "antoinemadec/FixCursorHold.nvim",
     },
     init = function()
       require("neotest").setup({
-        log_level=1,
         adapters = {
           require("neotest-python")({
             -- Extra arguments for nvim-dap configuration
@@ -533,9 +521,10 @@ return {
             dap = { justMyCode = false },
             args = { "--capture", "no" },
             runner = "pytest",
-            python = ".venv/bin/python",
+            -- python = ".venv/bin/python",
 
           }),
+        -- log_level = vim.log.levels.DEBUG,
         }
       })
     end,
