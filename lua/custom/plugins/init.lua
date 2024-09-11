@@ -55,12 +55,12 @@ return {
     dependencies = {'nvim-lua/plenary.nvim'}
   },
 
-  {
-    -- foldings
-    "chrisgrieser/nvim-origami",
-    event = "BufReadPost", -- later or on keypress would prevent saving folds
-    opts = true, -- needed even when using default config
-  },
+  -- {
+  --   -- foldings
+  --   "chrisgrieser/nvim-origami",
+  --   event = "BufReadPost", -- later or on keypress would prevent saving folds
+  --   opts = true, -- needed even when using default config
+  -- },
 
   {
     'ishan9299/modus-theme-vim',
