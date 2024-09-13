@@ -19,7 +19,7 @@ function Gpt_command(args)
     prompt = ''
   end
   local _cmd = ''
-  local _gpt = 'sgpt --no-md --model "gpt-4o"'
+  local _gpt = 'sgpt --model "gpt-4o"'
 
   if mod == '%' then
     _cmd = '%!'.._gpt..' "'
@@ -36,7 +36,7 @@ function Gpt_command(args)
     end
   end
 
-  cmd = _cmd .. prefix .. prompt .. '"'
+  cmd = _cmd .. prefix .. prompt .. '$(cat)"'
   vim.cmd(cmd)
 end
 
