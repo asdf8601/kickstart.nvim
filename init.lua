@@ -1055,14 +1055,6 @@ vim.keymap.set('n', '<leader>c-', 'O<esc>77i-<esc>:norm gcc<cr>j', { noremap = t
 vim.keymap.set('n', 'vic', 'V?%%<cr>o/%%<cr>koj', { noremap = true, desc = 'Visually select a cell and insert a comment before and after it' })
 -- }}}
 
--- load sql.lua {{{
-local sourceSql = function ()
-  vim.print('Sourcing sql.lua')
-  vim.print(vim.cmd.source('~/.config/nvim/lua/custom/snippets/sql.lua'))
-  vim.print(vim.cmd.source('/Users/mgreco/.config/nvim/lua/custom/snippets/sql.lua'))
-end
-vim.api.nvim_create_user_command('SourceSql', sourceSql, {})
--- }}}
 
 -- file operations {{{
 vim.keymap.set("n", "<leader>cd", ":lcd %:p:h<cr>", { noremap = true, silent = true, desc = "Change to the directory of the current file" })

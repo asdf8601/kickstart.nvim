@@ -3,13 +3,6 @@
 -- when the file is saved and display the output in a new buffer under the same
 -- name with the suffix .out.
 -- It contains two configurations, one for druid and one for trino.
---
---
--- Usage:
--- Just source this file: `:source %`
-
--- create a new buffer with the name of the file
-
 function CallbackFactory(config)
   local callback = function()
     -- get current buffer name
@@ -64,24 +57,57 @@ local autocmdFactory = function(event, config, augroup)
   })
 end
 
-vim.print("Loading sql.lua")
+local function mergeConfigs(userConfig, defaultConfig)
+  local result = {}
 
-local druidConfig = {
+  for k, v in pairs(defaultConfig) do
+    result[k] = v
+  end
+
+  if userConfig == nil then
+    return result
+  end
+
+  for k, v in pairs(userConfig) do
+    result[k] = v
+  end
+  return result
+end
+
+local druidConfigDefault = {
   pattern = "*druidq/*.sql",
   bin = "druidq",
-  opts = { "-eprint(df.to_string())" },
+  opts = {},
   outSuffix = ".out",
 }
 
-local trinoConfig = {
+local trinoConfigDefault = {
   pattern = "*trinoq/*.sql",
   bin = "trinoq",
-  opts = { "-eprint(df.to_string())" },
+  opts = {},
   outSuffix = ".out",
 }
 
-local augroup = vim.api.nvim_create_augroup("AutoSql", { clear = true })
 
-autocmdFactory("BufWritePost", druidConfig, augroup)
-autocmdFactory("BufWritePost", trinoConfig, augroup)
+function SqlEnable(config)
+  local trino = mergeConfigs(config.trino, trinoConfigDefault)
+  local druid = mergeConfigs(config.druid, druidConfigDefault)
+
+  local augroup = vim.api.nvim_create_augroup("AutoSql", { clear = true })
+
+  if druid then
+    autocmdFactory("BufWritePost", druid, augroup)
+  end
+
+  if trino then
+    autocmdFactory("BufWritePost", trino, augroup)
+  end
+
+end
+
+function SqlDisable()
+  vim.api.nvim_clear_autocmds({group = "AutoSql"})
+end
+
+SqlEnable({trino=trinoConfigDefault, druid=druidConfigDefault})
 -- vim: set sw=2 ts=2 sts=2 et:
