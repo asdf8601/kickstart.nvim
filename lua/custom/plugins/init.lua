@@ -162,7 +162,7 @@ return {
               .. "- Zoom out first to see the big picture and then zoom in to details.\n"
               .. "- Use Socratic method to improve your thinking and coding skills.\n"
               .. "- Don't elide any code from your output if the answer requires coding.\n"
-              .. "- Take a deep breath; You've got this!\n",
+              .. "- Take a deep breath; You've got this! Be extremely concise.\n",
           },
           {
             name = "ChatGPT3-5",

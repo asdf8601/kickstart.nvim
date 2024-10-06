@@ -265,6 +265,7 @@ require('lazy').setup({
           terraformls = {},
           tflint = {},
           html = { filetypes = { 'html', 'twig', 'hbs' } },
+          arduino_language_server = {},
           lua_ls = {
             Lua = {
               workspace = { checkThirdParty = false },
@@ -1034,7 +1035,8 @@ vim.keymap.set('n', '<leader>dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>',
 
 -- vim.keymap.set('n', '<leader>sn', ':\'<,\'>!sort -n -k 2', { noremap = true, desc = 'sort lines numerically' })
 -- vim.keymap.set('v', '<leader>s', ':\'<,\'>!sort -f<cr>', { noremap = true, desc = 'sort lines' })
-vim.keymap.set('v', '<leader>sf', ':!sqlformat  -k upper -r --indent_after_first --indent_columns -<cr>', { noremap = true })
+-- vim.keymap.set('v', '<leader>sf', ':!sqlformat  -k upper -r --indent_after_first --indent_columns -<cr>', { noremap = true })
+vim.keymap.set('v', '<leader>sf', ':!sqlfmt -<cr>', { noremap = true })
 
 vim.keymap.set('n', '<leader>tu', 'yypvawr-', { noremap = true, desc = 'underline word under cursor' })
 vim.keymap.set('n', '<leader>tx', ':s/\\[\\s\\?\\]/[x]/<cr>', { noremap = true, desc = 'check a box in markdown' })
