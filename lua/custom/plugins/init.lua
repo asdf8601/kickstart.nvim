@@ -8,6 +8,66 @@ local executable = function(x)
 end
 
 return {
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    lazy = false,
+    version = false, -- set this if you want to always pull the latest change
+    opts = {
+      -- add any opts here
+    },
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    build = "make",
+    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- The below dependencies are optional,
+      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      "zbirenbaum/copilot.lua", -- for providers='copilot'
+      {
+        -- support for image pasting
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
+      },
+      {
+        -- Make sure to set this up properly if you have lazy=true
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
+    },
+  },
+  {
+    "azratul/live-share.nvim",
+    dependencies = {
+      "jbyuki/instant.nvim",
+    },
+    config = function()
+      vim.g.instant_username = "asdfg0x2199"
+      require("live-share").setup({
+        port_internal = 8765,
+        max_attempts = 20, -- 5 seconds
+        service = "serveo.net"
+      })
+    end
+  },
 
   {
     'MeanderingProgrammer/markdown.nvim',
@@ -34,7 +94,7 @@ return {
         patterns = {
           {
             file_pattern = {'.autoenv', '.env*'},
-            cloak_pattern = '=.+',
+            cloak_pattern = 'TOKEN=.+',
             replace = nil,
           },
         },
@@ -223,6 +283,7 @@ return {
   },
 
   {
+    -- folding
     'kevinhwang91/nvim-ufo',
     dependencies = 'kevinhwang91/promise-async',
     config=function()
@@ -258,37 +319,37 @@ return {
     },
   },
 
-  {
-    -- Highlight text
-    'Pocco81/HighStr.nvim',
-    config = function()
-      local high_str = require("high-str")
-      high_str.setup({
-        verbosity = 0,
-        saving_path = "/tmp/highstr/",
-        highlight_colors = {
-          -- color_id = {"bg_hex_code",<"fg_hex_code"/"smart">}
-          color_0 = { "#0c0d0e", "smart" },           -- Cosmic charcoal
-          color_1 = { "#e5c07b", "smart" },           -- Pastel yellow
-          color_2 = { "#7FFFD4", "smart" },           -- Aqua menthe
-          color_3 = { "#8A2BE2", "smart" },           -- Proton purple
-          color_4 = { "#FF4500", "smart" },           -- Orange red
-          color_5 = { "#008000", "smart" },           -- Office green
-          color_6 = { "#0000FF", "smart" },           -- Just blue
-          color_7 = { "#FFC0CB", "smart" },           -- Blush pink
-          color_8 = { "#FFF9E3", "smart" },           -- Cosmic latte
-          color_9 = { "#7d5c34", "smart" },           -- Fallow brown
-        }
-      })
-
-      vim.api.nvim_set_keymap("v", "<leader>h1", ":<c-u>HSHighlight 1<CR>", { noremap = true, silent = true, desc = "Highlight text with color 1"})
-      vim.api.nvim_set_keymap("v", "<leader>h2", ":<c-u>HSHighlight 2<CR>", { noremap = true, silent = true, desc = "Highlight text with color 2"})
-      vim.api.nvim_set_keymap("v", "<leader>h3", ":<c-u>HSHighlight 3<CR>", { noremap = true, silent = true, desc = "Highlight text with color 3"})
-      vim.api.nvim_set_keymap("v", "<leader>h4", ":<c-u>HSHighlight 4<CR>", { noremap = true, silent = true, desc = "Highlight text with color 4"})
-      vim.api.nvim_set_keymap("v", "<leader>h0", ":<c-u>HSRmHighlight<CR>", { noremap = true, silent = true, desc = "Remove text highlight"})
-
-    end
-  },
+  -- {
+  --   -- Highlight text
+  --   'Pocco81/HighStr.nvim',
+  --   config = function()
+  --     local high_str = require("high-str")
+  --     high_str.setup({
+  --       verbosity = 0,
+  --       saving_path = "/tmp/highstr/",
+  --       highlight_colors = {
+  --         -- color_id = {"bg_hex_code",<"fg_hex_code"/"smart">}
+  --         color_0 = { "#0c0d0e", "smart" },           -- Cosmic charcoal
+  --         color_1 = { "#e5c07b", "smart" },           -- Pastel yellow
+  --         color_2 = { "#7FFFD4", "smart" },           -- Aqua menthe
+  --         color_3 = { "#8A2BE2", "smart" },           -- Proton purple
+  --         color_4 = { "#FF4500", "smart" },           -- Orange red
+  --         color_5 = { "#008000", "smart" },           -- Office green
+  --         color_6 = { "#0000FF", "smart" },           -- Just blue
+  --         color_7 = { "#FFC0CB", "smart" },           -- Blush pink
+  --         color_8 = { "#FFF9E3", "smart" },           -- Cosmic latte
+  --         color_9 = { "#7d5c34", "smart" },           -- Fallow brown
+  --       }
+  --     })
+  --
+  --     vim.api.nvim_set_keymap("v", "<leader>h1", ":<c-u>HSHighlight 1<CR>", { noremap = true, silent = true, desc = "Highlight text with color 1"})
+  --     vim.api.nvim_set_keymap("v", "<leader>h2", ":<c-u>HSHighlight 2<CR>", { noremap = true, silent = true, desc = "Highlight text with color 2"})
+  --     vim.api.nvim_set_keymap("v", "<leader>h3", ":<c-u>HSHighlight 3<CR>", { noremap = true, silent = true, desc = "Highlight text with color 3"})
+  --     vim.api.nvim_set_keymap("v", "<leader>h4", ":<c-u>HSHighlight 4<CR>", { noremap = true, silent = true, desc = "Highlight text with color 4"})
+  --     vim.api.nvim_set_keymap("v", "<leader>h0", ":<c-u>HSRmHighlight<CR>", { noremap = true, silent = true, desc = "Remove text highlight"})
+  --
+  --   end
+  -- },
 
   {
     -- scala lsp
@@ -690,11 +751,11 @@ return {
     }
   },
 
-  {
-    -- work with multiple cases of a word
-    -- :%Subvert/facilit{y,ies}/building{,s}/g
-    'tpope/vim-abolish',
-  },
+  -- {
+  --   -- work with multiple cases of a word
+  --   -- :%Subvert/facilit{y,ies}/building{,s}/g
+  --   'tpope/vim-abolish',
+  -- },
 
   {
     -- Spawning interactive processes

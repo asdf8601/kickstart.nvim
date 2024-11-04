@@ -19,7 +19,9 @@ require('lazy').setup({
     -- resize window automatically
     "nvim-focus/focus.nvim",
     config = function()
-      require('focus').setup()
+      require('focus').setup({
+        enable=false
+      })
     end,
   },
 
@@ -457,58 +459,58 @@ require('lazy').setup({
   },
 
 
-  {
-    -- Adds git related signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
-    opts = {
-      -- See `:help gitsigns.txt`
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
-      on_attach = function(bufnr)
-        local gs = package.loaded.gitsigns
-        vim.keymap.set('n', '<leader>hp', require('gitsigns').preview_hunk, { buffer = bufnr, desc = 'Preview git hunk' })
-        vim.keymap.set('n', '<leader>hs', gs.stage_hunk, {desc = 'Stage git hunk'})
-        vim.keymap.set('n', '<leader>hr', gs.reset_hunk, {desc = 'Reset git hunk'})
-        vim.keymap.set('v', '<leader>hs', function() gs.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end, {desc = 'Stage git hunk in visual mode'})
-        vim.keymap.set('v', '<leader>hr', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end, {desc = 'Reset git hunk in visual mode'})
-        vim.keymap.set('n', '<leader>hS', gs.stage_buffer, {desc = 'Stage buffer'})
-        vim.keymap.set('n', '<leader>hu', gs.undo_stage_hunk, {desc = 'Undo stage git hunk'})
-        vim.keymap.set('n', '<leader>hR', gs.reset_buffer, {desc = 'Reset buffer'})
-        vim.keymap.set('n', '<leader>hp', gs.preview_hunk, {desc = 'Preview git hunk'})
-        vim.keymap.set('n', '<leader>hb', function() gs.blame_line{full=true} end, {desc = 'Blame line full'} )
-        vim.keymap.set('n', '<leader>tb', gs.toggle_current_line_blame, {desc = 'Toggle current line blame'})
-        vim.keymap.set('n', '<leader>hd', gs.diffthis, {desc = 'Diff this'})
-        vim.keymap.set('n', '<leader>hD', function() gs.diffthis('~') end, {desc = 'Diff this with tilde'})
-        vim.keymap.set('n', '<leader>td', gs.toggle_deleted, {desc = 'Toggle deleted'})
-
-        -- don't override the built-in and fugitive keymaps
-        -- local gs = package.loaded.gitsigns
-        vim.keymap.set({ 'n', 'v' }, ']c', function()
-          if vim.wo.diff then
-            return ']c'
-          end
-          vim.schedule(function()
-            gs.next_hunk()
-          end)
-          return '<Ignore>'
-        end, { expr = true, buffer = bufnr, desc = 'Jump to next hunk' })
-        vim.keymap.set({ 'n', 'v' }, '[c', function()
-          if vim.wo.diff then
-            return '[c'
-          end
-          vim.schedule(function()
-            gs.prev_hunk()
-          end)
-          return '<Ignore>'
-        end, { expr = true, buffer = bufnr, desc = 'Jump to previous hunk' })
-      end,
-    },
-  },
+  -- {
+  --   -- Adds git related signs to the gutter, as well as utilities for managing changes
+  --   'lewis6991/gitsigns.nvim',
+  --   opts = {
+  --     -- See `:help gitsigns.txt`
+  --     signs = {
+  --       add = { text = '+' },
+  --       change = { text = '~' },
+  --       delete = { text = '_' },
+  --       topdelete = { text = '‾' },
+  --       changedelete = { text = '~' },
+  --     },
+  --     on_attach = function(bufnr)
+  --       local gs = package.loaded.gitsigns
+  --       vim.keymap.set('n', '<leader>hp', require('gitsigns').preview_hunk, { buffer = bufnr, desc = 'Preview git hunk' })
+  --       vim.keymap.set('n', '<leader>hs', gs.stage_hunk, {desc = 'Stage git hunk'})
+  --       vim.keymap.set('n', '<leader>hr', gs.reset_hunk, {desc = 'Reset git hunk'})
+  --       vim.keymap.set('v', '<leader>hs', function() gs.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end, {desc = 'Stage git hunk in visual mode'})
+  --       vim.keymap.set('v', '<leader>hr', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end, {desc = 'Reset git hunk in visual mode'})
+  --       vim.keymap.set('n', '<leader>hS', gs.stage_buffer, {desc = 'Stage buffer'})
+  --       vim.keymap.set('n', '<leader>hu', gs.undo_stage_hunk, {desc = 'Undo stage git hunk'})
+  --       vim.keymap.set('n', '<leader>hR', gs.reset_buffer, {desc = 'Reset buffer'})
+  --       vim.keymap.set('n', '<leader>hp', gs.preview_hunk, {desc = 'Preview git hunk'})
+  --       vim.keymap.set('n', '<leader>hb', function() gs.blame_line{full=true} end, {desc = 'Blame line full'} )
+  --       vim.keymap.set('n', '<leader>tb', gs.toggle_current_line_blame, {desc = 'Toggle current line blame'})
+  --       vim.keymap.set('n', '<leader>hd', gs.diffthis, {desc = 'Diff this'})
+  --       vim.keymap.set('n', '<leader>hD', function() gs.diffthis('~') end, {desc = 'Diff this with tilde'})
+  --       vim.keymap.set('n', '<leader>td', gs.toggle_deleted, {desc = 'Toggle deleted'})
+  --
+  --       -- don't override the built-in and fugitive keymaps
+  --       -- local gs = package.loaded.gitsigns
+  --       vim.keymap.set({ 'n', 'v' }, ']c', function()
+  --         if vim.wo.diff then
+  --           return ']c'
+  --         end
+  --         vim.schedule(function()
+  --           gs.next_hunk()
+  --         end)
+  --         return '<Ignore>'
+  --       end, { expr = true, buffer = bufnr, desc = 'Jump to next hunk' })
+  --       vim.keymap.set({ 'n', 'v' }, '[c', function()
+  --         if vim.wo.diff then
+  --           return '[c'
+  --         end
+  --         vim.schedule(function()
+  --           gs.prev_hunk()
+  --         end)
+  --         return '<Ignore>'
+  --       end, { expr = true, buffer = bufnr, desc = 'Jump to previous hunk' })
+  --     end,
+  --   },
+  -- },
 
   {
     'folke/tokyonight.nvim',
@@ -832,7 +834,7 @@ vim.g.netrw_hide = 0
 vim.g.netrw_nogx = 1
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 20
-vim.opt.laststatus = 2
+vim.opt.laststatus = 3
 -- }}}
 
 -- [[ fugitive ]] {{{
