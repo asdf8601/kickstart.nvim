@@ -8,7 +8,61 @@ local executable = function(x)
 end
 
 return {
+
   {
+    -- git diff view
+    'sindrets/diffview.nvim', cmd = "DiffviewOpen"
+  },
+
+  {
+    -- repl support like slime
+    "samharju/yeet.nvim",
+    dependencies = {
+      "stevearc/dressing.nvim", -- optional, provides sane UX
+    },
+    version = "*", -- use the latest release, remove for master
+    cmd = "Yeet",
+    config = function()
+      require("yeet").setup({
+        -- Send <CR> to channel after command for immediate execution.
+        yeet_and_run = true,
+        -- Send C-c before execution
+        interrupt_before_yeet = false,
+        -- Send 'clear<CR>' to channel before command for clean output.
+        clear_before_yeet = true,
+        -- Enable notify for yeets. Success notifications may be a little
+        -- too much if you are using noice.nvim or fidget.nvim
+        notify_on_success = true,
+        -- Print warning if pane list could not be fetched, e.g. tmux not running.
+        warn_tmux_not_running = false,
+        -- Window options for cache float
+        cache_window_opts = {
+          relative = "editor",
+          row = (vim.o.lines - 15) * 0.5,
+          col = (vim.o.columns - math.ceil(0.6 * vim.o.columns)) * 0.5,
+          width = math.ceil(0.6 * vim.o.columns),
+          height = 15,
+          border = "single",
+          title = "Yeet",
+        },
+      })
+
+      -- Keymaps
+      vim.keymap.set('n', '<leader>l', require("yeet").list_cmd, { desc = "Pop command cache open" })
+      vim.keymap.set('n', '<leader>yt', require("yeet").select_target, { desc = "Open target selection" })
+      vim.keymap.set('n', '\\\\', require("yeet").execute, { desc = "Yeet at something" })
+      vim.keymap.set('n', '<leader>yo', require("yeet").toggle_post_write, { desc = "Toggle autocommand for yeeting after write" })
+      vim.keymap.set('n', '<leader>\\', function()
+        require("yeet").execute(nil, { clear_before_yeet = false, interrupt_before_yeet = true })
+      end, { desc = "Run command without clearing terminal" })
+      vim.keymap.set({ 'n', 'v' }, '<leader>yv', function()
+        require("yeet").execute_selection({ clear_before_yeet = false })
+      end, { desc = "Yeet visual selection" })
+    end
+  },
+
+  {
+    -- chatgpt like plugin
     "yetone/avante.nvim",
     event = "VeryLazy",
     lazy = false,
@@ -54,7 +108,9 @@ return {
       },
     },
   },
+
   {
+    -- live share
     "azratul/live-share.nvim",
     dependencies = {
       "jbyuki/instant.nvim",
@@ -82,6 +138,7 @@ return {
   },
 
   {
+    -- hide key value pairs
     'laytan/cloak.nvim',
     config=function()
       require('cloak').setup({
@@ -114,13 +171,6 @@ return {
 
     dependencies = {'nvim-lua/plenary.nvim'}
   },
-
-  -- {
-  --   -- foldings
-  --   "chrisgrieser/nvim-origami",
-  --   event = "BufReadPost", -- later or on keypress would prevent saving folds
-  --   opts = true, -- needed even when using default config
-  -- },
 
   {
     'ishan9299/modus-theme-vim',
@@ -282,28 +332,28 @@ return {
     end
   },
 
-  {
-    -- folding
-    'kevinhwang91/nvim-ufo',
-    dependencies = 'kevinhwang91/promise-async',
-    config=function()
-
-      vim.o.foldcolumn = '1' -- '0' is not bad
-      vim.o.foldlevel = 99
-      vim.o.foldlevelstart = 99
-      -- vim.o.foldenable = true
-
-      -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
-      vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
-      vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
-      require('ufo').setup({
-        provider_selector = function(bufnr, filetype, buftype)
-          return {'treesitter', 'indent'}
-        end
-      })
-    end,
-
-  },
+  -- {
+  --   -- folding
+  --   'kevinhwang91/nvim-ufo',
+  --   dependencies = 'kevinhwang91/promise-async',
+  --   config=function()
+  --
+  --     vim.o.foldcolumn = '1' -- '0' is not bad
+  --     vim.o.foldlevel = 99
+  --     vim.o.foldlevelstart = 99
+  --     -- vim.o.foldenable = true
+  --
+  --     -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
+  --     vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+  --     vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+  --     require('ufo').setup({
+  --       provider_selector = function(bufnr, filetype, buftype)
+  --         return {'treesitter', 'indent'}
+  --       end
+  --     })
+  --   end,
+  --
+  -- },
 
   {
     -- astro

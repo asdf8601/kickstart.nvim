@@ -230,7 +230,7 @@ require('lazy').setup({
         require('mason-lspconfig').setup()
         local servers = {
           emmet_language_server = {
-            filetypes = { "astro", "css", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "pug", "typescriptreact" },
+            filetypes = { "astro", "css", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "pug", "typescriptreact", },
             init_options = {
               ---@type table<string, string>
               includeLanguages = {},
@@ -263,7 +263,6 @@ require('lazy').setup({
           jsonls = {},
           clangd = {},
           rust_analyzer = {},
-          tsserver = {},
           terraformls = {},
           tflint = {},
           html = { filetypes = { 'html', 'twig', 'hbs' } },
@@ -715,9 +714,18 @@ vim.opt.breakindent = true
 vim.wo.number = true
 
 -- vim.opt.foldmethod = 'marker'
-vim.opt.foldmethod = 'syntax'
+-- vim.opt.foldmethod = 'syntax'
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+
+vim.o.foldcolumn = "1"
+vim.o.foldenable = true
+-- vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldnestmax = 1
+vim.o.foldmethod="expr"
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.o.foldtext = ""
 
 -- Enable mouse mode
 vim.opt.mouse = 'a'
@@ -1239,7 +1247,5 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 
-vim.opt.foldlevelstart = 99
-vim.opt.foldlevel = 99
 
 -- vim: ts=2 sts=2 sw=2 et tw=0
