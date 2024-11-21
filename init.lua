@@ -1091,7 +1091,7 @@ vim.api.nvim_create_user_command('Jq', '%!jq', { nargs = 0 })
 
 -- grep program {{{
 if vim.fn.executable('rg') == 1 then
-  vim.o.grepprg = 'rg --vimgrep'
+  vim.o.grepprg = 'rg --hidden --vimgrep'
   vim.o.grepformat = '%f:%l:%c:%m'
 end
 -- }}}

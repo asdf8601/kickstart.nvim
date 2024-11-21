@@ -8,6 +8,14 @@ local executable = function(x)
 end
 
 return {
+  {
+    'Bekaboo/dropbar.nvim',
+    -- optional, but required for fuzzy finder support
+    dependencies = {
+      'nvim-telescope/telescope-fzf-native.nvim',
+      build = 'make'
+    }
+  },
 
   {
     -- git diff view
@@ -715,91 +723,91 @@ return {
     end,
   },
 
-  {
-    'nvimdev/lspsaga.nvim',
-    config = function()
-      require('lspsaga').setup({
-        symbol_in_winbar = {
-          enable = true,
-          separator = ' › ',
-          hide_keyword = false,
-          ignore_patterns = nil,
-          show_file = true,
-          folder_level = 1,
-          color_mode = true,
-          delay = 300,
-        },
-        outline = {
-          win_position = 'right',
-          win_width = 40,
-          auto_preview = false,
-          detail = false,
-          auto_close = true,
-          close_after_jump = false,
-          layout = 'normal',
-          max_height = 0.5,
-          left_width = 0.3,
-          keys = {
-            toggle_or_jump = '<cr>',
-            quit = 'q',
-            jump = 'e',
-          },
-        },
-        ui = {
-          devicon = false,
-          foldericon = true,
-          -- expand = '[+]',
-          -- collapse = '[-]',
-          -- imp_sign = '[ ]',
-          expand = '⊞ ',
-          collapse = '⊟ ',
-          imp_sign = '󰳛 ',
-          code_action = "",
-          lines = { '└', '├', '│', '─', '┌' },
-          lightbulb = {
-            enable = false,
-            enable_in_insert = false,
-            sign = false,
-            sign_priority = 40,
-            virtual_text = false,
-          },
-          kind = {
-            Folder = { " " },
-            Module = { " ", "@namespace" },
-            Namespace = { " ", "@namespace" },
-            Package = { " ", "@namespace" },
-            Class = { " ", "@type" },
-            Method = { " ", "@method" },
-            Property = { " ", "LineNr" },
-            Field = { " ", "@field" },
-            Constructor = { " ", "@constructor" },
-            Enum = { " ", "@type" },
-            Interface = { " ", "@type" },
-            Function = { " ", "@function" },
-            Variable = { " ", "@constant" },
-            Constant = { " ", "@constant" },
-            String = { " ", "@string" },
-            Number = { " ", "@number" },
-            Boolean = { " ", "@boolean" },
-            Array = { " ", "@constant" },
-            Object = { " ", "@type" },
-            Key = { " ", "@type" },
-            Null = { "N ", "@type" },
-            EnumMember = { " ", "@field" },
-            Struct = { " ", "@type" },
-            Event = { " ", "@type" },
-            Operator = { " ", "@operator" },
-            TypeParameter = { " ", "@parameter" },
-            Parameter = { " ", "@parameter" },
-          },
-        },
-      })
-      vim.keymap.set('n', '<leader>t', ':Lspsaga outline<cr>', { desc = "Symbols outline", silent = false })
-    end,
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter', -- optional
-    }
-  },
+  -- {
+  --   'nvimdev/lspsaga.nvim',
+  --   config = function()
+  --     require('lspsaga').setup({
+  --       symbol_in_winbar = {
+  --         enable = true,
+  --         separator = ' › ',
+  --         hide_keyword = false,
+  --         ignore_patterns = nil,
+  --         show_file = true,
+  --         folder_level = 1,
+  --         color_mode = true,
+  --         delay = 300,
+  --       },
+  --       outline = {
+  --         win_position = 'right',
+  --         win_width = 40,
+  --         auto_preview = false,
+  --         detail = false,
+  --         auto_close = true,
+  --         close_after_jump = false,
+  --         layout = 'normal',
+  --         max_height = 0.5,
+  --         left_width = 0.3,
+  --         keys = {
+  --           toggle_or_jump = '<cr>',
+  --           quit = 'q',
+  --           jump = 'e',
+  --         },
+  --       },
+  --       ui = {
+  --         devicon = false,
+  --         foldericon = true,
+  --         -- expand = '[+]',
+  --         -- collapse = '[-]',
+  --         -- imp_sign = '[ ]',
+  --         expand = '⊞ ',
+  --         collapse = '⊟ ',
+  --         imp_sign = '󰳛 ',
+  --         code_action = "",
+  --         lines = { '└', '├', '│', '─', '┌' },
+  --         lightbulb = {
+  --           enable = false,
+  --           enable_in_insert = false,
+  --           sign = false,
+  --           sign_priority = 40,
+  --           virtual_text = false,
+  --         },
+  --         kind = {
+  --           Folder = { " " },
+  --           Module = { " ", "@namespace" },
+  --           Namespace = { " ", "@namespace" },
+  --           Package = { " ", "@namespace" },
+  --           Class = { " ", "@type" },
+  --           Method = { " ", "@method" },
+  --           Property = { " ", "LineNr" },
+  --           Field = { " ", "@field" },
+  --           Constructor = { " ", "@constructor" },
+  --           Enum = { " ", "@type" },
+  --           Interface = { " ", "@type" },
+  --           Function = { " ", "@function" },
+  --           Variable = { " ", "@constant" },
+  --           Constant = { " ", "@constant" },
+  --           String = { " ", "@string" },
+  --           Number = { " ", "@number" },
+  --           Boolean = { " ", "@boolean" },
+  --           Array = { " ", "@constant" },
+  --           Object = { " ", "@type" },
+  --           Key = { " ", "@type" },
+  --           Null = { "N ", "@type" },
+  --           EnumMember = { " ", "@field" },
+  --           Struct = { " ", "@type" },
+  --           Event = { " ", "@type" },
+  --           Operator = { " ", "@operator" },
+  --           TypeParameter = { " ", "@parameter" },
+  --           Parameter = { " ", "@parameter" },
+  --         },
+  --       },
+  --     })
+  --     vim.keymap.set('n', '<leader>t', ':Lspsaga outline<cr>', { desc = "Symbols outline", silent = false })
+  --   end,
+  --   dependencies = {
+  --     'nvim-treesitter/nvim-treesitter', -- optional
+  --   }
+  -- },
 
   -- {
   --   -- work with multiple cases of a word
