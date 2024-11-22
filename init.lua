@@ -719,7 +719,7 @@ vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 vim.o.foldcolumn = "1"
-vim.o.foldenable = true
+vim.o.foldenable = false
 -- vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 vim.o.foldnestmax = 1
@@ -1091,7 +1091,7 @@ vim.api.nvim_create_user_command('Jq', '%!jq', { nargs = 0 })
 
 -- grep program {{{
 if vim.fn.executable('rg') == 1 then
-  vim.o.grepprg = 'rg --hidden --vimgrep'
+  vim.o.grepprg = 'rg --hidden --glob "!.git" --glob "!.venv" --vimgrep'
   vim.o.grepformat = '%f:%l:%c:%m'
 end
 -- }}}
