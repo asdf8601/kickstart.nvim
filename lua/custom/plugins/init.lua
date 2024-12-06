@@ -4,10 +4,12 @@
 -- See the kickstart.nvim README for more information
 ---@diagnostic disable: undefined-field
 local executable = function(x)
-    return vim.fn.executable(x) == 1
+  return vim.fn.executable(x) == 1
 end
 
 return {
+
+
   {
     'Bekaboo/dropbar.nvim',
     -- optional, but required for fuzzy finder support
@@ -19,7 +21,8 @@ return {
 
   {
     -- git diff view
-    'sindrets/diffview.nvim', cmd = "DiffviewOpen"
+    'sindrets/diffview.nvim',
+    cmd = "DiffviewOpen"
   },
 
   {
@@ -28,7 +31,7 @@ return {
     dependencies = {
       "stevearc/dressing.nvim", -- optional, provides sane UX
     },
-    version = "*", -- use the latest release, remove for master
+    version = "*",              -- use the latest release, remove for master
     cmd = "Yeet",
     config = function()
       require("yeet").setup({
@@ -59,7 +62,8 @@ return {
       vim.keymap.set('n', '<leader>l', require("yeet").list_cmd, { desc = "Pop command cache open" })
       vim.keymap.set('n', '<leader>yt', require("yeet").select_target, { desc = "Open target selection" })
       vim.keymap.set('n', '\\\\', require("yeet").execute, { desc = "Yeet at something" })
-      vim.keymap.set('n', '<leader>yo', require("yeet").toggle_post_write, { desc = "Toggle autocommand for yeeting after write" })
+      vim.keymap.set('n', '<leader>yo', require("yeet").toggle_post_write,
+        { desc = "Toggle autocommand for yeeting after write" })
       vim.keymap.set('n', '<leader>\\', function()
         require("yeet").execute(nil, { clear_before_yeet = false, interrupt_before_yeet = true })
       end, { desc = "Run command without clearing terminal" })
@@ -82,30 +86,33 @@ return {
     build = "make",
     -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
     dependencies = {
+
       "nvim-treesitter/nvim-treesitter",
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
       --- The below dependencies are optional,
       "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-      "zbirenbaum/copilot.lua", -- for providers='copilot'
-      {
-        -- support for image pasting
-        "HakonHarnes/img-clip.nvim",
-        event = "VeryLazy",
-        opts = {
-          -- recommended settings
-          default = {
-            embed_image_as_base64 = false,
-            prompt_for_file_name = false,
-            drag_and_drop = {
-              insert_mode = true,
-            },
-            -- required for Windows users
-            use_absolute_path = true,
-          },
-        },
-      },
+      "zbirenbaum/copilot.lua",      -- for providers='copilot'
+
+      -- {
+      --   -- support for image pasting
+      --   "HakonHarnes/img-clip.nvim",
+      --   event = "VeryLazy",
+      --   opts = {
+      --     -- recommended settings
+      --     default = {
+      --       embed_image_as_base64 = false,
+      --       prompt_for_file_name = false,
+      --       drag_and_drop = {
+      --         insert_mode = true,
+      --       },
+      --       -- required for Windows users
+      --       use_absolute_path = true,
+      --     },
+      --   },
+      -- },
+
       {
         -- Make sure to set this up properly if you have lazy=true
         'MeanderingProgrammer/render-markdown.nvim',
@@ -148,7 +155,7 @@ return {
   {
     -- hide key value pairs
     'laytan/cloak.nvim',
-    config=function()
+    config = function()
       require('cloak').setup({
         enabled = true,
         cloak_character = '*',
@@ -158,8 +165,8 @@ return {
         cloak_telescope = true,
         patterns = {
           {
-            file_pattern = {'.autoenv', '.env*'},
-            cloak_pattern = 'TOKEN=.+',
+            file_pattern = { '.autoenv', '.env*' },
+            cloak_pattern = '.*TOKEN.*=.+',
             replace = nil,
           },
         },
@@ -169,20 +176,23 @@ return {
 
   {
     'nvim-pack/nvim-spectre',
-    config=function ()
+    config = function()
       require('spectre').setup()
       vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', { desc = "Toggle Spectre" })
-      vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', { desc = "Search current word" })
-      vim.keymap.set('v', '<leader>sw', '<esc><cmd>lua require("spectre").open_visual()<CR>', { desc = "Search current word" })
-      vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', { desc = "Search on current file" })
+      vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>',
+        { desc = "Search current word" })
+      vim.keymap.set('v', '<leader>sw', '<esc><cmd>lua require("spectre").open_visual()<CR>',
+        { desc = "Search current word" })
+      vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>',
+        { desc = "Search on current file" })
     end,
 
-    dependencies = {'nvim-lua/plenary.nvim'}
+    dependencies = { 'nvim-lua/plenary.nvim' }
   },
 
   {
     'ishan9299/modus-theme-vim',
-    config = function ()
+    config = function()
       vim.g.modus_yellow_comments = 0
       vim.g.modus_green_strings = 0
       vim.g.modus_faint_syntax = 0
@@ -195,13 +205,13 @@ return {
   {
     "miikanissi/modus-themes.nvim",
     priority = 1000,
-    config = function ()
+    config = function()
       require("modus-themes").setup({
         -- Theme comes in two styles `modus_operandi` and `modus_vivendi`
         -- `auto` will automatically set style based on background set with vim.o.background
         style = "modus_vivendi",
-        variant = "tinted", -- Theme comes in four variants `default`, `tinted`, `deuteranopia`, and `tritanopia`
-        transparent = true, -- Transparent background (as supported by the terminal)
+        variant = "tinted",   -- Theme comes in four variants `default`, `tinted`, `deuteranopia`, and `tritanopia`
+        transparent = true,   -- Transparent background (as supported by the terminal)
         dim_inactive = false, -- "non-current" windows are dimmed
         styles = {
           -- Style to be applied to different syntax groups
@@ -212,7 +222,7 @@ return {
           variables = {},
         },
         on_colors = function(colors)
-            colors.error = colors.red_faint
+          colors.error = colors.red_faint
         end,
         on_highlights = function(hl, c)
         end,
@@ -230,7 +240,7 @@ return {
         config = function() vim.g.unception_block_while_host_edits = true end
       },
     },
-    config = function ()
+    config = function()
       require("gist").setup({
         private = false, -- All gists will be private, you won't be prompted again
         clipboard = "+", -- The registry to use for copying the Gist URL
@@ -241,15 +251,13 @@ return {
           }
         }
       })
-
     end
   },
 
   {
     "robitx/gp.nvim",
     lazy = false,
-    config = function()
-
+    init = function()
       require("gp").setup({
         providers = {
           ollama = {
@@ -273,14 +281,14 @@ return {
             model = { model = "gpt-4o", temperature = 1.1, top_p = 1 },
             -- system prompt (use this to specify the persona/role of the AI)
             system_prompt = "You are a general AI assistant.\n\n"
-              .. "The user provided the additional info about how they would like you to respond:\n\n"
-              .. "- If you're unsure don't guess and say you don't know instead.\n"
-              .. "- Ask question if you need clarification to provide better answer.\n"
-              .. "- Think deeply and carefully from first principles step by step.\n"
-              .. "- Zoom out first to see the big picture and then zoom in to details.\n"
-              .. "- Use Socratic method to improve your thinking and coding skills.\n"
-              .. "- Don't elide any code from your output if the answer requires coding.\n"
-              .. "- Take a deep breath; You've got this! Be extremely concise.\n",
+                         .. "The user provided the additional info about how they would like you to respond:\n\n"
+                         .. "- If you're unsure don't guess and say you don't know instead.\n"
+                         .. "- Ask question if you need clarification to provide better answer.\n"
+                         .. "- Think deeply and carefully from first principles step by step.\n"
+                         .. "- Zoom out first to see the big picture and then zoom in to details.\n"
+                         .. "- Use Socratic method to improve your thinking and coding skills.\n"
+                         .. "- Don't elide any code from your output if the answer requires coding.\n"
+                         .. "- Take a deep breath; You've got this! Be extremely concise.\n",
           },
           {
             name = "ChatGPT3-5",
@@ -290,14 +298,14 @@ return {
             model = { model = "gpt-3.5-turbo", temperature = 1.1, top_p = 1 },
             -- system prompt (use this to specify the persona/role of the AI)
             system_prompt = "You are a general AI assistant.\n\n"
-              .. "The user provided the additional info about how they would like you to respond:\n\n"
-              .. "- If you're unsure don't guess and say you don't know instead.\n"
-              .. "- Ask question if you need clarification to provide better answer.\n"
-              .. "- Think deeply and carefully from first principles step by step.\n"
-              .. "- Zoom out first to see the big picture and then zoom in to details.\n"
-              .. "- Use Socratic method to improve your thinking and coding skills.\n"
-              .. "- Don't elide any code from your output if the answer requires coding.\n"
-              .. "- Take a deep breath; You've got this!\n",
+                         .. "The user provided the additional info about how they would like you to respond:\n\n"
+                         .. "- If you're unsure don't guess and say you don't know instead.\n"
+                         .. "- Ask question if you need clarification to provide better answer.\n"
+                         .. "- Think deeply and carefully from first principles step by step.\n"
+                         .. "- Zoom out first to see the big picture and then zoom in to details.\n"
+                         .. "- Use Socratic method to improve your thinking and coding skills.\n"
+                         .. "- Don't elide any code from your output if the answer requires coding.\n"
+                         .. "- Take a deep breath; You've got this!\n",
           },
           {
             name = "CodeGPT4",
@@ -307,8 +315,8 @@ return {
             model = { model = "gpt-4o", temperature = 0.8, top_p = 1 },
             -- system prompt (use this to specify the persona/role of the AI)
             system_prompt = "You are an AI working as a code editor.\n\n"
-              .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
-              .. "START AND END YOUR ANSWER WITH:\n\n```",
+                          .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
+                          .. "START AND END YOUR ANSWER WITH:\n\n```",
           },
           {
             name = "CodeGPT3-5",
@@ -318,14 +326,115 @@ return {
             model = { model = "gpt-3.5-turbo", temperature = 0.8, top_p = 1 },
             -- system prompt (use this to specify the persona/role of the AI)
             system_prompt = "You are an AI working as a code editor.\n\n"
-              .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
-              .. "START AND END YOUR ANSWER WITH:\n\n```",
+                         .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
+                         .. "START AND END YOUR ANSWER WITH:\n\n```",
           },
+
+        },
+
+        hooks = {
+
+          -- GpInspectPlugin provides a detailed inspection of the plugin state
+          InspectPlugin = function(plugin, params)
+            local bufnr = vim.api.nvim_create_buf(false, true)
+            local copy = vim.deepcopy(plugin)
+            local key = copy.config.openai_api_key or ""
+            copy.config.openai_api_key = key:sub(1, 3) .. string.rep("*", #key - 6) .. key:sub(-3)
+            local plugin_info = string.format("Plugin structure:\n%s", vim.inspect(copy))
+            local params_info = string.format("Command params:\n%s", vim.inspect(params))
+            local lines = vim.split(plugin_info .. "\n" .. params_info, "\n")
+            vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+            vim.api.nvim_win_set_buf(0, bufnr)
+          end,
+
+          -- GpInspectLog for checking the log file
+          InspectLog = function(plugin, _)
+            local log_file = plugin.config.log_file
+            local buffer = plugin.helpers.get_buffer(log_file)
+            if not buffer then
+              vim.cmd("e " .. log_file)
+            else
+              vim.cmd("buffer " .. buffer)
+            end
+          end,
+
+          -- GpImplement rewrites the provided selection/range based on comments in it
+          Implement = function(gp, params)
+            local template = "Having following from {{filename}}:\n\n"
+                          .. "```{{filetype}}\n{{selection}}\n```\n\n"
+                          .. "Please rewrite this according to the contained instructions."
+                          .. "\n\nRespond exclusively with the snippet that should replace the selection above."
+
+            local agent = gp.get_command_agent()
+            gp.logger.info("Implementing selection with agent: " .. agent.name)
+
+            gp.Prompt(
+              params,
+              gp.Target.rewrite,
+              agent,
+              template,
+              nil, -- command will run directly without any prompting for user input
+              nil  -- no predefined instructions (e.g. speech-to-text from Whisper)
+            )
+          end,
+
+          -- your own functions can go here, see README for more examples like
+          -- :GpExplain, :GpUnitTests.., :GpTranslator etc.
+
+          -- example of making :%GpChatNew a dedicated command which
+          -- opens new chat with the entire current buffer as a context
+          BufferChatNew = function(gp, _)
+            -- call GpChatNew command in range mode on whole buffer
+            vim.api.nvim_command("%" .. gp.config.cmd_prefix .. "ChatNew")
+          end,
+
+          -- example of adding command which opens new chat dedicated for translation
+          Translator = function(gp, params)
+            local chat_system_prompt = "You are a Translator, please translate between English and Chinese."
+            gp.cmd.ChatNew(params, chat_system_prompt)
+            -- you can also create a chat with a specific fixed agent like this:
+            -- local agent = gp.get_chat_agent("ChatGPT4o")
+            -- gp.cmd.ChatNew(params, chat_system_prompt, agent)
+          end,
+
+          -- example of adding command which writes unit tests for the selected code
+          UnitTests = function(gp, params)
+            local template = "I have the following code from {{filename}}:\n\n"
+                          .. "```{{filetype}}\n{{selection}}\n```\n\n"
+                          .. "Please respond by writing table driven unit tests for the code above."
+            local agent = gp.get_command_agent()
+            gp.Prompt(params, gp.Target.enew, agent, template)
+          end,
+
+          -- example of adding command which explains the selected code
+          Explain = function(gp, params)
+            local template = "I have the following code from {{filename}}:\n\n"
+                          .. "```{{filetype}}\n{{selection}}\n```\n\n"
+                          .. "Please respond by explaining the code above."
+            local agent = gp.get_chat_agent()
+            gp.Prompt(params, gp.Target.popup, agent, template)
+          end,
+
+          CodeReview = function(gp, params)
+            local template = "I have the following code from {{filename}}:\n\n"
+                          .. "```{{filetype}}\n{{selection}}\n```\n\n"
+                          .. "Please analyze for code smells and suggest improvements."
+            local agent = gp.get_chat_agent()
+            gp.Prompt(params, gp.Target.enew("markdown"), agent, template)
+          end,
 
         },
       })
       -- https://github.com/Robitx/gp.nvim?tab=readme-ov-file#4-configuration
     end,
+  },
+
+  {
+    -- A task runner and job management plugin for Neovim
+    -- https://github.com/stevearc/overseer.nvim
+    'stevearc/overseer.nvim',
+    opts = {},
+    event = "VeryLazy",
   },
 
   {
@@ -485,7 +594,7 @@ return {
     }
   },
   'tpope/vim-obsession',
-  'tpope/vim-repeat',     -- better repeat
+  'tpope/vim-repeat', -- better repeat
   'tpope/vim-speeddating',
   {
     -- better netrw
@@ -498,7 +607,7 @@ return {
 
   {
     'goerz/jupytext.vim',
-    config=function ()
+    config = function()
       vim.g.jupytext_fmt = 'py:percent'
     end
   },
@@ -576,7 +685,7 @@ return {
               enable = true,
               ---@see https://curl.se/libcurl/c/curl_easy_getinfo.html
               stats = {
-                { "total_time", title = "Time taken:" },
+                { "total_time",      title = "Time taken:" },
                 { "size_download_t", title = "Download size:" },
               },
             },
@@ -590,10 +699,10 @@ return {
                   "tidy",
                   "-i",
                   "-q",
-                  "--tidy-mark",      "no",
+                  "--tidy-mark", "no",
                   "--show-body-only", "auto",
-                  "--show-errors",    "0",
-                  "--show-warnings",  "0",
+                  "--show-errors", "0",
+                  "--show-warnings", "0",
                   "-",
                 }, body):gsub("\n$", "")
 
@@ -643,16 +752,21 @@ return {
             -- python = ".venv/bin/python",
 
           }),
-        -- log_level = vim.log.levels.DEBUG,
+          -- log_level = vim.log.levels.DEBUG,
         }
       })
     end,
-    config = function ()
-      vim.keymap.set('n', '<leader>tn', function() require("neotest").run.run() end, { noremap = true, desc = 'Run nearest test' })
-      vim.keymap.set('n', '<leader>tf', function() require("neotest").run.run(vim.fn.expand("%")) end, { noremap = true, desc = 'Run current file tests' })
-      vim.keymap.set('n', '<leader>to', function() require("neotest").output_panel.toggle() end, { noremap = true, desc = 'Toggle output panel' })
-      vim.keymap.set('n', '<leader>tl', function() require("neotest").run.run_last() end, { noremap = true, desc = 'Run last test' })
-      vim.keymap.set('n', '<leader>td', function() require("neotest").run.run({ strategy = "dap" }) end, { noremap = true, desc = 'Run test debug mode' })
+    config = function()
+      vim.keymap.set('n', '<leader>tn', function() require("neotest").run.run() end,
+        { noremap = true, desc = 'Run nearest test' })
+      vim.keymap.set('n', '<leader>tf', function() require("neotest").run.run(vim.fn.expand("%")) end,
+        { noremap = true, desc = 'Run current file tests' })
+      vim.keymap.set('n', '<leader>to', function() require("neotest").output_panel.toggle() end,
+        { noremap = true, desc = 'Toggle output panel' })
+      vim.keymap.set('n', '<leader>tl', function() require("neotest").run.run_last() end,
+        { noremap = true, desc = 'Run last test' })
+      vim.keymap.set('n', '<leader>td', function() require("neotest").run.run({ strategy = "dap" }) end,
+        { noremap = true, desc = 'Run test debug mode' })
     end
   },
 
@@ -706,7 +820,8 @@ return {
         },
       })
       local dap = require('dap')
-      vim.keymap.set('n', '<leader>B', function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end, { noremap = true, desc = 'dap set breakpoint condition' })
+      vim.keymap.set('n', '<leader>B', function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
+        { noremap = true, desc = 'dap set breakpoint condition' })
       vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { noremap = true, desc = 'dap toggle breakpoint' })
       vim.keymap.set('n', '<leader>dc', dap.continue, { noremap = true, desc = 'dap continue' })
       vim.keymap.set('n', '<leader>dh', dap.step_out, { noremap = true, desc = 'dap step out ←' })

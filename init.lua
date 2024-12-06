@@ -15,6 +15,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
+
   {
     -- resize window automatically
     "nvim-focus/focus.nvim",
@@ -95,7 +96,22 @@ require('lazy').setup({
   --   end,
   -- },
 
-  { 'mbbill/undotree', },
+  {
+    'mbbill/undotree',
+    init = function()
+      vim.keymap.set('n', '<leader>u', ':UndotreeToggle<CR>', { noremap = true, desc = "Open/close UndoTree" })
+    end,
+  },
+
+  {
+    "monkoose/neocodeium",
+    event = "VeryLazy",
+    config = function()
+      local neocodeium = require("neocodeium")
+      neocodeium.setup()
+      vim.keymap.set("i", "<A-f>", neocodeium.accept)
+    end,
+  },
 
   -- {
   --   "Exafunction/codeium.nvim",
@@ -252,27 +268,26 @@ require('lazy').setup({
               variables = {},
             },
           },
+          arduino_language_server = {},
           astro = {},
-          ruff_lsp = {},
-          pyright = {},
           bashls = {},
+          clangd = {},
           dockerls = {},
           efm = {},
-          gopls = {},
           golangci_lint_ls = {},
+          gopls = {},
+          html = { filetypes = { 'html', 'twig', 'hbs' } },
           jsonls = {},
-          clangd = {},
+          lua_ls = { Lua = { workspace = { checkThirdParty = false }, telemetry = { enable = false }, }, },
+          pyright = {},
+          ruff = {},
           rust_analyzer = {},
+          sqls = {},
+          taplo = {},
           terraformls = {},
           tflint = {},
-          html = { filetypes = { 'html', 'twig', 'hbs' } },
-          arduino_language_server = {},
-          lua_ls = {
-            Lua = {
-              workspace = { checkThirdParty = false },
-              telemetry = { enable = false },
-            },
-          },
+          ts_ls = {},
+          yamlls = {},
         }
 
         -- Setup neovim lua configuration
@@ -353,9 +368,10 @@ require('lazy').setup({
     --   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
     --   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
     -- })
-    end
 
+    end
   },
+
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -561,18 +577,18 @@ require('lazy').setup({
     end,
   },
 
-  {
-    -- Set lualine as statusline
-    'nvim-lualine/lualine.nvim',
-    -- See `:help lualine.txt`
-    opts = {
-      options = {
-        icons_enabled = true,
-        component_separators = '|',
-        section_separators = '',
-      },
-    },
-  },
+  -- {
+  --   -- Set lualine as statusline
+  --   'nvim-lualine/lualine.nvim',
+  --   -- See `:help lualine.txt`
+  --   opts = {
+  --     options = {
+  --       icons_enabled = true,
+  --       component_separators = '|',
+  --       section_separators = '',
+  --     },
+  --   },
+  -- },
 
   {
     -- Add indentation guides even on blank lines
@@ -805,7 +821,8 @@ function UseZsh()
   end
 end
 
-UseZsh()
+-- TODO: why is this needed?
+-- UseZsh()
 -- }}}
 
 vim.opt.splitright = true
@@ -845,6 +862,7 @@ vim.g.netrw_winsize = 20
 vim.opt.laststatus = 3
 -- }}}
 
+-- [[keymaps]] {{{
 -- [[ fugitive ]] {{{
 vim.keymap.set("n", "<leader>w", ":Git<cr>", { noremap = true, desc = "Open Git status" })
 vim.keymap.set("n", "<leader>W", ":tab Git<cr>", { noremap = true, desc = "Open Git status in a new tab" })
@@ -893,57 +911,64 @@ function AddPdbrc()
 end
 -- }}}
 
--- keymaps
--- {{{
 vim.keymap.set('n', 'bp', AddPdbrc, { noremap = true, silent = true, desc = 'Add pdbrc' })
 
-vim.keymap.set('i', 'kj', '<esc>', { noremap = true, silent = true })
-vim.keymap.set('i', 'jk', '<esc>', { noremap = true, silent = true })
+-- escape
+vim.keymap.set('i' , 'kj' , '<esc>'      , { noremap = true , silent = true, desc = 'Exit insert mode with kj' })
+vim.keymap.set('i' , 'jk' , '<esc>'      , { noremap = true , silent = true, desc = 'Exit insert mode with jk' })
 
--- shebang
+-- This doesn't work as expected
+-- vim.keymap.set('t' , 'jk' , '<esc><esc>' , { noremap = true , silent = true, desc = 'Exit terminal mode with jk' })
+-- vim.keymap.set('t' , 'kj' , '<esc><esc>' , { noremap = true , silent = true, desc = 'Exit terminal mode with kj' })
+
+
+-- [shebang]
 vim.keymap.set('n', '<leader>sh', ":0<cr>O#!/usr/bin/env bash<esc><C-o>", { desc = 'Add shebang' })
 
--- commands
-vim.keymap.set('n', 'sh', ':.!sh ', { noremap = true, desc = 'Fill command to execute sh using current line' })
-vim.keymap.set('n', '<c-s><c-l>', ':!<C-R><C-L>',
-  { noremap = true, desc = 'Fill command to execute sh using current line' })
-vim.keymap.set('n', '<c-s><c-s>', ':.!sh<cr>', { noremap = true, desc = 'Execute sh current line' })
+-- [commands]
+-- TODO: see if I stil need this
+-- vim.keymap.set('n' , 'sh'         , ':.!sh '       , { noremap = true , desc = 'Fill neovims command to execute sh using current line' })
+-- vim.keymap.set('n' , '<c-s><c-l>' , ':!<C-R><C-L>' , { noremap = true , desc = 'Fill neovims command with bang + current line' })
+vim.keymap.set('n' , '<C-s><C-s>' , ':.!sh<cr>'    , { noremap = true , desc = 'Send current line to sh and REPLACE with the output' })
+vim.keymap.set('v' , '<C-s><C-s>' , ':!sh<cr>'     , { noremap = true , desc = 'Send selection to sh and REPLACE with the output' })
+vim.keymap.set('n' , '<C-w><C-h>' , ':.w !sh<cr>'  , { noremap = true , desc = 'Send current line to sh and show the output' })
+vim.keymap.set('v' , '<C-w><C-h>' , ':w !sh<cr>'   , { noremap = true , desc = 'Send selection to sh and show the output' })
 
 -- Explore
 -- vim.keymap.set('n', '-', ':Ex<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
 vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
 
 -- paste / yank / copy
-vim.keymap.set('n', '<leader>0', '"0p', { desc = "Paste from register 0", silent = false })
-vim.keymap.set('n', '<leader>1', '"1p', { desc = "Paste from register 1", silent = false })
-vim.keymap.set("v", "<C-c>", "\"0y", { noremap = true, desc = 'yank to clipboard' })
-vim.keymap.set("n", "<C-c>", "\"0yy", { noremap = true, desc = 'yank to clipboard' })
-vim.keymap.set('n', '<C-v><C-v>', '"0p', { desc = 'Paste 0 register' })
-vim.keymap.set('i', '<C-v>', '<C-r>0', { desc = 'Paste 0 register' })
-vim.keymap.set('n', '<leader>p', '"+p', { desc = 'Paste clipboard register' })
-vim.keymap.set('v', '<leader>p', '"+p', { desc = 'Paste clipboard register' })
-vim.keymap.set('n', '<leader>y', '"+yy', { noremap = true, desc = 'copy to system clipboard' })
-vim.keymap.set('v', '<leader>y', '"+y', { noremap = true, desc = 'copy to system clipboard' })
-vim.keymap.set('n', '<leader>yf', ':let @+ = expand("%:p")<cr>', { noremap = true, desc = 'yank filename/buffer path' })
+vim.keymap.set('n' , '<leader>0'  , '"0p'                         , { desc = "Paste from register 0" , silent = false })
+vim.keymap.set('n' , '<leader>9'  , '"1p'                         , { desc = "Paste from register 1" , silent = false })
+vim.keymap.set('n' , '<leader>p'  , '"+p'                         , { desc = 'Paste clipboard register' })
+vim.keymap.set('v' , '<leader>p'  , '"+p'                         , { desc = 'Paste clipboard register' })
+vim.keymap.set('n' , '<leader>y'  , '"+yy'                        , { noremap = true                 , desc = 'copy to system clipboard' })
+vim.keymap.set('v' , '<leader>y'  , '"+y'                         , { noremap = true                 , desc = 'copy to system clipboard' })
+vim.keymap.set('n' , '<leader>yf' , ':let @+ = expand("%:p")<cr>' , { noremap = true                 , desc = 'yank filename path'})
 
--- reload
-vim.keymap.set('n', '<leader><cr>', ':source ~/.config/nvim/init.lua<cr>', { noremap = true })
-vim.keymap.set('n', '<leader>rc', ':vnew ~/.config/nvim/init.lua<cr>', { noremap = true })
+-- [reload]
+vim.keymap.set('n' , '<leader><cr>' , ':source ~/.config/nvim/init.lua<cr>' , { noremap = true })
+vim.keymap.set('n' , '<leader>rc'   , ':vnew ~/.config/nvim/init.lua<cr>'   , { noremap = true })
 
 
 -- replace in all file
+-- vim.keymap.set('n', '<leader>s', ':s/<C-r><C-w>/<C-r><C-w>/gI<left><left><left>', { noremap = true, desc = 'search and replace word under cursor' })
 vim.keymap.set('n', '<leader>s', ':%s/<C-r><C-w>/<C-r><C-w>/gI<left><left><left>', { noremap = true, desc = 'search and replace word under cursor' })
--- vim.keymap.set('n', 'gs', ':%s//g<left><left>', {noremap = true, desc = 'search and replace' })
 vim.keymap.set("n", "<leader>gw", ":grep '<C-R><C-W>'", { desc = "Find word using grep command" })
 
-vim.keymap.set('i', '<C-J>', '<esc>:.m+1 | startinsert<cr>', { noremap = true, desc = 'move line down' })
-vim.keymap.set('i', '<C-K>', '<esc>:.m-2 | startinsert<cr>', { noremap = true, desc = 'move line up' })
+-- [move line]
+vim.keymap.set('i' , '<C-k>'     , '<esc>:.m-2 | startinsert<cr>' , { noremap = true , desc = 'move line up' })
+vim.keymap.set('i' , '<C-j>'     , '<esc>:.m+1 | startinsert<cr>' , { noremap = true , desc = 'move line down' })
+vim.keymap.set('n' , '<leader>k' , ':m .-2<cr>=='                 , { noremap = true , desc = 'move line up' })
+vim.keymap.set('n' , '<leader>j' , ':m .+1<cr>=='                 , { noremap = true , desc = 'move line down' })
 
-vim.keymap.set('n', '<leader>k', ':m .-2<cr>==', { noremap = true, desc = 'move line up' })
-vim.keymap.set('n', '<leader>j', ':m .+1<cr>==', { noremap = true, desc = 'move line down' })
-
+-- [quickfix]
+vim.keymap.set('n', '<leader>on', ':copen<cr>', { noremap = true, desc = 'open quickfix' })
 vim.keymap.set('n', '<leader>cn', ':cnext<cr>', { noremap = true, desc = 'next error' })
 vim.keymap.set('n', '<leader>cp', ':cprev<cr>', { noremap = true, desc = 'previous error' })
+
+
 -- }}}
 
 
@@ -972,10 +997,6 @@ augroup end
 -- vim.keymap.set("n", "<leader>tv", ":!terraform validate<CR>", { noremap = true, desc = "Terraform validate" })
 -- vim.keymap.set("n", "<leader>tp", ":!terraform plan<CR>", { noremap = true, desc = "Terraform plan" })
 -- vim.keymap.set("n", "<leader>taa", ":!terraform apply -auto-approve<CR>", { noremap = true, desc = "Terraform apply auto approve" })
-
-require('lspconfig').terraformls.setup({})
-require('lspconfig').tflint.setup({})
-require("lspconfig").astro.setup({})
 -- }}}
 
 
@@ -996,15 +1017,15 @@ if vim.fn.has('mac') == 1 then
   vim.cmd([[
     augroup macos
       autocmd!
-      autocmd BufWritePost yabairc silent !yabai --restart-service
-      autocmd BufWritePost skhdrc silent !skhd --restart-service
+      autocmd BufWritePost yabairc !yabai --restart-service
+      autocmd BufWritePost skhdrc !skhd --restart-service
     augroup END
   ]])
 end
 
 -- }}}
 
-vim.api.nvim_create_user_command('PushAirflow', '!gsutil cp -r % gs://europe-west1-data-cloud-com-831c7a66-bucket/%', {})
+vim.api.nvim_create_user_command('AirflowCp', '!gsutil cp -r % gs://europe-west1-data-cloud-com-831c7a66-bucket/%', {})
 
 -- [[ Setting options ]] {{{
 if vim.fn.has('mac') == 1 then
@@ -1021,7 +1042,7 @@ vim.g.gist_clip_command = 'xclip -selection clipboard'
 vim.g.gist_detect_filetype = 1
 vim.g.gist_open_browser_after_post = 1
 vim.g.gist_show_privates = 1
-vim.g.gist_user = "mmngreco"
+vim.g.gist_user = "asdf8601"
 vim.g.gist_token = os.getenv('GH_GIST_TOKEN')
 -- }}}
 
@@ -1048,23 +1069,26 @@ vim.keymap.set('n', '<leader>dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>',
 -- vim.keymap.set('v', '<leader>sf', ':!sqlformat  -k upper -r --indent_after_first --indent_columns -<cr>', { noremap = true })
 vim.keymap.set('v', '<leader>sf', ':!sqlfmt -<cr>', { noremap = true })
 
-vim.keymap.set('n', '<leader>tu', 'yypvawr-', { noremap = true, desc = 'underline word under cursor' })
-vim.keymap.set('n', '<leader>tx', ':s/\\[\\s\\?\\]/[x]/<cr>', { noremap = true, desc = 'check a box in markdown' })
-vim.keymap.set('n', '<leader>t<space>', ':s/\\[x\\]/[ ]/<cr>', { noremap = true, desc = 'uncheck a box in markdown' })
-vim.keymap.set('n', '<leader>/', '/<C-r><C-w>', { desc = '[S]earch [R]esume' })
+-- [markdown]
+vim.keymap.set('n' , '<leader>tu'       , 'yypVr-'                   , { noremap = true , desc = 'underline word under cursor' })
+vim.keymap.set('n' , '<leader>tx'       , ':s/\\[\\s\\?\\]/[x]/<cr>' , { noremap = true , desc = 'check a box in markdown' })
+vim.keymap.set('n' , '<leader>t<space>' , ':s/\\[x\\]/[ ]/<cr>'      , { noremap = true , desc = 'uncheck a box in markdown' })
+vim.keymap.set('n' , '<leader>ta'       , 'I- [ ] <esc>'             , { noremap = true , desc = 'append empty checkbox in markdown' })
+vim.keymap.set('n' , '<leader>m'        , ':MaximizerToggle<cr>'     , { noremap = true , desc = 'Maximize current window' })
 
-vim.keymap.set('n', '<leader>ta', 'I- [ ] <esc>', { noremap = true, desc = 'append empty checkbox in markdown' })
-vim.keymap.set('n', '<leader>m', ':MaximizerToggle<cr>', { noremap = true, desc = 'Maximize current window' })
+vim.keymap.set('n', '<leader>/', '/<C-r><C-w>', { desc = '[S]earch [R]esume' })
 
 vim.keymap.set('n', '<leader>zz', '<cmd>ZenMode<cr>', { noremap = true, desc = 'ZenMode toggle' })
 vim.keymap.set("v", "<leader>h", ":<c-u>HSHighlight 2<cr>", { noremap = true, desc = 'high-str' })
 -- vim.keymap.set("n", "<leader>h", ":<c-u>HSHighlight 2<cr>", {noremap = true, desc = 'high-str'})
 
 -- add python cells {{{
-vim.keymap.set('n', '<leader>co', 'O%%<esc>:norm gcc<cr>j', { noremap = true, desc = 'Insert a cell comment above the current line' })
-vim.keymap.set('n', '<leader>cO', 'o%%<esc>:norm gcc<cr>k', { noremap = true, desc = 'Insert a cell comment below the current line' })
-vim.keymap.set('n', '<leader>c-', 'O<esc>77i-<esc>:norm gcc<cr>j', { noremap = true, desc = 'Insert a horizontal line of dashes above the current line' })
-vim.keymap.set('n', 'vic', 'V?%%<cr>o/%%<cr>koj', { noremap = true, desc = 'Visually select a cell and insert a comment before and after it' })
+vim.keymap.set('n', '<leader>cO', 'O%%<esc>:norm gcc<cr>j', { noremap = true, desc = 'Insert a cell comment above the current line' })
+vim.keymap.set('n', '<leader>co', 'o%%<esc>:norm gcc<cr>k', { noremap = true, desc = 'Insert a cell comment below the current line' })
+
+vim.keymap.set('n', '<leader>c-', 'O<esc>80i-<esc>:norm gcc<cr>j', { noremap = true, desc = 'Insert a horizontal line of dashes above the current line' })
+-- vim.keymap.set('n', 'vic', 'V?%%<cr>o/%%<cr>koj', { noremap = true, desc = 'Visually select a cell and insert a comment before and after it' })
+
 -- }}}
 
 
@@ -1099,53 +1123,53 @@ end
 
 
 -- [[ autocomands ]] {{{
-local mmngreco = vim.api.nvim_create_augroup('mmngreco', { clear = true })
-vim.api.nvim_create_autocmd('BufWritePre', { group = mmngreco, pattern = '*', command = '%s/\\s\\+$//e' })
--- vim.api.nvim_create_autocmd('BufWritePre', { group = mmngreco, pattern = '*.go', command = 'GoFmt' })
--- vim.api.nvim_create_autocmd('BufEnter', { group = mmngreco, pattern = '*.dbout', command = 'norm zR' })
-vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'markdown', command = 'setl conceallevel=2 spl=en,es | TSBufDisable highlight' })
-vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'make', command = 'setl noexpandtab shiftwidth=4 softtabstop=0' })
-vim.api.nvim_create_autocmd('TermOpen', { group = mmngreco, pattern = '*', command = 'setl nonumber norelativenumber' })
-vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'fugitive', command = 'setl nonumber norelativenumber' })
-vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'python', command = 'nnoremap <buffer> <F8> :!black -l79 -S %<CR><CR>' })
-vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'python', command = 'nnoremap <buffer> <F7> :!ruff -l79 %<CR><CR>' })
-vim.api.nvim_create_autocmd({ 'BufEnter', 'BufRead' }, { group = mmngreco, pattern = 'Jenkinsfile', command = 'setl ft=groovy' })
-vim.api.nvim_create_autocmd({ 'BufEnter', 'BufRead' }, { group = mmngreco, pattern = '*.astro', command = 'set ft=astro' })
-vim.api.nvim_create_autocmd({ 'BufEnter', 'BufRead' }, { group = mmngreco, pattern = 'requirements*.txt', command = 'setl ft=requirements' })
-
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
+ASDF8601 = augroup('ASDF8601', { clear = true })
+
+autocmd('BufWritePre', { group = ASDF8601, pattern = '*', command = '%s/\\s\\+$//e' })
+autocmd('FileType', { group = ASDF8601, pattern = 'markdown', command = 'setl conceallevel=2 spl=en,es | TSBufDisable highlight' })
+autocmd('FileType', { group = ASDF8601, pattern = 'make', command = 'setl noexpandtab shiftwidth=4 softtabstop=0' })
+autocmd('TermOpen', { group = ASDF8601, pattern = '*', command = 'setl nonumber norelativenumber' })
+autocmd('FileType', { group = ASDF8601, pattern = 'fugitive', command = 'setl nonumber norelativenumber' })
+autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F8> :!black -l80 -S %<CR><CR>' })
+autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F7> :!ruff -l80 %<CR><CR>' })
+autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'Jenkinsfile', command = 'setl ft=groovy' })
+autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = '*.astro', command = 'set ft=astro' })
+autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'requirements*.txt', command = 'setl ft=requirements' })
+autocmd('FileType', { group = ASDF8601, pattern = 'qf', callback = function() vim.keymap.set('n', 'q', ':cclose<cr>', { desc = 'close quickfix', buffer = true }) end })
+
 
 -- local yank_group = augroup('HighlightYank', {})
-Mgreco = augroup('mgreco', {})
 autocmd({ "BufWritePre" }, {
-  group = Mgreco,
+  group = ASDF8601,
   pattern = "*",
   command = "%s/\\s\\+$//e",
 })
 
 autocmd({ 'FileType' }, {
-  group = Mgreco,
+  group = ASDF8601,
   pattern = "dbui",
   command = "nmap <buffer> <leader>w <Plug>(DBUI_SaveQuery)",
 })
+
 vim.keymap.set('n', '<leader>sq', '<Plug>(DBUI_SaveQuery)', { noremap = true })
 
 autocmd({ 'FileType' }, {
-  group = Mgreco,
+  group = ASDF8601,
   pattern = "markdown",
   command = "normal zR",
 })
 
 
 autocmd({ 'FileType' }, {
-  group = Mgreco,
+  group = ASDF8601,
   pattern = "dbui",
   command = "setl nonumber norelativenumber",
 })
 
 autocmd({ 'BufWritePost' }, {
-  group = Mgreco,
+  group = ASDF8601,
   pattern = "~/.Xresources",
   command = "silent !xrdb <afile> > /dev/null",
 })
@@ -1209,7 +1233,7 @@ autocmd({'BufWritePost',}, {
 --     ]])
 --   end,
 --   group = SyncVimRC,
---   pattern = {'*/.config/nvim/*', '*/mmngreco/kickstart.nvim/*'},
+--   pattern = {'*/.config/nvim/*', '*/asdf8601/kickstart.nvim/*'},
 -- })
 -- }}}
 -- }}}
