@@ -923,7 +923,7 @@ vim.keymap.set('i' , 'jk' , '<esc>'      , { noremap = true , silent = true, des
 
 
 -- [shebang]
-vim.keymap.set('n', '<leader>sh', ":0<cr>O#!/usr/bin/env bash<esc><C-o>", { desc = 'Add shebang' })
+vim.keymap.set('n', '<leader>sh', ":mark m<cr>:0<cr>O#!/usr/bin/env bash<esc>'m:delm m<cr>", { desc = 'Add shebang line' })
 
 -- [commands]
 -- TODO: see if I stil need this
