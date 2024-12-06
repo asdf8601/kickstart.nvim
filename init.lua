@@ -451,20 +451,20 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  {
-    'folke/which-key.nvim',
-    opts = {},
-    init = function()
-      vim.opt.timeout = true
-      require("which-key").setup({
-        icons = {
-          breadcrumb = ">>",
-          separator = ">",
-          group = "+",
-        },
-      })
-    end,
-  },
+  -- {
+  --   'folke/which-key.nvim',
+  --   opts = {},
+  --   init = function()
+  --     vim.opt.timeout = true
+  --     require("which-key").setup({
+  --       icons = {
+  --         breadcrumb = ">>",
+  --         separator = ">",
+  --         group = "+",
+  --       },
+  --     })
+  --   end,
+  -- },
 
   {
     'folke/todo-comments.nvim',

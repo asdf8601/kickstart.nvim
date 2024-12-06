@@ -9,6 +9,20 @@ end
 
 return {
 
+  {
+    -- clock in neovim (pomodoro)
+    -- https://github.com/nvzone/timerly
+    "nvzone/timerly",
+    lazy=false,
+    dependencies = {
+      'nvzone/volt'
+    },
+    cmd = "TimerlyToggle",
+    config = function()
+        require('timerly').setup()
+        vim.keymap.set('n', '<leader>tc', ':TimerlyToggle<CR>', { desc = "Toggle Timerly" })
+    end,
+  },
 
   {
     'Bekaboo/dropbar.nvim',
@@ -281,14 +295,14 @@ return {
             model = { model = "gpt-4o", temperature = 1.1, top_p = 1 },
             -- system prompt (use this to specify the persona/role of the AI)
             system_prompt = "You are a general AI assistant.\n\n"
-                         .. "The user provided the additional info about how they would like you to respond:\n\n"
-                         .. "- If you're unsure don't guess and say you don't know instead.\n"
-                         .. "- Ask question if you need clarification to provide better answer.\n"
-                         .. "- Think deeply and carefully from first principles step by step.\n"
-                         .. "- Zoom out first to see the big picture and then zoom in to details.\n"
-                         .. "- Use Socratic method to improve your thinking and coding skills.\n"
-                         .. "- Don't elide any code from your output if the answer requires coding.\n"
-                         .. "- Take a deep breath; You've got this! Be extremely concise.\n",
+                .. "The user provided the additional info about how they would like you to respond:\n\n"
+                .. "- If you're unsure don't guess and say you don't know instead.\n"
+                .. "- Ask question if you need clarification to provide better answer.\n"
+                .. "- Think deeply and carefully from first principles step by step.\n"
+                .. "- Zoom out first to see the big picture and then zoom in to details.\n"
+                .. "- Use Socratic method to improve your thinking and coding skills.\n"
+                .. "- Don't elide any code from your output if the answer requires coding.\n"
+                .. "- Take a deep breath; You've got this! Be extremely concise.\n",
           },
           {
             name = "ChatGPT3-5",
@@ -298,14 +312,14 @@ return {
             model = { model = "gpt-3.5-turbo", temperature = 1.1, top_p = 1 },
             -- system prompt (use this to specify the persona/role of the AI)
             system_prompt = "You are a general AI assistant.\n\n"
-                         .. "The user provided the additional info about how they would like you to respond:\n\n"
-                         .. "- If you're unsure don't guess and say you don't know instead.\n"
-                         .. "- Ask question if you need clarification to provide better answer.\n"
-                         .. "- Think deeply and carefully from first principles step by step.\n"
-                         .. "- Zoom out first to see the big picture and then zoom in to details.\n"
-                         .. "- Use Socratic method to improve your thinking and coding skills.\n"
-                         .. "- Don't elide any code from your output if the answer requires coding.\n"
-                         .. "- Take a deep breath; You've got this!\n",
+                .. "The user provided the additional info about how they would like you to respond:\n\n"
+                .. "- If you're unsure don't guess and say you don't know instead.\n"
+                .. "- Ask question if you need clarification to provide better answer.\n"
+                .. "- Think deeply and carefully from first principles step by step.\n"
+                .. "- Zoom out first to see the big picture and then zoom in to details.\n"
+                .. "- Use Socratic method to improve your thinking and coding skills.\n"
+                .. "- Don't elide any code from your output if the answer requires coding.\n"
+                .. "- Take a deep breath; You've got this!\n",
           },
           {
             name = "CodeGPT4",
@@ -315,8 +329,8 @@ return {
             model = { model = "gpt-4o", temperature = 0.8, top_p = 1 },
             -- system prompt (use this to specify the persona/role of the AI)
             system_prompt = "You are an AI working as a code editor.\n\n"
-                          .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
-                          .. "START AND END YOUR ANSWER WITH:\n\n```",
+                .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
+                .. "START AND END YOUR ANSWER WITH:\n\n```",
           },
           {
             name = "CodeGPT3-5",
@@ -326,8 +340,8 @@ return {
             model = { model = "gpt-3.5-turbo", temperature = 0.8, top_p = 1 },
             -- system prompt (use this to specify the persona/role of the AI)
             system_prompt = "You are an AI working as a code editor.\n\n"
-                         .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
-                         .. "START AND END YOUR ANSWER WITH:\n\n```",
+                .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
+                .. "START AND END YOUR ANSWER WITH:\n\n```",
           },
 
         },
@@ -361,9 +375,9 @@ return {
           -- GpImplement rewrites the provided selection/range based on comments in it
           Implement = function(gp, params)
             local template = "Having following from {{filename}}:\n\n"
-                          .. "```{{filetype}}\n{{selection}}\n```\n\n"
-                          .. "Please rewrite this according to the contained instructions."
-                          .. "\n\nRespond exclusively with the snippet that should replace the selection above."
+                .. "```{{filetype}}\n{{selection}}\n```\n\n"
+                .. "Please rewrite this according to the contained instructions."
+                .. "\n\nRespond exclusively with the snippet that should replace the selection above."
 
             local agent = gp.get_command_agent()
             gp.logger.info("Implementing selection with agent: " .. agent.name)
@@ -400,8 +414,8 @@ return {
           -- example of adding command which writes unit tests for the selected code
           UnitTests = function(gp, params)
             local template = "I have the following code from {{filename}}:\n\n"
-                          .. "```{{filetype}}\n{{selection}}\n```\n\n"
-                          .. "Please respond by writing table driven unit tests for the code above."
+                .. "```{{filetype}}\n{{selection}}\n```\n\n"
+                .. "Please respond by writing table driven unit tests for the code above."
             local agent = gp.get_command_agent()
             gp.Prompt(params, gp.Target.enew, agent, template)
           end,
@@ -409,16 +423,16 @@ return {
           -- example of adding command which explains the selected code
           Explain = function(gp, params)
             local template = "I have the following code from {{filename}}:\n\n"
-                          .. "```{{filetype}}\n{{selection}}\n```\n\n"
-                          .. "Please respond by explaining the code above."
+                .. "```{{filetype}}\n{{selection}}\n```\n\n"
+                .. "Please respond by explaining the code above."
             local agent = gp.get_chat_agent()
             gp.Prompt(params, gp.Target.popup, agent, template)
           end,
 
           CodeReview = function(gp, params)
             local template = "I have the following code from {{filename}}:\n\n"
-                          .. "```{{filetype}}\n{{selection}}\n```\n\n"
-                          .. "Please analyze for code smells and suggest improvements."
+                .. "```{{filetype}}\n{{selection}}\n```\n\n"
+                .. "Please analyze for code smells and suggest improvements."
             local agent = gp.get_chat_agent()
             gp.Prompt(params, gp.Target.enew("markdown"), agent, template)
           end,
