@@ -10,6 +10,107 @@ end
 return {
 
   {
+    'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {},
+    -- Optional dependencies
+    -- dependencies = { { "echasnovski/mini.icons", opts = {} } },
+    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
+    config = function()
+      require("oil").setup({
+        default_file_explorer = true,
+        keymaps = {
+
+          -- Mappings can be a string
+          ["~"] = "<cmd>edit $HOME<CR>",
+
+          -- Mappings can be a function
+
+          ["gd"] = function() require("oil").set_columns({ "icon", "permissions", "size", "mtime" }) end,
+          -- You can pass additional opts to vim.keymap.set by using
+          -- a table with the mapping as the first element.
+
+          ["<leader>ff"] = {
+            function()
+              require("telescope.builtin").find_files({
+                cwd = require("oil").get_current_dir()
+              })
+            end,
+            mode = "n",
+            nowait = true,
+            desc = "Find files in the current directory"
+          },
+          -- Mappings that are a string starting with "actions." will be
+          -- one of the built-in actions, documented below.
+          ["`"] = "actions.tcd",
+
+          -- ["gx"] = function()
+          --   local oil = require("oil")
+          --   local cwd = oil.get_current_dir()
+          --   local entry = oil.get_cursor_entry()
+          --   if cwd and entry then
+          --     vim.fn.jobstart({ "open", string.format("%s/%s", cwd, entry.name) })
+          --   end
+          -- end,
+
+          -- ["!"] = {
+          --   "actions.open_cmdline",
+          --   opts = {},
+          --   desc = "Open the command line with the current entry as an argument",
+          -- },
+
+          ["!"] = function ()
+              -- Open cmdline with visually selected entries as argument
+              -- : <file1> <file2> <file..>
+              local oil = require("oil")
+              local mode = string.lower(vim.api.nvim_get_mode().mode)
+              local bufnr = vim.api.nvim_get_current_buf()
+              local name
+              local cwd = oil.get_current_dir()
+
+              if mode == "n" then
+                  print("=== normal mode")
+
+                  local lnum = vim.fn.getpos(".")[2]
+
+                  name = oil.get_entry_on_line(bufnr, lnum)["name"]
+                  vim.print(cwd..name)
+
+              elseif mode == "v" then
+                  print("=== visual mode")
+
+                  local lnum0 = vim.fn.getpos("'<")[2]
+                  local lnum1 = vim.fn.getpos("'>")[2]
+                  print(lnum0, lnum1)
+
+                  for lnum = lnum0, lnum1 do
+                      _ = oil.get_entry_on_line(bufnr, lnum)
+                      name = oil.get_entry_on_line(bufnr, lnum)
+                      vim.print(cwd)
+                      vim.print(name)
+                  end
+
+              end
+          end,
+
+          -- Some actions have parameters. These are passed in via the `opts` key.
+          ["<leader>:"] = {
+            "actions.open_cmdline",
+            opts = {
+              shorten_path = false,
+              modify = ":h",
+            },
+            desc = "Open the command line with the current directory as an argument",
+          },
+        }
+      })
+
+      vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+    end,
+  },
+
+  {
     -- clock in neovim (pomodoro)
     -- https://github.com/nvzone/timerly
     "nvzone/timerly",
@@ -607,13 +708,15 @@ return {
       'kristijanhusak/vim-dadbod-ui',
     }
   },
+
   'tpope/vim-obsession',
   'tpope/vim-repeat', -- better repeat
   'tpope/vim-speeddating',
-  {
-    -- better netrw
-    'tpope/vim-vinegar',
-  },
+
+  -- {
+  --   -- better netrw
+  --   'tpope/vim-vinegar',
+  -- },
 
   {
     'tpope/vim-unimpaired',

@@ -1038,7 +1038,11 @@ end
 -- }}}
 
 -- [[ gist ]] {{{
-vim.g.gist_clip_command = 'xclip -selection clipboard'
+if vim.fn.has('mac') == 1 then
+  vim.g.gist_clip_command = 'pbcopy'
+else
+  vim.g.gist_clip_command = 'xclip -selection clipboard'
+end
 vim.g.gist_detect_filetype = 1
 vim.g.gist_open_browser_after_post = 1
 vim.g.gist_show_privates = 1
