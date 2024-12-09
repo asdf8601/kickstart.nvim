@@ -50,6 +50,7 @@ function CallbackFactory(config)
     })
   end
   return callback
+
 end
 
 local autocmdFactory = function(config)
@@ -64,7 +65,8 @@ local autocmdFactory = function(config)
 
 end
 
-local function mergeConfigs(userConfig, defaultConfig)
+
+local mergeConfigs = function(userConfig, defaultConfig)
   local result = {}
 
   for k, v in pairs(defaultConfig) do
@@ -82,49 +84,8 @@ local function mergeConfigs(userConfig, defaultConfig)
 end
 
 
-local druidConfigDefault = {
-  cmd = "druidq",
-  opts = {},
-  outSuffix = ".out",
-  pattern = "*druidq/*.sql",
-  event = "BufWritePost",
-  group = "AutoSql",
-}
-
-
-local trinoConfigDefault = {
-  cmd = "trinoq",
-  opts = {},
-  outSuffix = ".out",
-  pattern = "*trinoq/*.sql",
-  event = "BufWritePost",
-  group = "AutoSql",
-}
-
-
-function SqlEnable(config)
-  local trino = mergeConfigs(config.trino, trinoConfigDefault)
-  local druid = mergeConfigs(config.druid, druidConfigDefault)
-
-  if druid then
-    autocmdFactory(druid)
-  end
-
-  if trino then
-    autocmdFactory(trino)
-  end
-
-end
-
-
 function ClearGroup(group)
   vim.api.nvim_clear_autocmds({group = group})
-end
-
-
-function SqlDisable()
-  local group = "AutoSql"
-  ClearGroup(group)
 end
 
 
@@ -144,6 +105,7 @@ local pythonConfigDefault = {
 function RunnerRemove(config)
   ClearGroup(config.group)
 end
+
 
 function RunnerNew(config)
   -- NOTE:
