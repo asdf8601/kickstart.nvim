@@ -863,6 +863,8 @@ vim.opt.laststatus = 3
 -- }}}
 
 -- [[keymaps]] {{{
+vim.keymap.set("i", "<C-e>", "<C-o>$", { noremap = true, silent = true, desc = "Move to end of line in insert mode" })
+--
 -- [[ fugitive ]] {{{
 vim.keymap.set("n", "<leader>w", ":Git<cr>", { noremap = true, desc = "Open Git status" })
 vim.keymap.set("n", "<leader>W", ":tab Git<cr>", { noremap = true, desc = "Open Git status in a new tab" })

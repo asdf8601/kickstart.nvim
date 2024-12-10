@@ -10,6 +10,15 @@ end
 return {
 
   {
+    'altermo/ultimate-autopair.nvim',
+    event={'InsertEnter','CmdlineEnter'},
+    branch='v0.6', --recommended as each new version will have breaking changes
+    opts={
+      --Config goes here
+    },
+  },
+
+  {
     "sphamba/smear-cursor.nvim",
     -- opts = {
     --   -- Smear cursor color. Defaults to Cursor GUI color if not set.
