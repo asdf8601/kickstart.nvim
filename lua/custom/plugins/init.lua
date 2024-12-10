@@ -108,30 +108,39 @@ return {
               local bufnr = vim.api.nvim_get_current_buf()
               local name
               local cwd = oil.get_current_dir()
+              local items = {}
+
+              local function open_cmdline_with_path(paths, mode)
+                local rm = ""
+                local args = ""
+                for _, path in ipairs(paths) do
+                  args = args .. " " .. vim.fn.fnameescape(path)
+                end
+                if mode == "v" then
+                  rm = "<Del><Del><Del><Del><Del>"
+                end
+                local escaped = vim.api.nvim_replace_termcodes(":! " .. args .. "<Home>" .. rm .. "<Right>", true, false, true)
+                vim.api.nvim_feedkeys(escaped, mode, true)
+              end
 
               if mode == "n" then
-                  print("=== normal mode")
-
-                  local lnum = vim.fn.getpos(".")[2]
-
-                  name = oil.get_entry_on_line(bufnr, lnum)["name"]
-                  vim.print(cwd..name)
+                local lnum = vim.fn.getpos(".")[2]
+                name = oil.get_entry_on_line(bufnr, lnum).name
+                table.insert(items, cwd .. name)
 
               elseif mode == "v" then
-                  print("=== visual mode")
-
-                  local lnum0 = vim.fn.getpos("'<")[2]
-                  local lnum1 = vim.fn.getpos("'>")[2]
-                  print(lnum0, lnum1)
-
-                  for lnum = lnum0, lnum1 do
-                      _ = oil.get_entry_on_line(bufnr, lnum)
-                      name = oil.get_entry_on_line(bufnr, lnum)
-                      vim.print(cwd)
-                      vim.print(name)
-                  end
-
+                local start = vim.fn.getpos("v")
+                local end_ = vim.fn.getpos(".")
+                local lnum0 = start[2]
+                local lnum1 = end_[2]
+                print(lnum0, lnum1)
+                for lnum = lnum0, lnum1 do
+                    _ = oil.get_entry_on_line(bufnr, lnum)
+                    name = oil.get_entry_on_line(bufnr, lnum).name
+                    table.insert(items, cwd .. name)
+                end
               end
+              open_cmdline_with_path(items, mode)
           end,
 
           -- Some actions have parameters. These are passed in via the `opts` key.
