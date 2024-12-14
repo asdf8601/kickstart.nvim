@@ -10,6 +10,21 @@ end
 return {
 
   {
+    "mistricky/codesnap.nvim",
+    build = "make",
+    opts = {
+      save_path = "~/Pictures",
+      has_breadcrumbs = true,
+      show_workspace = true,
+      bg_theme = "bamboo",
+      has_line_number = true,
+      code_font_family = "CaskaydiaCove Nerd Font",
+      watermark_font_family = "Sans Serif",
+      watermark = "asdfg8601",
+    },
+  },
+
+  {
     'altermo/ultimate-autopair.nvim',
     event={'InsertEnter','CmdlineEnter'},
     branch='v0.6', --recommended as each new version will have breaking changes
@@ -743,6 +758,11 @@ return {
       'junegunn/fzf',
       -- config = function() vim.fn['fzf#install']() end,
     },
+    opts = {
+      preview = {
+        auto_preview = false,
+      }
+    }
   },
 
   {

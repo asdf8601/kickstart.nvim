@@ -12,36 +12,29 @@ function CallbackFactory(config)
 
     if bufnr == -1 then
       vim.cmd.new(bufoutname)
-      -- vim.cmd.write()
       bufnr = vim.fn.bufnr(bufoutname)
     end
 
+    -- build cmd
     local cmd = { config.cmd, bufname, }
-
     for _, opt in ipairs(config.opts) do
       table.insert(cmd, opt)
     end
 
-    -- clean buffer
+    -- clean entire buffer
     vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, {})
 
     -- execute command
     vim.fn.jobstart(cmd, {
-      stdout_buffered = false,
-
       on_stdout = function(_, data, _)
-        -- NOTE:
-        -- this function is called multiple times that's why we need to
-        -- append the data.
+        -- Append data in multiple calls (-1, -1)
         if data then
           vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, data)
         end
       end,
 
       on_stderr = function (_, data, _)
-        -- NOTE:
-        -- this function is called always multiple times that's why we
-        -- need to append the Error line and the data.
+        -- Append data in multiple calls (-1, -1)
         if data then
           -- vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, {"Error:"})
           vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, data)

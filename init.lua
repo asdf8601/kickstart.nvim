@@ -928,13 +928,12 @@ vim.keymap.set('i' , 'jk' , '<esc>'      , { noremap = true , silent = true, des
 vim.keymap.set('n', '<leader>sh', ":mark m<cr>:0<cr>O#!/usr/bin/env bash<esc>'m:delm m<cr>", { desc = 'Add shebang line' })
 
 -- [commands]
--- TODO: see if I stil need this
--- vim.keymap.set('n' , 'sh'         , ':.!sh '       , { noremap = true , desc = 'Fill neovims command to execute sh using current line' })
--- vim.keymap.set('n' , '<c-s><c-l>' , ':!<C-R><C-L>' , { noremap = true , desc = 'Fill neovims command with bang + current line' })
-vim.keymap.set('n' , '<C-s><C-s>' , ':.!sh<cr>'    , { noremap = true , desc = 'Send current line to sh and REPLACE with the output' })
-vim.keymap.set('v' , '<C-s><C-s>' , ':!sh<cr>'     , { noremap = true , desc = 'Send selection to sh and REPLACE with the output' })
-vim.keymap.set('n' , '<C-w><C-h>' , ':.w !sh<cr>'  , { noremap = true , desc = 'Send current line to sh and show the output' })
-vim.keymap.set('v' , '<C-w><C-h>' , ':w !sh<cr>'   , { noremap = true , desc = 'Send selection to sh and show the output' })
+vim.keymap.set('n' , '<leader>xl', ':!<C-R><C-L>'  , { noremap = true, desc = 'Fill command with current line' })
+vim.keymap.set('n' , '<leader>xc', ':.!sh '        , { noremap = true, desc = 'Fill command to execute current line in shell' })
+vim.keymap.set('n' , '<leader>xr' , ':.!sh<cr>'    , { noremap = true , desc = 'E[X]ecute line in shell and [R]eplace with output' })
+vim.keymap.set('v' , '<leader>xr' , ':!sh<cr>'     , { noremap = true , desc = 'E[X]ecute selection in shell and [R]eplace with output' })
+vim.keymap.set('n' , '<leader>xs' , ':.w !sh<cr>'  , { noremap = true , desc = 'E[X]ecute line in shell and [S]how output' })
+vim.keymap.set('v' , '<leader>xs' , ':w !sh<cr>'   , { noremap = true , desc = 'E[X]ecute selection in shell and [S]how output' })
 
 -- Explore
 -- vim.keymap.set('n', '-', ':Ex<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
