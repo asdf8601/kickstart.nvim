@@ -18,7 +18,7 @@ function CallbackFactory(config)
 
     local cmd = { config.cmd, bufname, }
 
-    for _, opt in ipairs(config.opts) do
+    for _, opt in ipairs(config.args) do
       table.insert(cmd, opt)
     end
 
@@ -84,7 +84,7 @@ end
 
 local druidConfigDefault = {
   cmd = "druidq",
-  opts = {},
+  args = {},
   outSuffix = ".out",
   pattern = "*druidq/*.sql",
   event = "BufWritePost",
@@ -94,7 +94,7 @@ local druidConfigDefault = {
 
 local trinoConfigDefault = {
   cmd = "trinoq",
-  opts = {},
+  args = {},
   outSuffix = ".out",
   pattern = "*trinoq/*.sql",
   event = "BufWritePost",
@@ -103,14 +103,15 @@ local trinoConfigDefault = {
 
 
 function SqlEnable(config)
-  local trino = mergeConfigs(config.trino, trinoConfigDefault)
-  local druid = mergeConfigs(config.druid, druidConfigDefault)
 
-  if druid then
+  if config == 'druid' then
+    config = { druid = {} }
+    local druid = mergeConfigs(config.druid, druidConfigDefault)
     autocmdFactory(druid)
-  end
 
-  if trino then
+  elseif config == 'trino' then
+    config = { trino = {} }
+    local trino = mergeConfigs(config.trino, trinoConfigDefault)
     autocmdFactory(trino)
   end
 
@@ -135,7 +136,7 @@ local pythonConfigDefault = {
   --   $ python % > %.out
   pattern = "*.py",
   cmd = "python",
-  opts = {},
+  args = {},
   outSuffix = ".out",
   group = "AutoPython",
   event = "BufWritePost",

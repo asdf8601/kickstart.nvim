@@ -82,6 +82,7 @@ function ClearGroup(group)
 end
 
 
+---@type table @default configuration for druid
 local pythonConfigDefault = {
   -- Pattern:
   --   $ <bin> (<file>) <ops> > <file>.out

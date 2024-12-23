@@ -172,29 +172,41 @@ require('lazy').setup({
       end
 
       local function slime_use_tmux()
-        vim.g.slime_target = "tmux"
-        vim.g.slime_bracketed_paste = 1
-        vim.g.slime_python_ipython = 0
-        vim.g.slime_no_mappings = 1
-        vim.g.slime_default_config = { socket_name = "default", target_pane = ":.2" }
-        vim.g.slime_dont_ask_default = 1
+        vim.b.slime_config = nil
+        vim.b.slime_target = "tmux"
+        vim.b.slime_bracketed_paste = 1
+        vim.b.slime_python_ipython = 0
+        vim.b.slime_no_mappings = 1
+        vim.b.slime_default_config = { socket_name = "default", target_pane = ":.2" }
+        vim.b.slime_dont_ask_default = 1
       end
 
       local function slime_use_neovim()
-        vim.g.slime_target = "neovim"
-        vim.g.slime_bracketed_paste = 1
-        vim.g.slime_python_ipython = 1
-        vim.g.slime_no_mappings = 1
+        vim.b.slime_config = nil
+        vim.b.slime_target = "neovim"
+        vim.b.slime_bracketed_paste = 1
+        vim.b.slime_python_ipython = 1
+        vim.b.slime_no_mappings = 1
 
         if vim.fn.has('mac') == 0 then
-          vim.g.slime_get_jobid = slime_get_jobid
+          vim.b.slime_get_jobid = slime_get_jobid
         end
         -- vim.g.slime_default_config = nil
         -- vim.g.slime_dont_ask_default = 0
       end
 
+      vim.api.nvim_create_user_command('SlimeTarget', function (opts)
+        vim.b.slime_config = nil
+        if opts.args == "tmux" then
+          slime_use_tmux()
+        elseif opts.args == "neovim" then
+          slime_use_neovim()
+        else
+          vim.b.slime_target = opts.args
+        end
+      end, { desc = "Change Slime target", nargs = '*'})
+
       slime_use_neovim()
-      -- slime_use_tmux()
       vim.keymap.set('n', '<leader>e', vim.cmd.SlimeSend, { noremap = true, desc = 'send line to term' })
       vim.keymap.set('n', '<leader>cv', vim.cmd.SlimeConfig, { noremap = true, desc = "Open slime configuration" })
       vim.keymap.set('x', '<leader>e', '<Plug>SlimeRegionSend', { noremap = true, desc = 'send line to tmux' })
@@ -1253,11 +1265,11 @@ end
 
 
 -- [[ colorschemes ]] {{{
--- vim.cmd.colorscheme 'modus-vivendi' -- not installed
+vim.cmd.colorscheme 'modus-vivendi' -- not installed
 -- vim.cmd.colorscheme 'tokyonight-night'
 -- vim.cmd.colorscheme 'tokyonight-moon'
 -- vim.cmd.colorscheme 'modus_vivendi'
-vim.cmd.colorscheme 'onedark'
+-- vim.cmd.colorscheme 'onedark'
 -- }}}
 
 
