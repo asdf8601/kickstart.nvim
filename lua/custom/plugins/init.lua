@@ -237,11 +237,6 @@ return {
         },
       })
 
-      vim.api.nvim_create_user_command('SlimeSwitch', function (opts)
-        vim.b.slime_config = nil
-        vim.b.slime_target = opts.args
-      end, { desc = "Change Slime target", nargs = '*'})
-
       -- Keymaps
       vim.keymap.set('n', '<leader>l', require("yeet").list_cmd, { desc = "Pop command cache open" })
       vim.keymap.set('n', '<leader>yt', require("yeet").select_target, { desc = "Open target selection" })
