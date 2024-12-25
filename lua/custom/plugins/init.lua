@@ -174,20 +174,20 @@ return {
     end,
   },
 
-  {
-    -- clock in neovim (pomodoro)
-    -- https://github.com/nvzone/timerly
-    "nvzone/timerly",
-    lazy=false,
-    dependencies = {
-      'nvzone/volt'
-    },
-    cmd = "TimerlyToggle",
-    config = function()
-        require('timerly').setup()
-        vim.keymap.set('n', '<leader>tc', ':TimerlyToggle<CR>', { desc = "Toggle Timerly" })
-    end,
-  },
+  -- {
+  --   -- clock in neovim (pomodoro)
+  --   -- https://github.com/nvzone/timerly
+  --   "nvzone/timerly",
+  --   lazy=false,
+  --   dependencies = {
+  --     'nvzone/volt'
+  --   },
+  --   cmd = "TimerlyToggle",
+  --   config = function()
+  --       require('timerly').setup()
+  --       vim.keymap.set('n', '<leader>tc', ':TimerlyToggle<CR>', { desc = "Toggle Timerly" })
+  --   end,
+  -- },
 
   {
     'Bekaboo/dropbar.nvim',
@@ -303,21 +303,21 @@ return {
     },
   },
 
-  {
-    -- live share
-    "azratul/live-share.nvim",
-    dependencies = {
-      "jbyuki/instant.nvim",
-    },
-    config = function()
-      vim.g.instant_username = "asdfg0x2199"
-      require("live-share").setup({
-        port_internal = 8765,
-        max_attempts = 20, -- 5 seconds
-        service = "serveo.net"
-      })
-    end
-  },
+  -- {
+  --   -- live share
+  --   "azratul/live-share.nvim",
+  --   dependencies = {
+  --     "jbyuki/instant.nvim",
+  --   },
+  --   config = function()
+  --     vim.g.instant_username = "asdfg0x2199"
+  --     require("live-share").setup({
+  --       port_internal = 8765,
+  --       max_attempts = 20, -- 5 seconds
+  --       service = "serveo.net"
+  --     })
+  --   end
+  -- },
 
   {
     'MeanderingProgrammer/markdown.nvim',
@@ -409,29 +409,29 @@ return {
     end
   },
 
-  {
-    "Rawnly/gist.nvim",
-    cmd = { "GistCreate", "GistCreateFromFile", "GistsList" },
-    dependencies = {
-      {
-        "samjwill/nvim-unception",
-        lazy = false,
-        config = function() vim.g.unception_block_while_host_edits = true end
-      },
-    },
-    config = function()
-      require("gist").setup({
-        private = false, -- All gists will be private, you won't be prompted again
-        clipboard = "+", -- The registry to use for copying the Gist URL
-        list = {
-          mappings = {
-            next_file = "<C-n>",
-            prev_file = "<C-p>"
-          }
-        }
-      })
-    end
-  },
+  -- {
+  --   "Rawnly/gist.nvim",
+  --   cmd = { "GistCreate", "GistCreateFromFile", "GistsList" },
+  --   dependencies = {
+  --     {
+  --       "samjwill/nvim-unception",
+  --       lazy = false,
+  --       config = function() vim.g.unception_block_while_host_edits = true end
+  --     },
+  --   },
+  --   config = function()
+  --     require("gist").setup({
+  --       private = false, -- All gists will be private, you won't be prompted again
+  --       clipboard = "+", -- The registry to use for copying the Gist URL
+  --       list = {
+  --         mappings = {
+  --           next_file = "<C-n>",
+  --           prev_file = "<C-p>"
+  --         }
+  --       }
+  --     })
+  --   end
+  -- },
 
   {
     "robitx/gp.nvim",
@@ -650,6 +650,20 @@ return {
   --   end,
   --
   -- },
+  --
+  -- {
+  --   -- Set lualine as statusline
+  --   'nvim-lualine/lualine.nvim',
+  --   -- See `:help lualine.txt`
+  --   opts = {
+  --     options = {
+  --       icons_enabled = true,
+  --       component_separators = '|',
+  --       section_separators = '',
+  --     },
+  --   },
+  -- },
+
 
   {
     -- astro
@@ -1138,6 +1152,88 @@ return {
     ft = { "go", 'gomod' },
     build = ':lua require("go.install").update_all_sync()'
   },
+
+  -- {
+  --   'echasnovski/mini.nvim',
+  --   init = function()
+  --     require('mini.ai').setup({ n_lines = 500 })
+  --     require('mini.operators').setup()
+  --     -- require('mini.statusline').setup()
+  --     -- require('mini.surround').setup()
+  --     require('mini.map').setup(
+  --       {
+  --         integrations = nil,
+  --         symbols = {
+  --           encode = require('mini.map').gen_encode_symbols.dot('3x2'),
+  --           scroll_line = '█',
+  --           scroll_view = '┃',
+  --         },
+  --         window = {
+  --           focusable = false,
+  --           side = 'right',
+  --           show_integration_count = true,
+  --           width = 12,
+  --           winblend = 25,
+  --           zindex = 10,
+  --         },
+  --       }
+  --     )
+  --     require('mini.files').setup({
+  --       options = {
+  --         permanent_delete = false,
+  --         use_as_default_explorer = false,
+  --       },
+  --       mappings = {
+  --           close       = 'q',
+  --           go_in       = 'l',
+  --           go_in_plus  = 'L',
+  --           go_out      = 'h',
+  --           go_out_plus = 'H',
+  --           reset       = '<C-r>',
+  --           reveal_cwd  = '@',
+  --           show_help   = 'g?',
+  --           synchronize = '=',
+  --           trim_left   = '<',
+  --           trim_right  = '>',
+  --         },
+  --       windows = {
+  --         max_number = math.huge,
+  --         preview = false,
+  --         width_focus = 50,
+  --         width_nofocus = 15,
+  --         width_preview = 25,
+  --       },
+  --
+  --     })
+  --
+  --     vim.keymap.set("n", "<leader>mf", MiniFiles.open, {desc = "Open file explorer"})
+  --     vim.keymap.set("n", "<leader>mm", MiniMap.toggle, {desc = "Toggle Mini Map"})
+  --
+  --   end,
+  -- },
+  --
+  -- {
+  --   "monkoose/neocodeium",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     local neocodeium = require("neocodeium")
+  --     neocodeium.setup()
+  --     vim.keymap.set("i", "<A-f>", neocodeium.accept)
+  --   end,
+  -- },
+  --
+  -- {
+  --   "Exafunction/codeium.nvim",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "hrsh7th/nvim-cmp",
+  --   },
+  --   enable = false,
+  --   config = function()
+  --     require("codeium").setup({
+  --     })
+  --   end
+  -- },
 
 }
 -- vim: ts=2 sts=2 sw=2 et tw=0

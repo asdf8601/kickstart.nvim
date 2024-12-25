@@ -37,94 +37,12 @@ require('lazy').setup({
     end
   },
 
-  -- {
-  --   'echasnovski/mini.nvim',
-  --   init = function()
-  --     require('mini.ai').setup({ n_lines = 500 })
-  --     require('mini.operators').setup()
-  --     -- require('mini.statusline').setup()
-  --     -- require('mini.surround').setup()
-  --     require('mini.map').setup(
-  --       {
-  --         integrations = nil,
-  --         symbols = {
-  --           encode = require('mini.map').gen_encode_symbols.dot('3x2'),
-  --           scroll_line = '█',
-  --           scroll_view = '┃',
-  --         },
-  --         window = {
-  --           focusable = false,
-  --           side = 'right',
-  --           show_integration_count = true,
-  --           width = 12,
-  --           winblend = 25,
-  --           zindex = 10,
-  --         },
-  --       }
-  --     )
-  --     require('mini.files').setup({
-  --       options = {
-  --         permanent_delete = false,
-  --         use_as_default_explorer = false,
-  --       },
-  --       mappings = {
-  --           close       = 'q',
-  --           go_in       = 'l',
-  --           go_in_plus  = 'L',
-  --           go_out      = 'h',
-  --           go_out_plus = 'H',
-  --           reset       = '<C-r>',
-  --           reveal_cwd  = '@',
-  --           show_help   = 'g?',
-  --           synchronize = '=',
-  --           trim_left   = '<',
-  --           trim_right  = '>',
-  --         },
-  --       windows = {
-  --         max_number = math.huge,
-  --         preview = false,
-  --         width_focus = 50,
-  --         width_nofocus = 15,
-  --         width_preview = 25,
-  --       },
-  --
-  --     })
-  --
-  --     vim.keymap.set("n", "<leader>mf", MiniFiles.open, {desc = "Open file explorer"})
-  --     vim.keymap.set("n", "<leader>mm", MiniMap.toggle, {desc = "Toggle Mini Map"})
-  --
-  --   end,
-  -- },
-
   {
     'mbbill/undotree',
     init = function()
       vim.keymap.set('n', '<leader>u', ':UndotreeToggle<CR>', { noremap = true, desc = "Open/close UndoTree" })
     end,
   },
-
-  {
-    "monkoose/neocodeium",
-    event = "VeryLazy",
-    config = function()
-      local neocodeium = require("neocodeium")
-      neocodeium.setup()
-      vim.keymap.set("i", "<A-f>", neocodeium.accept)
-    end,
-  },
-
-  -- {
-  --   "Exafunction/codeium.nvim",
-  --   dependencies = {
-  --     "nvim-lua/plenary.nvim",
-  --     "hrsh7th/nvim-cmp",
-  --   },
-  --   enable = false,
-  --   config = function()
-  --     require("codeium").setup({
-  --     })
-  --   end
-  -- },
 
   {
     'jpalardy/vim-slime',
@@ -588,19 +506,6 @@ require('lazy').setup({
       })
     end,
   },
-
-  -- {
-  --   -- Set lualine as statusline
-  --   'nvim-lualine/lualine.nvim',
-  --   -- See `:help lualine.txt`
-  --   opts = {
-  --     options = {
-  --       icons_enabled = true,
-  --       component_separators = '|',
-  --       section_separators = '',
-  --     },
-  --   },
-  -- },
 
   {
     -- Add indentation guides even on blank lines
