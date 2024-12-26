@@ -4,6 +4,7 @@
 -- name with the suffix .out.
 -- It contains two configurations, one for druid and one for trino.
 function CallbackFactory(config)
+
   local callback = function()
 
     local bufname = vim.fn.expand("%:p")
@@ -13,6 +14,9 @@ function CallbackFactory(config)
     if bufnr == -1 then
       vim.cmd.new(bufoutname)
       bufnr = vim.fn.bufnr(bufoutname)
+      vim.api.nvim_set_option_value("textwidth", 0, {buf=bufnr})
+      vim.api.nvim_set_option_value("wrapmargin", 0, {buf=bufnr})
+      vim.api.nvim_set_option_value("buftype", "nofile", {buf=bufnr})
     end
 
     -- build cmd

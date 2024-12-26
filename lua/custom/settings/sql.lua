@@ -129,33 +129,6 @@ function SqlDisable()
 end
 
 
-local pythonConfigDefault = {
-  -- Pattern:
-  --   $ <bin> (<file>) <ops> > <file>.out
-  -- Equivalent to:
-  --   $ python % > %.out
-  pattern = "*.py",
-  cmd = "python",
-  args = {},
-  outSuffix = ".out",
-  group = "AutoPython",
-  event = "BufWritePost",
-}
-
-function RunnerRemove(config)
-  ClearGroup(config.group)
-end
-
-function RunnerNew(config)
-  -- NOTE:
-  -- this function will create an autocmd group for the python files
-  -- and run the python code when the file is saved.
-  -- Usage:
-  -- CreateRunner({pattern = "*.py", bin = "python %"})
-  config = mergeConfigs(config, pythonConfigDefault)
-  autocmdFactory(config)
-end
-
 
 return {}
 -- vim: set sw=2 ts=2 sts=2 et:

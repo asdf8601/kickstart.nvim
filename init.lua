@@ -634,6 +634,7 @@ require('lazy').setup({
 
   { import = 'custom.plugins' },
   { import = 'custom.settings' },
+  { import = 'custom.plugins.runner' },
 
 }, {})
 
@@ -1170,7 +1171,7 @@ end
 
 
 -- [[ colorschemes ]] {{{
-vim.cmd.colorscheme 'modus-vivendi' -- not installed
+-- vim.cmd.colorscheme 'modus-vivendi' -- not installed
 -- vim.cmd.colorscheme 'tokyonight-night'
 -- vim.cmd.colorscheme 'tokyonight-moon'
 -- vim.cmd.colorscheme 'modus_vivendi'
