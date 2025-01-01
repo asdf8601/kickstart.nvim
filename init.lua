@@ -1020,7 +1020,7 @@ vim.keymap.set("n", "<leader>cd", ":lcd %:p:h<cr>", { noremap = true, silent = t
 vim.keymap.set('n', '<leader>fn', ":echo expand('%')<cr>", { noremap = true })
 -- }}}
 
--- markdown {{{
+-- [[markdown]] {{{
 vim.g.markdown_fenced_languages = { 'html', 'python', 'bash=sh', 'sql', 'mermaid' }
 vim.g.markdown_minlines = 50
 -- TODO: fill this
@@ -1040,6 +1040,8 @@ vim.api.nvim_create_user_command('Jq', '%!jq', { nargs = 0 })
 if vim.fn.executable('rg') == 1 then
   vim.o.grepprg = 'rg --hidden --glob "!.git" --glob "!.venv" --vimgrep'
   vim.o.grepformat = '%f:%l:%c:%m'
+else
+  vim.print('ripgrep not found')
 end
 -- }}}
 -- }}}
@@ -1122,6 +1124,7 @@ vim.treesitter.language.register("markdown", "mdx") -- the mdx filetype will use
 
 -- [[ JS ]]  {{{
 local JS = vim.api.nvim_create_augroup('JS', { clear = true })
+
 autocmd({'FileType',}, {
   callback = function()
     vim.cmd([[
@@ -1164,8 +1167,10 @@ autocmd({'BufWritePost',}, {
 
 
 -- [[ neovim-remote ]] {{{
-if vim.fn.has('nvim') then
+if vim.fn.has('nvim') and vim.fn.executable("nvr") then
   vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'
+else
+  vim.print('nvr not found')
 end
 -- }}}
 

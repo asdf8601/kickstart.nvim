@@ -35,24 +35,7 @@ return {
 
   {
     "sphamba/smear-cursor.nvim",
-    -- opts = {
-    --   -- Smear cursor color. Defaults to Cursor GUI color if not set.
-    --   -- Set to "none" to match the text color at the target cursor position.
-    --   -- cursor_color = "#d3cdc3",
-    --
-    --   -- Background color. Defaults to Normal GUI background color if not set.
-    --   -- normal_bg = "#282828",
-    --
-    --   -- Smear cursor when switching buffers or windows.
-    --   smear_between_buffers = true,
-    --
-    --   -- Smear cursor when moving within line or to neighbor lines.
-    --   smear_between_neighbor_lines = true,
-    --
-    --   -- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
-    --   -- Smears will blend better on all backgrounds.
-    --   legacy_computing_symbols_support = true,
-    -- },
+    disable = true,
     opts = {                         -- Default  Range
       stiffness = 0.8,               -- 0.6      [0, 1]
       trailing_stiffness = 0.4,      -- 0.3      [0, 1]
@@ -66,9 +49,6 @@ return {
     ---@module 'oil'
     ---@type oil.SetupOpts
     opts = {},
-    -- Optional dependencies
-    -- dependencies = { { "echasnovski/mini.icons", opts = {} } },
-    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
     config = function()
       require("oil").setup({
         view_options = {
@@ -77,45 +57,42 @@ return {
         default_file_explorer = true,
         keymaps = {
 
-          -- Mappings can be a string
           ["~"] = "<cmd>edit $HOME<CR>",
 
-          -- Mappings can be a function
+          ["`"] = "actions.tcd",
 
-          ["gd"] = function() require("oil").set_columns({ "icon", "permissions", "size", "mtime" }) end,
-          -- You can pass additional opts to vim.keymap.set by using
-          -- a table with the mapping as the first element.
+          ["gd"] = {
+            function()
+              require("oil").set_columns({ "icon", "permissions", "size", "mtime" })
+            end
+          },
 
           ["<C-p>"] = {
             function()
               require("telescope.builtin").find_files({
-                cwd = require("oil").get_current_dir()
+                cwd = require("oil").get_current_dir(),
+                hidden = true,
+                exclude = { ".git", "node_modules", ".cache" },
               })
             end,
             mode = "n",
             nowait = true,
             desc = "Find files in the current directory"
           },
-          -- Mappings that are a string starting with "actions." will be
-          -- one of the built-in actions, documented below.
-          ["`"] = "actions.tcd",
 
-          -- ["gx"] = function()
-          --   local oil = require("oil")
-          --   local cwd = oil.get_current_dir()
-          --   local entry = oil.get_cursor_entry()
-          --   if cwd and entry then
-          --     vim.fn.jobstart({ "open", string.format("%s/%s", cwd, entry.name) })
-          --   end
-          -- end,
+          ["go"] = {
+            function()
+              local oil = require("oil")
+              local cwd = oil.get_current_dir()
+              local entry = oil.get_cursor_entry()
+              if cwd and entry then
+                vim.fn.jobstart({ "open", string.format("%s/%s", cwd, entry.name) })
+              end
+            end
+          },
 
-          -- ["!"] = {
-          --   "actions.open_cmdline",
-          --   opts = {},
-          --   desc = "Open the command line with the current entry as an argument",
-          -- },
-
-          ["!"] = function ()
+          ["!"] = {
+            function ()
               -- Open cmdline with visually selected entries as argument
               -- : <file1> <file2> <file..>
               local oil = require("oil")
@@ -150,15 +127,15 @@ return {
                 local lnum1 = end_[2]
                 print(lnum0, lnum1)
                 for lnum = lnum0, lnum1 do
-                    _ = oil.get_entry_on_line(bufnr, lnum)
-                    name = oil.get_entry_on_line(bufnr, lnum).name
-                    table.insert(items, cwd .. name)
+                  _ = oil.get_entry_on_line(bufnr, lnum)
+                  name = oil.get_entry_on_line(bufnr, lnum).name
+                  table.insert(items, cwd .. name)
                 end
               end
               open_cmdline_with_path(items, mode)
-          end,
+            end
+          },
 
-          -- Some actions have parameters. These are passed in via the `opts` key.
           ["<leader>:"] = {
             "actions.open_cmdline",
             opts = {
@@ -167,6 +144,7 @@ return {
             },
             desc = "Open the command line with the current directory as an argument",
           },
+
         }
       })
 
