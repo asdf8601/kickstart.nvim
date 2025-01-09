@@ -33,16 +33,16 @@ return {
     },
   },
 
-  {
-    "sphamba/smear-cursor.nvim",
-    disable = true,
-    opts = {                         -- Default  Range
-      stiffness = 0.8,               -- 0.6      [0, 1]
-      trailing_stiffness = 0.4,      -- 0.3      [0, 1]
-      distance_stop_animating = 0.5, -- 0.1      > 0
-      hide_target_hack = false,      -- true     boolean
-    },
-  },
+  -- {
+  --   "sphamba/smear-cursor.nvim",
+  --   opts = {                         -- Default  Range
+  --     enable = false,
+  --     stiffness = 0.8,               -- 0.6      [0, 1]
+  --     trailing_stiffness = 0.4,      -- 0.3      [0, 1]
+  --     distance_stop_animating = 0.5, -- 0.1      > 0
+  --     hide_target_hack = false,      -- true     boolean
+  --   },
+  -- },
 
   {
     'stevearc/oil.nvim',
@@ -56,6 +56,10 @@ return {
         },
         default_file_explorer = true,
         keymaps = {
+
+          ["cd"] = function ()
+              vim.cmd("cd " .. require("oil").get_current_dir())
+          end,
 
           ["~"] = "<cmd>edit $HOME<CR>",
 
@@ -102,17 +106,17 @@ return {
               local cwd = oil.get_current_dir()
               local items = {}
 
-              local function open_cmdline_with_path(paths, mode)
+              local function open_cmdline_with_path(paths, m)
                 local rm = ""
                 local args = ""
                 for _, path in ipairs(paths) do
                   args = args .. " " .. vim.fn.fnameescape(path)
                 end
-                if mode == "v" then
+                if m == "v" then
                   rm = "<Del><Del><Del><Del><Del>"
                 end
                 local escaped = vim.api.nvim_replace_termcodes(":! " .. args .. "<Home>" .. rm .. "<Right>", true, false, true)
-                vim.api.nvim_feedkeys(escaped, mode, true)
+                vim.api.nvim_feedkeys(escaped, m, true)
               end
 
               if mode == "n" then
