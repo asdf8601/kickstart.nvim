@@ -1167,16 +1167,16 @@ autocmd({'BufWritePost',}, {
 
 
 -- [[ neovim-remote ]] {{{
-if vim.fn.has('nvim') and vim.fn.executable("nvr") then
-  vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'
-else
-  vim.print('nvr not found')
-end
+-- if vim.fn.has('nvim') and vim.fn.executable("nvr") then
+--   vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'
+-- else
+--   vim.print('nvr not found')
+-- end
 -- }}}
 
 
 -- [[ colorschemes ]] {{{
--- vim.cmd.colorscheme 'modus-vivendi' -- not installed
+vim.cmd.colorscheme 'modus-vivendi' -- not installed
 -- vim.cmd.colorscheme 'tokyonight-night'
 -- vim.cmd.colorscheme 'tokyonight-moon'
 -- vim.cmd.colorscheme 'modus_vivendi'
