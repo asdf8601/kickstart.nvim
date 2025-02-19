@@ -176,7 +176,7 @@ require('lazy').setup({
         require('mason-lspconfig').setup()
         local servers = {
           emmet_language_server = {
-            filetypes = { "astro", "css", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "pug", "typescriptreact", },
+            filetypes = { "astro", "css", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "pug", "typescriptreact"},
             init_options = {
               ---@type table<string, string>
               includeLanguages = {},
@@ -208,6 +208,7 @@ require('lazy').setup({
           gopls = {},
           html = { filetypes = { 'html', 'twig', 'hbs' } },
           jsonls = {},
+          jsonnet_ls = {},
           lua_ls = { Lua = { workspace = { checkThirdParty = false }, telemetry = { enable = false }, }, },
           pyright = {},
           ruff = {},
@@ -372,6 +373,9 @@ require('lazy').setup({
             { name = 'copilot' },
             { name = 'buffer' },
             { name = 'path' },
+            per_filetype = {
+              codecompanion = { "codecompanion" },
+            },
             -- { name = 'nvim_lsp_signature_help' },
             -- { name = 'neorg' },
             -- { name = 'orgmode' },
@@ -944,7 +948,24 @@ end
 
 -- }}}
 
-vim.api.nvim_create_user_command('AirflowCp', '!gsutil cp -r % gs://europe-west1-data-cloud-com-831c7a66-bucket/%', {})
+
+
+local function CurrentRelativePath()
+  local current_file = vim.fn.expand('%:p')
+  -- local current_directory = vim.fn.expand('%:p:h')
+  local pwd = vim.fn.getcwd()
+  return string.gsub(current_file, '^' .. pwd, '.')
+end
+
+-- function AirflowCpCmd()
+--   local curren_file = CurrentRelativePath()
+--   local cmd = 'gsutil cp -r '..current_file ..'gs://europe-west1-data-cloud-com-831c7a66-bucket/'..current_file
+--   input = vim.fn.input('Command: ', cmd)
+--   -- expand terminal command with the command
+--   vim.api.nvim_cmd('terminal '..cmd)
+-- end
+
+vim.api.nvim_create_user_command('AirflowCp', '!echo gsutil cp -r % gs://europe-west1-data-cloud-com-831c7a66-bucket/%', {})
 
 -- [[ Setting options ]] {{{
 if vim.fn.has('mac') == 1 then
@@ -1058,7 +1079,8 @@ autocmd('FileType', { group = ASDF8601, pattern = 'make', command = 'setl noexpa
 autocmd('TermOpen', { group = ASDF8601, pattern = '*', command = 'setl nonumber norelativenumber' })
 autocmd('FileType', { group = ASDF8601, pattern = 'fugitive', command = 'setl nonumber norelativenumber' })
 autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F8> :!black -l80 -S %<CR><CR>' })
-autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F7> :!ruff -l80 %<CR><CR>' })
+autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F7> :!ruff check -l80 %<CR><CR>' })
+autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F9> :!ruff check -l80 --fix %<CR><CR>' })
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'Jenkinsfile', command = 'setl ft=groovy' })
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = '*.astro', command = 'set ft=astro' })
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'requirements*.txt', command = 'setl ft=requirements' })
@@ -1186,17 +1208,16 @@ vim.cmd.colorscheme 'modus-vivendi' -- not installed
 
 
 -- Run gofmt + goimports on save
-
-local format_sync_grp = vim.api.nvim_create_augroup("goimports", {})
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*.go",
-  callback = function()
-    require('go.format').goimports()
-    require('go.format').gofmt()
-    require('go.format').org_imports()
-  end,
-  group = format_sync_grp,
-})
+-- local format_sync_grp = vim.api.nvim_create_augroup("goimports", {})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   pattern = "*.go",
+--   callback = function()
+--     require('go.format').goimports()
+--     require('go.format').gofmt()
+--     require('go.format').org_imports()
+--   end,
+--   group = format_sync_grp,
+-- })
 
 
 

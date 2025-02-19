@@ -10,6 +10,40 @@ end
 return {
 
   {
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function ()
+      require("codecompanion").setup({
+        strategies = {
+          chat = {
+            adapter = "copilot",
+          },
+          inline = {
+            adapter = "copilot",
+          },
+          agent = {
+            adapter = "copilot",
+          },
+        },
+        adapters = {
+          copilot = function()
+            return require("codecompanion.adapters").extend("copilot", {
+              schema = {
+                model = {
+                  default = "claude-3.5-sonnet",
+                },
+              },
+            })
+          end,
+        },
+      })
+    end
+  },
+
+  {
     "mistricky/codesnap.nvim",
     build = "make",
     opts = {
@@ -1121,19 +1155,19 @@ return {
     'tpope/vim-markdown',
   },
 
-  {
-    -- NOTE: this was causing lost the startup message
-    "ray-x/go.nvim",
-    dependencies = {
-      "ray-x/guihua.lua",
-      "neovim/nvim-lspconfig",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    opts = {},
-    event = { "CmdlineEnter" },
-    ft = { "go", 'gomod' },
-    build = ':lua require("go.install").update_all_sync()'
-  },
+  -- {
+  --   -- NOTE: this was causing lost the startup message
+  --   "ray-x/go.nvim",
+  --   dependencies = {
+  --     "ray-x/guihua.lua",
+  --     "neovim/nvim-lspconfig",
+  --     "nvim-treesitter/nvim-treesitter",
+  --   },
+  --   opts = {},
+  --   event = { "CmdlineEnter" },
+  --   ft = { "go", 'gomod' },
+  --   build = ':lua require("go.install").update_all_sync()'
+  -- },
 
   -- {
   --   'echasnovski/mini.nvim',

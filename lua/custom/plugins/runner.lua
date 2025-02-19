@@ -1,12 +1,10 @@
 -- Description:
--- This file contains the configuration to run the sql queries automatically
+-- This file contains the configuration to run commands automatically
 -- when the file is saved and display the output in a new buffer under the same
 -- name with the suffix .out.
--- It contains two configurations, one for druid and one for trino.
+
 function CallbackFactory(config)
-
   local callback = function()
-
     local bufname = vim.fn.expand("%:p")
     local bufoutname = bufname .. config.outSuffix
     local bufnr = vim.fn.bufnr(bufoutname)
@@ -20,7 +18,20 @@ function CallbackFactory(config)
     end
 
     -- build cmd
-    local cmd = { config.cmd, bufname, }
+    local cmd = {}
+    if type(config.cmd) == "string" then
+      -- Split the command string into parts
+      for part in config.cmd:gmatch("%S+") do
+        if part == "%" then
+          table.insert(cmd, bufname)
+        else
+          table.insert(cmd, part)
+        end
+      end
+    else
+      cmd = { config.cmd, bufname }
+    end
+
     for _, opt in ipairs(config.opts) do
       table.insert(cmd, opt)
     end
@@ -31,23 +42,19 @@ function CallbackFactory(config)
     -- execute command
     vim.fn.jobstart(cmd, {
       on_stdout = function(_, data, _)
-        -- Append data in multiple calls (-1, -1)
         if data then
           vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, data)
         end
       end,
 
       on_stderr = function (_, data, _)
-        -- Append data in multiple calls (-1, -1)
         if data then
-          -- vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, {"Error:"})
           vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, data)
         end
       end
     })
   end
   return callback
-
 end
 
 local autocmdFactory = function(config)
@@ -59,9 +66,7 @@ local autocmdFactory = function(config)
     pattern = config.pattern,
     callback = CallbackFactory(config)
   })
-
 end
-
 
 local mergeConfigs = function(userConfig, defaultConfig)
   local result = {}
@@ -80,23 +85,17 @@ local mergeConfigs = function(userConfig, defaultConfig)
   return result
 end
 
-
 function ClearGroup(group)
   vim.api.nvim_clear_autocmds({group = group})
 end
 
-
----@type table @default configuration for druid
-local pythonConfigDefault = {
-  -- Pattern:
-  --   $ <bin> (<file>) <ops> > <file>.out
-  -- Equivalent to:
-  --   $ python % > %.out
-  pattern = "*.py",
-  cmd = "python",
-  opts = {"-u"},
+---@type table @default configuration
+local defaultConfig = {
+  pattern = "*",
+  cmd = "uv run %",
+  opts = {},
   outSuffix = ".out",
-  group = "AutoPython",
+  group = "AutoRunner",
   event = "BufWritePost",
 }
 
@@ -104,17 +103,9 @@ function RunnerRemove(config)
   ClearGroup(config.group)
 end
 
-
 function RunnerNew(config)
-  -- NOTE:
-  -- this function will create an autocmd group for the python files
-  -- and run the python code when the file is saved.
-  -- Usage:
-  -- CreateRunner({pattern = "*.py", bin = "python %"})
-  config = mergeConfigs(config, pythonConfigDefault)
+  config = mergeConfigs(config, defaultConfig)
   autocmdFactory(config)
 end
 
-
 return {}
--- vim: set sw=2 ts=2 sts=2 et:
