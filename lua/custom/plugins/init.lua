@@ -10,6 +10,87 @@ end
 return {
 
   {
+    -- A Neovim plugin that display prettier diagnostic messages. Display one
+    -- line diagnostic messages where the cursor is, with icons and colors.
+    -- https://github.com/rachartier/tiny-inline-diagnostic.nvim
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy", -- Or `LspAttach`
+    priority = 1000, -- needs to be loaded in first
+    config = function()
+      require('tiny-inline-diagnostic').setup({
+        -- Style preset for diagnostic messages
+        -- Available options:
+        -- "modern", "classic", "minimal", "powerline",
+        -- "ghost", "simple", "nonerdfont", "amongus"
+        preset = "nonerdfont",
+        -- Configuration for breaking long messages into separate lines
+        options = {
+          break_line = {
+            -- Enable the feature to break messages after a specific length
+            enabled = true,
+            -- Number of characters after which to break the line
+            after = 30,
+          },
+        },
+      })
+      vim.diagnostic.config({ virtual_text = false }) -- Only if needed in your configuration, if you already have native LSP diagnostics
+    end
+  },
+
+  {
+    -- A hackable Markdown, HTML, LaTeX, Typst & YAML previewer for Neovim.
+    -- https://github.com/OXY2DEV/markview.nvim
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+    config = function ()
+
+      require("markview").setup({
+        preview = {
+          icon_provider = "internal", -- "internal", "mini" or "devicons"
+        }
+      })
+
+      require("markview.extras.editor").setup()
+
+      require("markview.extras.checkboxes").setup({
+        --- Default checkbox state(used when adding checkboxes).
+        ---@type string
+        default = "X",
+
+        --- Changes how checkboxes are removed.
+        ---@type
+        ---| "disable" Disables the checkbox.
+        ---| "checkbox" Removes the checkbox.
+        ---| "list_item" Removes the list item markers too.
+        remove_style = "disable",
+
+        --- Various checkbox states.
+        ---
+        --- States are in sets to quickly change between them
+        --- when there are a lot of states.
+        ---@type string[][]
+        states = {
+          { " ", "/", "X" },
+          { "<", ">" },
+          { "?", "!", "*" },
+          { '"' },
+          { "l", "b", "i" },
+          { "S", "I" },
+          { "p", "c" },
+          { "f", "k", "w" },
+          { "u", "d" }
+        }
+      })
+    end,
+
+    -- For blink.cmp's completion
+    -- source
+    -- dependencies = {
+    --     "saghen/blink.cmp"
+    -- },
+  },
+
+  {
     "olimorris/codecompanion.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -17,29 +98,166 @@ return {
     },
     config = function ()
       require("codecompanion").setup({
+
+        display = {
+          diff = {
+            provider = nil,
+          },
+        },
+
+        prompt_library = {
+
+          ["Code Expert"] = {
+            strategy = "chat",
+            description = "Get some special advice from an LLM",
+            opts = {
+              modes = { "v" },
+              short_name = "expert",
+              auto_submit = true,
+              stop_context_insertion = true,
+              user_prompt = true,
+            },
+            prompts = {
+              {
+                role = "system",
+                content = function(context)
+                  return "I want you to act as a senior "
+                    .. context.filetype
+                    .. " developer. I will ask you specific questions and I want you to return concise explanations and codeblock examples."
+                end,
+              },
+              {
+                role = "user",
+                content = function(context)
+                  local text = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
+                  return "I have the following code:\n\n```" .. context.filetype .. "\n" .. text .. "\n```\n\n"
+                end,
+                opts = {
+                  contains_code = true,
+                }
+              },
+            },
+          },
+
+          ["fix grammar"] = {
+            strategy = "inline",
+            description = "Fix Grammar",
+            opts = {
+              modes = { "v" },
+              short_name = "fix_grammar",
+              auto_submit = true,
+              stop_context_insertion = true,
+              user_prompt = false,
+              placement = "add" -- or "replace"|"add"|"before"|"chat"
+            },
+            prompts = {
+              {
+                role = "system",
+                content = "You are a grammar fixer, I need from you rewrite the text to make it correct and clear but keep the original tone and intention. Return only the text corrected.",
+              },
+              {
+                role = "user",
+                content = function(context)
+                  local text = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
+                  return "I have the following text:\n\n" .. text .. "\n\n"
+                end,
+                opts = {
+                    contains_code = false,
+                },
+              },
+            },
+          },
+
+          ["translate spa"] = {
+            strategy = "inline",
+            description = "Translate text",
+            prompts = {
+              {
+                role = "system",
+                content = "You are a translation assistant. Please translate the provided text between languages while preserving meaning and tone. If the source language isn't specified, detect it and translate to English. If the target language isn't specified, translate to Spanish. Return only the translated text without any explanations.",
+              },
+              {
+                role = "user",
+                content = function(context)
+                  local text = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
+                  return "I have the following text:\n\n" .. text .. "\n\n"
+                end,
+                opts = {
+                  contains_code = false,
+                },
+              },
+            },
+          },
+
+          ["translate eng"] = {
+            strategy = "inline",
+            description = "Translate text",
+            prompts = {
+              {
+                role = "system",
+                content = "You are a translation assistant. Please translate the provided text between languages while preserving meaning and tone. If the source language isn't specified, detect it and translate to English. If the target language isn't specified, translate to English. Return only the translated text without any explanations.",
+              },
+              {
+                role = "user",
+                content = function(context)
+                  local text = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
+                  return "I have the following text:\n\n" .. text .. "\n\n"
+                end,
+                opts = {
+                  contains_code = false,
+                },
+              },
+            },
+          },
+
+        },
+
         strategies = {
           chat = {
+            -- adapter = "gemini",
             adapter = "copilot",
           },
           inline = {
+            -- adapter = "gemini",
             adapter = "copilot",
           },
           agent = {
+            -- adapter = "gemini",
             adapter = "copilot",
           },
         },
+
         adapters = {
           copilot = function()
             return require("codecompanion.adapters").extend("copilot", {
               schema = {
                 model = {
-                  default = "claude-3.5-sonnet",
+                  -- default = "claude-3.7-sonnet",
+                  -- default = "o4-mini",
+                  default = "claude-sonnet-4",
                 },
               },
             })
           end,
+
+          gemini = function()
+            return require("codecompanion.adapters").extend("gemini", {
+              schema = {
+                model = {
+                  -- default = "gemini-2.0-flash",
+                  default = "gemini-2.5-flash-preview-04-17",
+                },
+              },
+            })
+          end,
+
         },
       })
+
+      vim.keymap.set({ "n", "v" }, "<C-c><C-c>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true, desc = "Show CodeCompanion Actions" })
+      vim.keymap.set({ "n", "v" }, "<LocalLeader>c", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true, desc = "Toggle CodeCompanion Chat" })
+      vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true, desc = "Add selection to CodeCompanion Chat" })
+
     end
   },
 
@@ -61,22 +279,11 @@ return {
   {
     'altermo/ultimate-autopair.nvim',
     event={'InsertEnter','CmdlineEnter'},
-    branch='v0.6', --recommended as each new version will have breaking changes
+    -- branch='v0.6', --recommended as each new version will have breaking changes
     opts={
       --Config goes here
     },
   },
-
-  -- {
-  --   "sphamba/smear-cursor.nvim",
-  --   opts = {                         -- Default  Range
-  --     enable = false,
-  --     stiffness = 0.8,               -- 0.6      [0, 1]
-  --     trailing_stiffness = 0.4,      -- 0.3      [0, 1]
-  --     distance_stop_animating = 0.5, -- 0.1      > 0
-  --     hide_target_hack = false,      -- true     boolean
-  --   },
-  -- },
 
   {
     'stevearc/oil.nvim',
@@ -91,6 +298,9 @@ return {
         default_file_explorer = true,
         keymaps = {
 
+          ["<C-s>"] = { "actions.select", opts = { vertical = true } },
+          ["<C-h>"] = { "actions.select", opts = { horizontal = true } },
+          ["<C-t>"] = { "actions.select", opts = { tab = true } },
           ["cd"] = function ()
               vim.cmd("cd " .. require("oil").get_current_dir())
           end,
@@ -190,21 +400,6 @@ return {
     end,
   },
 
-  -- {
-  --   -- clock in neovim (pomodoro)
-  --   -- https://github.com/nvzone/timerly
-  --   "nvzone/timerly",
-  --   lazy=false,
-  --   dependencies = {
-  --     'nvzone/volt'
-  --   },
-  --   cmd = "TimerlyToggle",
-  --   config = function()
-  --       require('timerly').setup()
-  --       vim.keymap.set('n', '<leader>tc', ':TimerlyToggle<CR>', { desc = "Toggle Timerly" })
-  --   end,
-  -- },
-
   {
     'Bekaboo/dropbar.nvim',
     -- optional, but required for fuzzy finder support
@@ -275,13 +470,28 @@ return {
     lazy = false,
     version = false, -- set this if you want to always pull the latest change
     opts = {
-      -- add any opts here
+      provider = "copilot",
+      providers = {
+        copilot = {
+          -- model = "claude-3.7-sonnet", -- bad
+          -- model = "claude-3.5-sonnet",
+          -- model = "o4-mini",
+          model = "claude-sonnet-4",
+          extra_request_body = {
+            temperature = 0,
+            max_tokens = 81920,
+          }
+        },
+        gemini = {
+          -- model = "gemini-2.0-flash"
+          model = "gemini-2.5-flash-preview-04-17",
+        },
+      },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
     -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
     dependencies = {
-
       "nvim-treesitter/nvim-treesitter",
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
@@ -308,14 +518,14 @@ return {
       --   },
       -- },
 
-      {
-        -- Make sure to set this up properly if you have lazy=true
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {
-          file_types = { "markdown", "Avante" },
-        },
-        ft = { "markdown", "Avante" },
-      },
+      -- {
+      --   -- Make sure to set this up properly if you have lazy=true
+      --   'MeanderingProgrammer/render-markdown.nvim',
+      --   opts = {
+      --     file_types = { "markdown", "Avante" },
+      --   },
+      --   ft = { "markdown", "Avante" },
+      -- },
     },
   },
 
@@ -335,17 +545,17 @@ return {
   --   end
   -- },
 
-  {
-    'MeanderingProgrammer/markdown.nvim',
-    name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    config = function()
-      require('render-markdown').setup({
-        headings = { '#', '#', '#', '#', '#', '#' },
-        bullet = '○',
-      })
-    end,
-  },
+  -- {
+  --   'MeanderingProgrammer/markdown.nvim',
+  --   name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
+  --   dependencies = { 'nvim-treesitter/nvim-treesitter' },
+  --   config = function()
+  --     require('render-markdown').setup({
+  --       headings = { '#', '#', '#', '#', '#', '#' },
+  --       bullet = '○',
+  --     })
+  --   end,
+  -- },
 
   {
     -- hide key value pairs
@@ -360,9 +570,8 @@ return {
         cloak_telescope = true,
         patterns = {
           {
-            file_pattern = { '.autoenv', '.env*' },
-            cloak_pattern = '.*TOKEN.*=.+',
-            replace = nil,
+            file_pattern = { ".autoenv", ".env*" },
+            cloak_pattern = "=.+",
           },
         },
       })
@@ -644,43 +853,6 @@ return {
     end
   },
 
-  -- {
-  --   -- folding
-  --   'kevinhwang91/nvim-ufo',
-  --   dependencies = 'kevinhwang91/promise-async',
-  --   config=function()
-  --
-  --     vim.o.foldcolumn = '1' -- '0' is not bad
-  --     vim.o.foldlevel = 99
-  --     vim.o.foldlevelstart = 99
-  --     -- vim.o.foldenable = true
-  --
-  --     -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
-  --     vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
-  --     vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
-  --     require('ufo').setup({
-  --       provider_selector = function(bufnr, filetype, buftype)
-  --         return {'treesitter', 'indent'}
-  --       end
-  --     })
-  --   end,
-  --
-  -- },
-  --
-  -- {
-  --   -- Set lualine as statusline
-  --   'nvim-lualine/lualine.nvim',
-  --   -- See `:help lualine.txt`
-  --   opts = {
-  --     options = {
-  --       icons_enabled = true,
-  --       component_separators = '|',
-  --       section_separators = '',
-  --     },
-  --   },
-  -- },
-
-
   {
     -- astro
     "virchau13/tree-sitter-astro",
@@ -795,10 +967,6 @@ return {
     }
   },
 
-  {
-    -- unix commands in vim
-    'tpope/vim-eunuch',
-  },
 
   {
     -- database support in vim
@@ -808,14 +976,9 @@ return {
     }
   },
 
-  'tpope/vim-obsession',
   'tpope/vim-repeat', -- better repeat
   'tpope/vim-speeddating',
 
-  -- {
-  --   -- better netrw
-  --   'tpope/vim-vinegar',
-  -- },
 
   {
     'tpope/vim-unimpaired',
@@ -1014,10 +1177,8 @@ return {
     },
     config = function()
       require("dapui").setup()
-      require("dapui").setup()
       require("nvim-dap-virtual-text").setup({})
-      require("dap-python").setup(os.getenv('HOME') .. '/.venv-nvim/bin/python')
-
+      require("dap-python").setup()
       require('dap-go').setup({
         dap_configurations = {
           {
@@ -1035,6 +1196,7 @@ return {
           build_flags = "",
         },
       })
+
       local dap = require('dap')
       vim.keymap.set('n', '<leader>B', function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
         { noremap = true, desc = 'dap set breakpoint condition' })
@@ -1047,6 +1209,7 @@ return {
       vim.keymap.set('n', '<leader>de', dap.repl.open, { noremap = true, desc = 'dap open repl' })
       vim.keymap.set('n', '<leader>dr', dap.run_last, { noremap = true, desc = 'dap run last' })
       vim.keymap.set('n', '<leader>dq', dap.disconnect, { noremap = true, desc = 'dap disconnect' })
+
       local dapui = require('dapui')
       vim.keymap.set('n', '<leader>du', dapui.toggle, { noremap = true, desc = 'toggle dap ui' })
       vim.keymap.set('n', '<leader>do', dapui.open, { noremap = true, desc = 'toggle dap ui' })
@@ -1054,120 +1217,40 @@ return {
     end,
   },
 
-  -- {
-  --   'nvimdev/lspsaga.nvim',
-  --   config = function()
-  --     require('lspsaga').setup({
-  --       symbol_in_winbar = {
-  --         enable = true,
-  --         separator = ' › ',
-  --         hide_keyword = false,
-  --         ignore_patterns = nil,
-  --         show_file = true,
-  --         folder_level = 1,
-  --         color_mode = true,
-  --         delay = 300,
-  --       },
-  --       outline = {
-  --         win_position = 'right',
-  --         win_width = 40,
-  --         auto_preview = false,
-  --         detail = false,
-  --         auto_close = true,
-  --         close_after_jump = false,
-  --         layout = 'normal',
-  --         max_height = 0.5,
-  --         left_width = 0.3,
-  --         keys = {
-  --           toggle_or_jump = '<cr>',
-  --           quit = 'q',
-  --           jump = 'e',
-  --         },
-  --       },
-  --       ui = {
-  --         devicon = false,
-  --         foldericon = true,
-  --         -- expand = '[+]',
-  --         -- collapse = '[-]',
-  --         -- imp_sign = '[ ]',
-  --         expand = '⊞ ',
-  --         collapse = '⊟ ',
-  --         imp_sign = '󰳛 ',
-  --         code_action = "",
-  --         lines = { '└', '├', '│', '─', '┌' },
-  --         lightbulb = {
-  --           enable = false,
-  --           enable_in_insert = false,
-  --           sign = false,
-  --           sign_priority = 40,
-  --           virtual_text = false,
-  --         },
-  --         kind = {
-  --           Folder = { " " },
-  --           Module = { " ", "@namespace" },
-  --           Namespace = { " ", "@namespace" },
-  --           Package = { " ", "@namespace" },
-  --           Class = { " ", "@type" },
-  --           Method = { " ", "@method" },
-  --           Property = { " ", "LineNr" },
-  --           Field = { " ", "@field" },
-  --           Constructor = { " ", "@constructor" },
-  --           Enum = { " ", "@type" },
-  --           Interface = { " ", "@type" },
-  --           Function = { " ", "@function" },
-  --           Variable = { " ", "@constant" },
-  --           Constant = { " ", "@constant" },
-  --           String = { " ", "@string" },
-  --           Number = { " ", "@number" },
-  --           Boolean = { " ", "@boolean" },
-  --           Array = { " ", "@constant" },
-  --           Object = { " ", "@type" },
-  --           Key = { " ", "@type" },
-  --           Null = { "N ", "@type" },
-  --           EnumMember = { " ", "@field" },
-  --           Struct = { " ", "@type" },
-  --           Event = { " ", "@type" },
-  --           Operator = { " ", "@operator" },
-  --           TypeParameter = { " ", "@parameter" },
-  --           Parameter = { " ", "@parameter" },
-  --         },
-  --       },
-  --     })
-  --     vim.keymap.set('n', '<leader>t', ':Lspsaga outline<cr>', { desc = "Symbols outline", silent = false })
-  --   end,
-  --   dependencies = {
-  --     'nvim-treesitter/nvim-treesitter', -- optional
-  --   }
-  -- },
-
-  -- {
-  --   -- work with multiple cases of a word
-  --   -- :%Subvert/facilit{y,ies}/building{,s}/g
-  --   'tpope/vim-abolish',
-  -- },
 
   {
     -- Spawning interactive processes
     'tpope/vim-dispatch',
   },
 
-  {
-    'tpope/vim-markdown',
-  },
-
   -- {
-  --   -- NOTE: this was causing lost the startup message
-  --   "ray-x/go.nvim",
-  --   dependencies = {
-  --     "ray-x/guihua.lua",
-  --     "neovim/nvim-lspconfig",
-  --     "nvim-treesitter/nvim-treesitter",
-  --   },
-  --   opts = {},
-  --   event = { "CmdlineEnter" },
-  --   ft = { "go", 'gomod' },
-  --   build = ':lua require("go.install").update_all_sync()'
+  --   'tpope/vim-markdown',
   -- },
+
+  {
+    -- NOTE: this was causing lost the startup message
+    "ray-x/go.nvim",
+    dependencies = {
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    opts = {},
+    event = { "CmdlineEnter" },
+    ft = { "go", 'gomod' },
+    build = ':lua require("go.install").update_all_sync()',
+    init = function ()
+      local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        pattern = "*.go",
+        callback = function()
+          require('go.format').goimports()
+        end,
+        group = format_sync_grp,
+      })
+      require('go').setup()
+    end,
+  },
 
   -- {
   --   'echasnovski/mini.nvim',

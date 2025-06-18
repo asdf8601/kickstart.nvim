@@ -27,15 +27,18 @@ function OpenUrl()
   end
 
   -- chek if it is a url
+  -- https://google.com
   if text:match('https?://') then
     url = string.match(text, 'https?://[%w-_%.%?%.:/%+=&]+[^ >"\',;`]*')
+    cmd = vim.g.openurl_command .. ' "' .. url .. '" &'
+    out = vim.fn.system(cmd)
   else
     -- replace spaces with +
     text = text:gsub('\\n', ''):gsub('%s+', '+')
     url = 'https://www.google.com/search?q=' .. text
+    cmd = vim.g.openurl_command .. ' "' .. url .. '" &'
+    out = vim.fn.system(cmd)
   end
-  cmd = vim.g.openurl_command .. ' "' .. url .. '" &'
-  out = vim.fn.system(cmd)
   return out
 end
 
