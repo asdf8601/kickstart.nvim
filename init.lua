@@ -177,35 +177,6 @@ require('lazy').setup({
       'saghen/blink.cmp',
     },
     config = function()
-      -- Brief aside: **What is LSP?**
-      --
-      -- LSP is an initialism you've probably heard, but might not understand what it is.
-      --
-      -- LSP stands for Language Server Protocol. It's a protocol that helps editors
-      -- and language tooling communicate in a standardized fashion.
-      --
-      -- In general, you have a "server" which is some tool built to understand a particular
-      -- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc.). These Language Servers
-      -- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
-      -- processes that communicate with some "client" - in this case, Neovim!
-      --
-      -- LSP provides Neovim with features like:
-      --  - Go to definition
-      --  - Find references
-      --  - Autocompletion
-      --  - Symbol Search
-      --  - and more!
-      --
-      -- Thus, Language Servers are external tools that must be installed separately from
-      -- Neovim. This is where `mason` and related plugins come into play.
-      --
-      -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
-      -- and elegantly composed help section, `:help lsp-vs-treesitter`
-
-      --  This function gets run when an LSP attaches to a particular buffer.
-      --    That is to say, every time a new file is opened that is associated with
-      --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
-      --    function will be executed to configure the current buffer
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
@@ -355,62 +326,62 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        arduino_language_server = {},
-        astro = {},
-        bashls = {},
-        clangd = {},
-        dockerls = {},
-        efm = {},
-        golangci_lint_ls = {},
-        gopls = {},
+        bashls = {capabilities=capabilities},
+        dockerls = {capabilities=capabilities},
+        golangci_lint_ls = {capabilities=capabilities},
+        gopls = {capabilities=capabilities},
         html = { filetypes = { 'html', 'twig', 'hbs' } },
-        jsonls = {},
-        jsonnet_ls = {},
+        jsonls = {capabilities=capabilities},
+        jsonnet_ls = {capabilities=capabilities},
         lua_ls = { Lua = { workspace = { checkThirdParty = false }, telemetry = { enable = false }, }, },
-        pyright = {},
-        ruff = {},
+        pyright = {capabilities=capabilities},
+        ruff = {capabilities=capabilities},
+        taplo = {capabilities=capabilities},
         rust_analyzer = {},
-        sqls = {},
-        taplo = {},
-        terraformls = {},
-        tflint = {},
-        ts_ls = {},
-        yamlls = {},
-        emmet_language_server = {
-          filetypes = {
-            "astro",
-            "css",
-            "eruby",
-            "html",
-            "javascript",
-            "javascriptreact",
-            "less",
-            "sass",
-            "scss",
-            "pug",
-            "typescriptreact",
-          },
-          init_options = {
-            ---@type table<string, string>
-            includeLanguages = {},
-            --- @type string[]
-            excludeLanguages = {},
-            --- @type string[]
-            extensionsPath = {},
-            --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/preferences/)
-            preferences = {},
-            --- @type boolean Defaults to `true`
-            showAbbreviationSuggestions = true,
-            --- @type "always" | "never" Defaults to `"always"`
-            showExpandedAbbreviation = "always",
-            --- @type boolean Defaults to `false`
-            showSuggestionsAsSnippets = false,
-            --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/syntax-profiles/)
-            syntaxProfiles = {},
-            --- @type table<string, string> [Emmet Docs](https://docs.emmet.io/customization/snippets/#variables)
-            variables = {},
-          },
-        },
+        -- sqls = {},
+        terraformls = {capabilities=capabilities},
+        tflint = {capabilities=capabilities},
+        ts_ls = {capabilities=capabilities},
+        yamlls = {capabilities=capabilities},
+        -- arduino_language_server = {},
+        -- astro = {},
+        -- clangd = {},
+        -- efm = {},
+        -- emmet_language_server = {
+        --   filetypes = {
+        --     "astro",
+        --     "css",
+        --     "eruby",
+        --     "html",
+        --     "javascript",
+        --     "javascriptreact",
+        --     "less",
+        --     "sass",
+        --     "scss",
+        --     "pug",
+        --     "typescriptreact",
+        --   },
+        --   init_options = {
+        --     ---@type table<string, string>
+        --     includeLanguages = {},
+        --     --- @type string[]
+        --     excludeLanguages = {},
+        --     --- @type string[]
+        --     extensionsPath = {},
+        --     --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/preferences/)
+        --     preferences = {},
+        --     --- @type boolean Defaults to `true`
+        --     showAbbreviationSuggestions = true,
+        --     --- @type "always" | "never" Defaults to `"always"`
+        --     showExpandedAbbreviation = "always",
+        --     --- @type boolean Defaults to `false`
+        --     showSuggestionsAsSnippets = false,
+        --     --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/syntax-profiles/)
+        --     syntaxProfiles = {},
+        --     --- @type table<string, string> [Emmet Docs](https://docs.emmet.io/customization/snippets/#variables)
+        --     variables = {},
+        --   },
+        -- },
       }
 
       -- Setup neovim lua configuration
