@@ -1,3 +1,5 @@
+local vim = vim
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -769,7 +771,9 @@ vim.opt.breakindent = true
 vim.wo.number = true
 
 -- vim.opt.foldmethod = 'marker'
+-- vim.opt.foldmethod="expr"
 -- vim.opt.foldmethod = 'syntax'
+-- vim.opt.foldmethod = 'manual'
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
@@ -778,9 +782,11 @@ vim.o.foldenable = false
 -- vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 vim.o.foldnestmax = 1
-vim.o.foldmethod="expr"
-vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.o.foldtext = ""
+
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+
 
 -- Enable mouse mode
 vim.opt.mouse = 'a'
@@ -1159,6 +1165,7 @@ autocmd('FileType', { group = ASDF8601, pattern = 'make', command = 'setl noexpa
 autocmd('TermOpen', { group = ASDF8601, pattern = '*', command = 'setl nonumber norelativenumber' })
 autocmd('FileType', { group = ASDF8601, pattern = 'fugitive', command = 'setl nonumber norelativenumber' })
 autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F8> :!black -l80 -S %<CR><CR>' })
+autocmd('FileType', { group = ASDF8601, pattern = 'json*', command = 'setl tw=0' })
 autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F7> :!ruff check -l80 %<CR><CR>' })
 autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F9> :!ruff check -l80 --fix %<CR><CR>' })
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'Jenkinsfile', command = 'setl ft=groovy' })
