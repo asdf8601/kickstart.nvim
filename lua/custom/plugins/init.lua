@@ -139,6 +139,112 @@ return {
             },
           },
 
+          ["PR body"] = {
+            strategy = "chat",
+            description = "Create a PR body based on git diff main",
+            opts = {
+              modes = { "n" },
+              short_name = "pr_body",
+              auto_submit = true,
+              stop_context_insertion = true,
+              user_prompt = false,
+              placement = "chat", -- or "replace"|"add"|"before"|"chat"
+              adapter = {
+                name = "gemini",
+                model = "gemini-2.5-pro",
+              },
+            },
+            prompts = {
+              {
+                role = "system",
+                content = [[
+                  <goal>
+                  You’re an assistant that takes a Git diff and writes a short,
+                  casual PR description without jargon. Don't forget to mention
+                  other relevant changes.
+                  Big changes don't have to be the only ones you comment on.
+                  Be very concise and simple and use simple words.
+                  Do not include ornamental text.
+                  Do not include suggestions nor improvements.
+
+                  Output format:
+                  1. **Quick summary**: one sentence.
+                  2. **Main changes**: bullet list grouped by file or feature.
+                  3. **Optional details**: for anything special.
+                  4. **How to test**: quick commands or steps.
+                  </goal>
+
+                  <input>
+
+                  ```diff
+                  diff --git c/README.md w/README.md
+                  index a678f9c..8cf4dc0 100644
+                  --- c/README.md
+                  +++ w/README.md
+                  + This an example:
+                  + ```bash
+                  + ash setup
+                  + ash run
+                  + ```
+                  </input>
+
+                  <output>
+                  ## Quick summary:
+                  - Improved docs and scripts.
+
+                  ## Main changes:
+                  - README.md: simplified text and added example.
+
+                  ## Optional details:
+                  - Added alias `ash` for `agora.sh`.
+
+                  ## How to test:
+                  - Run the following commands:
+                  ```bash
+                  ash setup
+                  ash run
+                  ```
+                  </output>
+
+           ["fix grammar"] = {
+             strategy = "inline",
+             description = "Fix Grammar",
+                  ```
+                  </input>
+
+                  <output>
+                  Return:
+
+                  Quick summary:
+                      •	Improved docs and scripts.
+
+                  Main changes:
+                      •	README.md: simplified text and added Quick Start.
+                      •	agora.sh: added alias ash, colors, error handling, improved fzf.
+                      •	.gitignore: added Python rules.
+
+                  How to test:
+
+                  ```
+                  ash setup
+                  ash run
+                  ```
+                  </output>
+
+                  ]],
+              },
+              {
+                role = "user",
+                content = function(_)
+                  local diff = vim.fn.system("git diff main")
+                  return "Here is the diff:\n\n```diff\n" .. diff .. "\n```\n\n"
+                end,
+                opts = {
+                    contains_code = true,
+                },
+              },
+            },
+          },
           ["fix grammar"] = {
             strategy = "inline",
             description = "Fix Grammar",
@@ -245,7 +351,8 @@ return {
               schema = {
                 model = {
                   -- default = "gemini-2.0-flash",
-                  default = "gemini-2.5-flash-preview-04-17",
+                  -- default = "gemini-2.5-flash-preview-04-17",
+                  default = "gemini-2.5-pro",
                 },
               },
             })
@@ -484,7 +591,9 @@ return {
         },
         gemini = {
           -- model = "gemini-2.0-flash"
-          model = "gemini-2.5-flash-preview-04-17",
+          -- model = "gemini-2.5-flash",
+          -- model = "gemini-2.5-flash-lite-preview-06-17",
+          model = "gemini-2.5-pro",
         },
       },
     },
