@@ -206,9 +206,6 @@ return {
                   ```
                   </output>
 
-           ["fix grammar"] = {
-             strategy = "inline",
-             description = "Fix Grammar",
                   ```
                   </input>
 
@@ -422,10 +419,23 @@ return {
             end
           },
 
+          ["ff"] = {
+            function()
+              require("telescope.builtin").find_files({
+                cwd = require('oil').get_current_dir(),
+                hidden = true,
+                exclude = { ".git", "node_modules", ".cache" },
+              })
+            end,
+            mode = "n",
+            nowait = true,
+            desc = "Find files in the current directory"
+          },
+
           ["<C-p>"] = {
             function()
               require("telescope.builtin").find_files({
-                cwd = require("oil").get_current_dir(),
+                cwd = vim.fn.systemlist("git rev-parse --show-toplevel")[1],
                 hidden = true,
                 exclude = { ".git", "node_modules", ".cache" },
               })
@@ -577,7 +587,7 @@ return {
     lazy = false,
     version = false, -- set this if you want to always pull the latest change
     opts = {
-      provider = "copilot",
+      provider = "gemini",
       providers = {
         copilot = {
           -- model = "claude-3.7-sonnet", -- bad
@@ -591,9 +601,13 @@ return {
         },
         gemini = {
           -- model = "gemini-2.0-flash"
-          -- model = "gemini-2.5-flash",
           -- model = "gemini-2.5-flash-lite-preview-06-17",
-          model = "gemini-2.5-pro",
+          -- model = "gemini-2.5-pro",
+          model = "gemini-2.5-flash",
+          extra_request_body = {
+            temperature = 0,
+            max_tokens = 81920,
+          }
         },
       },
     },

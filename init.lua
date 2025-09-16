@@ -689,17 +689,43 @@ require('lazy').setup({
       --     previewer = false,
       --   })
       -- end, { desc = '[/] Fuzzily search in current buffer' })
-      vim.keymap.set('n', '<C-p>',      require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-      vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-      vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-      vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-      vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
-      vim.keymap.set('n', "<leader>fp", "<cmd>lua require('telescope.builtin').find_files( { cwd = vim.fn.expand('%:p:h'), hidden = false }) <CR>", { desc = "Search current buffer dir", noremap = true })
-      vim.keymap.set('n', '<leader>fl', ':Telescope diagnostics<cr>', { noremap = true, desc = "Find errors, lint, diagnostics", silent = false })
-      vim.keymap.set('n', '<leader>fc', ':Telescope commands<cr>', { noremap = true, desc = "Find commands", silent = false })
-      vim.keymap.set('n', '<leader>fk', ':Telescope keymaps<cr>', { noremap = true, desc = "Find keymaps", silent = false })
+      vim.keymap.set('n', '<C-p>', require('telescope.builtin').git_files, { desc = '[telescope] Search [G]it [F]iles' })
+      vim.keymap.set('n', '<leader>fp', "<cmd>lua require('telescope.builtin').git_files( { cwd = vim.fn.getcwd(), hidden = false, use_git_root=false }) <CR>", { desc = "[telescope] Search git files in current buffer dir]", noremap = true })
+      vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[telescope] [S]earch [F]iles' })
+      vim.keymap.set('n', "<leader>fb", "<cmd>lua require('telescope.builtin').find_files( { cwd = vim.fn.expand('%:p:h'), hidden = false }) <CR>", { desc = "[telescope] Search files in current buffer dir", noremap = true })
+      vim.keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags, { desc = '[telescope] [S]earch [H]elp' })
+      vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[telescope] [S]earch current [W]ord under cursor in all files' })
+      vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[telescope] [S]earch by [G]rep - Live search text across all files in workspace' })
+      vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[telescope] [S]earch [D]iagnostics across workspace' })
+      vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[telescope] Resume last search' })
+      -- vim.keymap.set('n', '<leader>fl', ':Telescope diagnostics<cr>', { noremap = true, desc = "[telescope] Find errors, lint, diagnostics", silent = false })
+      vim.keymap.set('n', '<leader>fc', ':Telescope commands<cr>', { noremap = true, desc = "[telescope] Find commands", silent = false })
+      vim.keymap.set('n', '<leader>fk', ':Telescope keymaps<cr>', { noremap = true, desc = "[telescope] Find keymaps", silent = false })
+
+      vim.keymap.set('n', '<leader>fj', function()
+        require('telescope.builtin').find_files({
+          prompt_title = "Find Directories",
+          cwd = vim.fn.expand('~'),
+          find_command = { 'find', vim.fn.expand('~/github.com/seedtag'), vim.fn.expand('~/github.com/asdf8601'), '-maxdepth', '1', '-type', 'd', '-name', '.git', '-prune', '-o', '-type', 'd', '-print' },
+          attach_mappings = function(prompt_bufnr, map)
+            local actions = require('telescope.actions')
+            local action_state = require('telescope.actions.state')
+
+            local function open_in_new_window()
+              local selection = action_state.get_selected_entry()
+              actions.close(prompt_bufnr)
+              vim.cmd('vnew')
+              vim.cmd('lcd ' .. selection.value)
+              vim.cmd('edit .')
+            end
+
+            map('i', '<CR>', open_in_new_window)
+            map('n', '<CR>', open_in_new_window)
+
+            return true
+          end,
+        })
+        end, { desc = '[telescope] Find projects and open it in a new win' })
       end
   },
 
@@ -1164,7 +1190,8 @@ autocmd('FileType', { group = ASDF8601, pattern = 'markdown', command = 'setl co
 autocmd('FileType', { group = ASDF8601, pattern = 'make', command = 'setl noexpandtab shiftwidth=4 softtabstop=0' })
 autocmd('TermOpen', { group = ASDF8601, pattern = '*', command = 'setl nonumber norelativenumber' })
 autocmd('FileType', { group = ASDF8601, pattern = 'fugitive', command = 'setl nonumber norelativenumber' })
-autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F8> :!black -l80 -S %<CR><CR>' })
+-- autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F8> :!black -l80 -S %<CR><CR>' })
+autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F8> :!ruff format % && ruff check % --fix<CR><CR>' })
 autocmd('FileType', { group = ASDF8601, pattern = 'json*', command = 'setl tw=0' })
 autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F7> :!ruff check -l80 %<CR><CR>' })
 autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F9> :!ruff check -l80 --fix %<CR><CR>' })
