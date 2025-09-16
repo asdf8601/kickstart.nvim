@@ -111,8 +111,9 @@ require('lazy').setup({
         if vim.fn.has('mac') == 0 then
           vim.g.slime_get_jobid = slime_get_jobid
         end
-        -- vim.g.slime_default_config = nil
-        -- vim.g.slime_dont_ask_default = 0
+          -- vim.g.slime_get_jobid = slime_get_jobid
+          vim.g.slime_default_config = nil
+          vim.g.slime_dont_ask_default = 0
       end
 
       vim.api.nvim_create_user_command('SlimeTarget', function (opts)
