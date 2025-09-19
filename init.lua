@@ -1196,6 +1196,7 @@ autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap 
 autocmd('FileType', { group = ASDF8601, pattern = 'json*', command = 'setl tw=0' })
 autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F7> :!ruff check -l80 %<CR><CR>' })
 autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F9> :!ruff check -l80 --fix %<CR><CR>' })
+autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = {'.autoenv', '.env'}, command = 'setl ft=bash' })
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'Jenkinsfile', command = 'setl ft=groovy' })
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = '*.astro', command = 'set ft=astro' })
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'requirements*.txt', command = 'setl ft=requirements' })
