@@ -331,30 +331,32 @@ return {
         },
 
         adapters = {
-          copilot = function()
-            return require("codecompanion.adapters").extend("copilot", {
-              schema = {
-                model = {
-                  -- default = "claude-3.7-sonnet",
-                  -- default = "o4-mini",
-                  default = "claude-sonnet-4",
+          http = {
+            copilot = function()
+              return require("codecompanion.adapters.http").extend("copilot", {
+                schema = {
+                  model = {
+                    -- default = "claude-3.7-sonnet",
+                    -- default = "o4-mini",
+                    default = "claude-sonnet-4",
+                  },
                 },
-              },
-            })
-          end,
+              })
+            end,
 
-          gemini = function()
-            return require("codecompanion.adapters").extend("gemini", {
-              schema = {
-                model = {
-                  -- default = "gemini-2.0-flash",
-                  -- default = "gemini-2.5-flash-preview-04-17",
-                  default = "gemini-2.5-pro",
+            gemini = function()
+              return require("codecompanion.adapters.http").extend("gemini", {
+                schema = {
+                  model = {
+                    -- default = "gemini-2.0-flash",
+                    -- default = "gemini-2.5-flash-preview-04-17",
+                    default = "gemini-2.5-pro",
+                  },
                 },
-              },
-            })
-          end,
+              })
+            end,
 
+          }
         },
       })
 
@@ -781,180 +783,180 @@ return {
   --   end
   -- },
 
-  {
-    "robitx/gp.nvim",
-    lazy = false,
-    init = function()
-      require("gp").setup({
-        providers = {
-          ollama = {
-            endpoint = "http://localhost:11434/v1/chat/completions",
-          },
-        },
-
-        agents = {
-          {
-            name = "Llama3",
-            chat = true,
-            command = true,
-            provider = "ollama",
-            model = { model = "llama3", stream = false },
-            system_prompt = "Your are a general AI assistant better than ChatGPT4.",
-          },
-          {
-            name = "ChatGPT4",
-            chat = true,
-            command = false,
-            model = { model = "gpt-4o", temperature = 1.1, top_p = 1 },
-            -- system prompt (use this to specify the persona/role of the AI)
-            system_prompt = "You are a general AI assistant.\n\n"
-                .. "The user provided the additional info about how they would like you to respond:\n\n"
-                .. "- If you're unsure don't guess and say you don't know instead.\n"
-                .. "- Ask question if you need clarification to provide better answer.\n"
-                .. "- Think deeply and carefully from first principles step by step.\n"
-                .. "- Zoom out first to see the big picture and then zoom in to details.\n"
-                .. "- Use Socratic method to improve your thinking and coding skills.\n"
-                .. "- Don't elide any code from your output if the answer requires coding.\n"
-                .. "- Take a deep breath; You've got this! Be extremely concise.\n",
-          },
-          {
-            name = "ChatGPT3-5",
-            chat = true,
-            command = false,
-            -- string with model name or table with model name and parameters
-            model = { model = "gpt-3.5-turbo", temperature = 1.1, top_p = 1 },
-            -- system prompt (use this to specify the persona/role of the AI)
-            system_prompt = "You are a general AI assistant.\n\n"
-                .. "The user provided the additional info about how they would like you to respond:\n\n"
-                .. "- If you're unsure don't guess and say you don't know instead.\n"
-                .. "- Ask question if you need clarification to provide better answer.\n"
-                .. "- Think deeply and carefully from first principles step by step.\n"
-                .. "- Zoom out first to see the big picture and then zoom in to details.\n"
-                .. "- Use Socratic method to improve your thinking and coding skills.\n"
-                .. "- Don't elide any code from your output if the answer requires coding.\n"
-                .. "- Take a deep breath; You've got this!\n",
-          },
-          {
-            name = "CodeGPT4",
-            chat = false,
-            command = true,
-            -- string with model name or table with model name and parameters
-            model = { model = "gpt-4o", temperature = 0.8, top_p = 1 },
-            -- system prompt (use this to specify the persona/role of the AI)
-            system_prompt = "You are an AI working as a code editor.\n\n"
-                .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
-                .. "START AND END YOUR ANSWER WITH:\n\n```",
-          },
-          {
-            name = "CodeGPT3-5",
-            chat = false,
-            command = true,
-            -- string with model name or table with model name and parameters
-            model = { model = "gpt-3.5-turbo", temperature = 0.8, top_p = 1 },
-            -- system prompt (use this to specify the persona/role of the AI)
-            system_prompt = "You are an AI working as a code editor.\n\n"
-                .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
-                .. "START AND END YOUR ANSWER WITH:\n\n```",
-          },
-
-        },
-
-        hooks = {
-
-          -- GpInspectPlugin provides a detailed inspection of the plugin state
-          InspectPlugin = function(plugin, params)
-            local bufnr = vim.api.nvim_create_buf(false, true)
-            local copy = vim.deepcopy(plugin)
-            local key = copy.config.openai_api_key or ""
-            copy.config.openai_api_key = key:sub(1, 3) .. string.rep("*", #key - 6) .. key:sub(-3)
-            local plugin_info = string.format("Plugin structure:\n%s", vim.inspect(copy))
-            local params_info = string.format("Command params:\n%s", vim.inspect(params))
-            local lines = vim.split(plugin_info .. "\n" .. params_info, "\n")
-            vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-            vim.api.nvim_win_set_buf(0, bufnr)
-          end,
-
-          -- GpInspectLog for checking the log file
-          InspectLog = function(plugin, _)
-            local log_file = plugin.config.log_file
-            local buffer = plugin.helpers.get_buffer(log_file)
-            if not buffer then
-              vim.cmd("e " .. log_file)
-            else
-              vim.cmd("buffer " .. buffer)
-            end
-          end,
-
-          -- GpImplement rewrites the provided selection/range based on comments in it
-          Implement = function(gp, params)
-            local template = "Having following from {{filename}}:\n\n"
-                .. "```{{filetype}}\n{{selection}}\n```\n\n"
-                .. "Please rewrite this according to the contained instructions."
-                .. "\n\nRespond exclusively with the snippet that should replace the selection above."
-
-            local agent = gp.get_command_agent()
-            gp.logger.info("Implementing selection with agent: " .. agent.name)
-
-            gp.Prompt(
-              params,
-              gp.Target.rewrite,
-              agent,
-              template,
-              nil, -- command will run directly without any prompting for user input
-              nil  -- no predefined instructions (e.g. speech-to-text from Whisper)
-            )
-          end,
-
-          -- your own functions can go here, see README for more examples like
-          -- :GpExplain, :GpUnitTests.., :GpTranslator etc.
-
-          -- example of making :%GpChatNew a dedicated command which
-          -- opens new chat with the entire current buffer as a context
-          BufferChatNew = function(gp, _)
-            -- call GpChatNew command in range mode on whole buffer
-            vim.api.nvim_command("%" .. gp.config.cmd_prefix .. "ChatNew")
-          end,
-
-          -- example of adding command which opens new chat dedicated for translation
-          Translator = function(gp, params)
-            local chat_system_prompt = "You are a Translator, please translate between English and Chinese."
-            gp.cmd.ChatNew(params, chat_system_prompt)
-            -- you can also create a chat with a specific fixed agent like this:
-            -- local agent = gp.get_chat_agent("ChatGPT4o")
-            -- gp.cmd.ChatNew(params, chat_system_prompt, agent)
-          end,
-
-          -- example of adding command which writes unit tests for the selected code
-          UnitTests = function(gp, params)
-            local template = "I have the following code from {{filename}}:\n\n"
-                .. "```{{filetype}}\n{{selection}}\n```\n\n"
-                .. "Please respond by writing table driven unit tests for the code above."
-            local agent = gp.get_command_agent()
-            gp.Prompt(params, gp.Target.enew, agent, template)
-          end,
-
-          -- example of adding command which explains the selected code
-          Explain = function(gp, params)
-            local template = "I have the following code from {{filename}}:\n\n"
-                .. "```{{filetype}}\n{{selection}}\n```\n\n"
-                .. "Please respond by explaining the code above."
-            local agent = gp.get_chat_agent()
-            gp.Prompt(params, gp.Target.popup, agent, template)
-          end,
-
-          CodeReview = function(gp, params)
-            local template = "I have the following code from {{filename}}:\n\n"
-                .. "```{{filetype}}\n{{selection}}\n```\n\n"
-                .. "Please analyze for code smells and suggest improvements."
-            local agent = gp.get_chat_agent()
-            gp.Prompt(params, gp.Target.enew("markdown"), agent, template)
-          end,
-
-        },
-      })
-      -- https://github.com/Robitx/gp.nvim?tab=readme-ov-file#4-configuration
-    end,
-  },
+  -- {
+  --   "robitx/gp.nvim",
+  --   lazy = false,
+  --   init = function()
+  --     require("gp").setup({
+  --       providers = {
+  --         ollama = {
+  --           endpoint = "http://localhost:11434/v1/chat/completions",
+  --         },
+  --       },
+  --
+  --       agents = {
+  --         {
+  --           name = "Llama3",
+  --           chat = true,
+  --           command = true,
+  --           provider = "ollama",
+  --           model = { model = "llama3", stream = false },
+  --           system_prompt = "Your are a general AI assistant better than ChatGPT4.",
+  --         },
+  --         {
+  --           name = "ChatGPT4",
+  --           chat = true,
+  --           command = false,
+  --           model = { model = "gpt-4o", temperature = 1.1, top_p = 1 },
+  --           -- system prompt (use this to specify the persona/role of the AI)
+  --           system_prompt = "You are a general AI assistant.\n\n"
+  --               .. "The user provided the additional info about how they would like you to respond:\n\n"
+  --               .. "- If you're unsure don't guess and say you don't know instead.\n"
+  --               .. "- Ask question if you need clarification to provide better answer.\n"
+  --               .. "- Think deeply and carefully from first principles step by step.\n"
+  --               .. "- Zoom out first to see the big picture and then zoom in to details.\n"
+  --               .. "- Use Socratic method to improve your thinking and coding skills.\n"
+  --               .. "- Don't elide any code from your output if the answer requires coding.\n"
+  --               .. "- Take a deep breath; You've got this! Be extremely concise.\n",
+  --         },
+  --         {
+  --           name = "ChatGPT3-5",
+  --           chat = true,
+  --           command = false,
+  --           -- string with model name or table with model name and parameters
+  --           model = { model = "gpt-3.5-turbo", temperature = 1.1, top_p = 1 },
+  --           -- system prompt (use this to specify the persona/role of the AI)
+  --           system_prompt = "You are a general AI assistant.\n\n"
+  --               .. "The user provided the additional info about how they would like you to respond:\n\n"
+  --               .. "- If you're unsure don't guess and say you don't know instead.\n"
+  --               .. "- Ask question if you need clarification to provide better answer.\n"
+  --               .. "- Think deeply and carefully from first principles step by step.\n"
+  --               .. "- Zoom out first to see the big picture and then zoom in to details.\n"
+  --               .. "- Use Socratic method to improve your thinking and coding skills.\n"
+  --               .. "- Don't elide any code from your output if the answer requires coding.\n"
+  --               .. "- Take a deep breath; You've got this!\n",
+  --         },
+  --         {
+  --           name = "CodeGPT4",
+  --           chat = false,
+  --           command = true,
+  --           -- string with model name or table with model name and parameters
+  --           model = { model = "gpt-4o", temperature = 0.8, top_p = 1 },
+  --           -- system prompt (use this to specify the persona/role of the AI)
+  --           system_prompt = "You are an AI working as a code editor.\n\n"
+  --               .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
+  --               .. "START AND END YOUR ANSWER WITH:\n\n```",
+  --         },
+  --         {
+  --           name = "CodeGPT3-5",
+  --           chat = false,
+  --           command = true,
+  --           -- string with model name or table with model name and parameters
+  --           model = { model = "gpt-3.5-turbo", temperature = 0.8, top_p = 1 },
+  --           -- system prompt (use this to specify the persona/role of the AI)
+  --           system_prompt = "You are an AI working as a code editor.\n\n"
+  --               .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
+  --               .. "START AND END YOUR ANSWER WITH:\n\n```",
+  --         },
+  --
+  --       },
+  --
+  --       hooks = {
+  --
+  --         -- GpInspectPlugin provides a detailed inspection of the plugin state
+  --         InspectPlugin = function(plugin, params)
+  --           local bufnr = vim.api.nvim_create_buf(false, true)
+  --           local copy = vim.deepcopy(plugin)
+  --           local key = copy.config.openai_api_key or ""
+  --           copy.config.openai_api_key = key:sub(1, 3) .. string.rep("*", #key - 6) .. key:sub(-3)
+  --           local plugin_info = string.format("Plugin structure:\n%s", vim.inspect(copy))
+  --           local params_info = string.format("Command params:\n%s", vim.inspect(params))
+  --           local lines = vim.split(plugin_info .. "\n" .. params_info, "\n")
+  --           vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+  --           vim.api.nvim_win_set_buf(0, bufnr)
+  --         end,
+  --
+  --         -- GpInspectLog for checking the log file
+  --         InspectLog = function(plugin, _)
+  --           local log_file = plugin.config.log_file
+  --           local buffer = plugin.helpers.get_buffer(log_file)
+  --           if not buffer then
+  --             vim.cmd("e " .. log_file)
+  --           else
+  --             vim.cmd("buffer " .. buffer)
+  --           end
+  --         end,
+  --
+  --         -- GpImplement rewrites the provided selection/range based on comments in it
+  --         Implement = function(gp, params)
+  --           local template = "Having following from {{filename}}:\n\n"
+  --               .. "```{{filetype}}\n{{selection}}\n```\n\n"
+  --               .. "Please rewrite this according to the contained instructions."
+  --               .. "\n\nRespond exclusively with the snippet that should replace the selection above."
+  --
+  --           local agent = gp.get_command_agent()
+  --           gp.logger.info("Implementing selection with agent: " .. agent.name)
+  --
+  --           gp.Prompt(
+  --             params,
+  --             gp.Target.rewrite,
+  --             agent,
+  --             template,
+  --             nil, -- command will run directly without any prompting for user input
+  --             nil  -- no predefined instructions (e.g. speech-to-text from Whisper)
+  --           )
+  --         end,
+  --
+  --         -- your own functions can go here, see README for more examples like
+  --         -- :GpExplain, :GpUnitTests.., :GpTranslator etc.
+  --
+  --         -- example of making :%GpChatNew a dedicated command which
+  --         -- opens new chat with the entire current buffer as a context
+  --         BufferChatNew = function(gp, _)
+  --           -- call GpChatNew command in range mode on whole buffer
+  --           vim.api.nvim_command("%" .. gp.config.cmd_prefix .. "ChatNew")
+  --         end,
+  --
+  --         -- example of adding command which opens new chat dedicated for translation
+  --         Translator = function(gp, params)
+  --           local chat_system_prompt = "You are a Translator, please translate between English and Chinese."
+  --           gp.cmd.ChatNew(params, chat_system_prompt)
+  --           -- you can also create a chat with a specific fixed agent like this:
+  --           -- local agent = gp.get_chat_agent("ChatGPT4o")
+  --           -- gp.cmd.ChatNew(params, chat_system_prompt, agent)
+  --         end,
+  --
+  --         -- example of adding command which writes unit tests for the selected code
+  --         UnitTests = function(gp, params)
+  --           local template = "I have the following code from {{filename}}:\n\n"
+  --               .. "```{{filetype}}\n{{selection}}\n```\n\n"
+  --               .. "Please respond by writing table driven unit tests for the code above."
+  --           local agent = gp.get_command_agent()
+  --           gp.Prompt(params, gp.Target.enew, agent, template)
+  --         end,
+  --
+  --         -- example of adding command which explains the selected code
+  --         Explain = function(gp, params)
+  --           local template = "I have the following code from {{filename}}:\n\n"
+  --               .. "```{{filetype}}\n{{selection}}\n```\n\n"
+  --               .. "Please respond by explaining the code above."
+  --           local agent = gp.get_chat_agent()
+  --           gp.Prompt(params, gp.Target.popup, agent, template)
+  --         end,
+  --
+  --         CodeReview = function(gp, params)
+  --           local template = "I have the following code from {{filename}}:\n\n"
+  --               .. "```{{filetype}}\n{{selection}}\n```\n\n"
+  --               .. "Please analyze for code smells and suggest improvements."
+  --           local agent = gp.get_chat_agent()
+  --           gp.Prompt(params, gp.Target.enew("markdown"), agent, template)
+  --         end,
+  --
+  --       },
+  --     })
+  --     -- https://github.com/Robitx/gp.nvim?tab=readme-ov-file#4-configuration
+  --   end,
+  -- },
 
   {
     -- A task runner and job management plugin for Neovim
@@ -1022,56 +1024,56 @@ return {
   --   end
   -- },
 
-  {
-    -- scala lsp
-    'scalameta/nvim-metals',
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      local metals_config = require("metals").bare_config()
-
-      -- Example of settings
-      metals_config.settings = {
-        showImplicitArguments = true,
-        excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
-      }
-
-      -- metals_config.init_options.statusBarProvider = "on"
-      metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
-      local dap = require("dap")
-      dap.configurations.scala = {
-        {
-          type = "scala",
-          request = "launch",
-          name = "RunOrTest",
-          metals = {
-            runType = "runOrTestFile",
-            --args = { "firstArg", "secondArg", "thirdArg" }, -- here just as an example
-          },
-        },
-        {
-          type = "scala",
-          request = "launch",
-          name = "Test Target",
-          metals = {
-            runType = "testTarget",
-          },
-        },
-      }
-
-      metals_config.on_attach = function(client, bufnr)
-        require("metals").setup_dap()
-      end
-
-      local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "scala", "sbt", "java" },
-        callback = function()
-          require("metals").initialize_or_attach(metals_config)
-        end,
-        group = nvim_metals_group,
-      })
-    end
-  },
+  -- {
+  --   -- scala lsp
+  --   'scalameta/nvim-metals',
+  --   dependencies = { "nvim-lua/plenary.nvim" },
+  --   config = function()
+  --     local metals_config = require("metals").bare_config()
+  --
+  --     -- Example of settings
+  --     metals_config.settings = {
+  --       showImplicitArguments = true,
+  --       excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
+  --     }
+  --
+  --     -- metals_config.init_options.statusBarProvider = "on"
+  --     metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
+  --     local dap = require("dap")
+  --     dap.configurations.scala = {
+  --       {
+  --         type = "scala",
+  --         request = "launch",
+  --         name = "RunOrTest",
+  --         metals = {
+  --           runType = "runOrTestFile",
+  --           --args = { "firstArg", "secondArg", "thirdArg" }, -- here just as an example
+  --         },
+  --       },
+  --       {
+  --         type = "scala",
+  --         request = "launch",
+  --         name = "Test Target",
+  --         metals = {
+  --           runType = "testTarget",
+  --         },
+  --       },
+  --     }
+  --
+  --     metals_config.on_attach = function(client, bufnr)
+  --       require("metals").setup_dap()
+  --     end
+  --
+  --     local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
+  --     vim.api.nvim_create_autocmd("FileType", {
+  --       pattern = { "scala", "sbt", "java" },
+  --       callback = function()
+  --         require("metals").initialize_or_attach(metals_config)
+  --       end,
+  --       group = nvim_metals_group,
+  --     })
+  --   end
+  -- },
 
   'junegunn/vim-easy-align',
   'alec-gibson/nvim-tetris',
