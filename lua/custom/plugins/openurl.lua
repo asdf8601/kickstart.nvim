@@ -1,3 +1,5 @@
+vim.g.openurl_command = 'open'
+
 function GetVisual(mode)
   local data
   local _, ls, cs = unpack(vim.fn.getpos('v'))
@@ -10,7 +12,6 @@ function GetVisual(mode)
   return table.concat(data, '\\n')
 end
 
-vim.g.openurl_command = 'open'
 
 function OpenUrl()
   local mode = vim.fn.mode()
