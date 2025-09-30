@@ -1,3 +1,4 @@
+
 local servers = {
   -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
   --
@@ -6,7 +7,15 @@ local servers = {
   bashls = {},
   dockerls = {},
   golangci_lint_ls = {},
-  gopls = { settings = { gopls = { usePlaceholders = false, buildFlags =  {"-tags=unit,integration"}, gofumpt = true, ["local"] = "<repo>", } }, init_options = { buildFlags =  {"-tags=unit,integration"} } },
+  gopls = {
+    settings = {
+      gopls = {
+        buildFlags =  { "-tags=unit,integration" },
+        staticcheck = true,
+        gofumpt = true,
+      }
+    }
+  } ,
   gotestsum = {},
   golines = {},
   html = { filetypes = { 'html', 'twig', 'hbs' } },
@@ -289,6 +298,8 @@ return {
           end,
         },
       }
+
+      vim.lsp.config.gopls = servers.gopls
     end,
   },
 }
