@@ -28,7 +28,7 @@ local function search_scio()
     vim.cmd('edit ' .. cwd .. '/' .. prompt)
     return true
   end
-  require("telescope.builtin").find_files({
+  builtin.find_files({
     prompt_title = "< scio >",
     cwd = "~/github/mmngreco/scio",
     hidden = true,
@@ -41,7 +41,7 @@ local function search_scio()
 end
 
 local function search_dotfiles()
-  require("telescope.builtin").find_files({
+  builtin.find_files({
     prompt_title = "< dotfiles >",
     cwd = "$DOTFILES_HOME",
     hidden = true,
@@ -50,7 +50,7 @@ local function search_dotfiles()
 end
 
 local function my_find_files()
-  require("telescope.builtin").find_files({
+  builtin.find_files({
     file_ignore_patterns = ignore_patterns,
     hidden = true,
     no_ignore = true,
@@ -59,7 +59,7 @@ local function my_find_files()
 end
 
 local function git_branches()
-  require("telescope.builtin").git_branches({
+  builtin.git_branches({
     attach_mappings = function(_, map)
       map('i', '<c-d>', actions.git_delete_branch)
       map('n', '<c-d>', actions.git_delete_branch)
@@ -85,7 +85,7 @@ local function find_files_from_project_git_root()
   if is_git_repo() then
     opts["cwd"] = get_git_root()
   end
-  require("telescope.builtin").find_files(opts)
+  builtin.find_files(opts)
 end
 
 local previewers = require("telescope.previewers")
@@ -105,7 +105,7 @@ local new_maker = function(filepath, bufnr, opts)
 end
 
 local find_project = function()
-  require('telescope.builtin').find_files({
+  builtin.find_files({
     prompt_title = "Find Directories",
     cwd = vim.fn.expand('~'),
     find_command = { 'find', vim.fn.expand('~/github.com/seedtag'), vim.fn.expand('~/github.com/asdf8601'), '-maxdepth', '1', '-type', 'd', '-name', '.git', '-prune', '-o', '-type', 'd', '-print' },
@@ -130,12 +130,15 @@ local find_project = function()
 end
 
 local find_fuzzy_buffer = function ()
-  require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+  builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
     winblend = 15,
     previewer = false,
   })
 end
 
+local find_buffer_cwd = function()
+  builtin.find_files( { cwd = vim.fn.expand('%:p:h'), hidden = false })
+end
 
 -- }}
 
@@ -193,21 +196,21 @@ return {
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
 
-
-      -- vim.keymap.set('n', '<Leader>ff', my_find_files, { desc = "Find files", noremap = true })
       -- vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = '[telescope] [S]earch [F]iles' })
       -- vim.keymap.set('n', '<leader>fh', ':Telescope <cr>', { noremap = true, desc = "Find help", silent = false })
       -- vim.keymap.set('n', '<leader>fl', ':Telescope diagnostics<cr>', { noremap = true, desc = "[telescope] Find errors, lint, diagnostics", silent = false })
       -- vim.keymap.set('n', '<leader>sc', search_scio, { desc = "Search scio", noremap = true })
+
       vim.keymap.set("n", "<C-p>", find_files_from_project_git_root, { noremap = true, desc = "[telescope] Find files from git root" })
-      vim.keymap.set('n', "<leader>fb", "<cmd>lua builtin.find_files( { cwd = vim.fn.expand('%:p:h'), hidden = false }) <CR>", { desc = "[telescope] Search files in current buffer dir", noremap = true })
+      vim.keymap.set('n', "<leader>fb", find_buffer_cwd , { desc = "[telescope] Search files in current buffer dir", noremap = true })
       vim.keymap.set('n', "ts", "<cmd>lua builtin.symbols{ sources = {'emoji', 'kaomoji', 'gitmoji'} } <CR>", { desc = "[telescope] Search emoji", noremap = true })
       vim.keymap.set('n', '<C-p>', builtin.git_files, { desc = '[telescope] Search [G]it [F]iles' })
-      vim.keymap.set('n', '<leader>/', find_fuzzy_buffer, { desc = '[telescope] Fuzzily search in current buffer' })
+      vim.keymap.set('n', '<leader>/', find_fuzzy_buffer,  { desc = '[telescope] Fuzzily search in current buffer' })
       vim.keymap.set('n', '<leader><space>', builtin.buffers, { desc = '[telescope] Find existing buffers' })
       vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = '[telescope] Find recently opened files' })
       vim.keymap.set('n', '<leader>dot', search_dotfiles, { desc = "[telescope] Search dotfiles", noremap = true })
       vim.keymap.set('n', '<leader>fc', ':Telescope commands<cr>', { noremap = true, desc = "[telescope] Find commands", silent = false })
+      vim.keymap.set('n', '<leader>ff', my_find_files, { desc = "Find files", noremap = true })
       vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[telescope] [S]earch [H]elp' })
       vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[telescope] [S]earch [H]elp' })
       vim.keymap.set('n', '<leader>fj', find_project, { desc = '[telescope] Find projects and open it in a new win' })
@@ -219,7 +222,6 @@ return {
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[telescope] [S]earch by [G]rep - Live search text across all files in workspace' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[telescope] Resume last search' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[telescope] [S]earch current [W]ord under cursor in all files' })
-
       end
   },
 }

@@ -108,4 +108,5 @@ function RunnerNew(config)
   autocmdFactory(config)
 end
 
+
 return {}

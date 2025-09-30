@@ -1,5 +1,44 @@
 return {
   {
+    'ishan9299/modus-theme-vim',
+    config = function()
+      vim.g.modus_yellow_comments = 0
+      vim.g.modus_green_strings = 0
+      vim.g.modus_faint_syntax = 0
+      vim.g.modus_cursorline_intense = 1
+      vim.g.modus_termtrans_enable = 1
+      vim.g.modus_dim_inactive_window = 0
+    end,
+  },
+
+  {
+    "miikanissi/modus-themes.nvim",
+    priority = 1000,
+    config = function()
+      require("modus-themes").setup({
+        -- Theme comes in two styles `modus_operandi` and `modus_vivendi`
+        -- `auto` will automatically set style based on background set with vim.o.background
+        style = "modus_vivendi",
+        variant = "tinted",   -- Theme comes in four variants `default`, `tinted`, `deuteranopia`, and `tritanopia`
+        transparent = true,   -- Transparent background (as supported by the terminal)
+        dim_inactive = false, -- "non-current" windows are dimmed
+        styles = {
+          -- Style to be applied to different syntax groups
+          -- Value is any valid attr-list value for `:help nvim_set_hl`
+          comments = { italic = false },
+          keywords = { italic = false },
+          functions = {},
+          variables = {},
+        },
+        on_colors = function(colors)
+          colors.error = colors.red_faint
+        end,
+        on_highlights = function(hl, c)
+        end,
+      })
+    end
+  },
+  {
     'folke/tokyonight.nvim',
     priority = 1000, -- make sure to load this before all the other start plugins
     init = function()

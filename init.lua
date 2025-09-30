@@ -154,24 +154,6 @@ local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
 require('lazy').setup({
-
-  {
-    'folke/todo-comments.nvim',
-    event = 'VimEnter',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    opts = { signs = false },
-  },
-
-  {
-    -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help ibl`
-    main = 'ibl',
-    opts = {},
-  },
-
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
   { import = 'custom.plugins' },
   { import = 'custom.plugins.runner' },
 }, {})
@@ -510,5 +492,4 @@ autocmd({ 'BufWritePost' }, {
 })
 -- }}}
 -- }}}
-
 -- vim: ts=2 sts=2 sw=2 et tw=0

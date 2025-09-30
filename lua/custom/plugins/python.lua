@@ -93,35 +93,43 @@ local function slime_use_neovim()
 end
 
 return {
-  'jpalardy/vim-slime',
-  init=function ()
-    -- options
-    vim.g.slime_last_channel = { nil }
-    vim.g.slime_cell_delimiter = '\\s*#\\s*%%'
-    vim.g.slime_paste_file = os.getenv("HOME") .. "/.slime_paste"
+  {
+    'jpalardy/vim-slime',
+    init=function ()
+      -- options
+      vim.g.slime_last_channel = { nil }
+      vim.g.slime_cell_delimiter = '\\s*#\\s*%%'
+      vim.g.slime_paste_file = os.getenv("HOME") .. "/.slime_paste"
 
-    -- new user command
-    vim.api.nvim_create_user_command('SlimeTarget', function (opts)
-      vim.b.slime_config = nil
-      if opts.args == "tmux" then
-        slime_use_tmux()
-      elseif opts.args == "neovim" then
-        slime_use_neovim()
-      else
-        vim.g.slime_target = opts.args
-      end
-    end, { desc = "Change Slime target", nargs = '*'})
+      -- new user command
+      vim.api.nvim_create_user_command('SlimeTarget', function (opts)
+        vim.b.slime_config = nil
+        if opts.args == "tmux" then
+          slime_use_tmux()
+        elseif opts.args == "neovim" then
+          slime_use_neovim()
+        else
+          vim.g.slime_target = opts.args
+        end
+      end, { desc = "Change Slime target", nargs = '*'})
 
-    slime_use_neovim()
+      slime_use_neovim()
 
-    -- keymaps
-    vim.keymap.set('n', '<leader>e', vim.cmd.SlimeSend, { noremap = true, desc = 'send line to term' })
-    vim.keymap.set('n', '<leader>cv', vim.cmd.SlimeConfig, { noremap = true, desc = "Open slime configuration" })
-    vim.keymap.set('x', '<leader>e', '<Plug>SlimeRegionSend', { noremap = true, desc = 'send line to tmux' })
-    vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', { noremap = true, desc = "Send Paragraph with Slime" })
-    vim.keymap.set('n', '<leader>ck', prev_cell, { noremap = true, desc = "Search backward for slime cell delimiter" })
-    vim.keymap.set('n', '<leader>cj', next_cell, { noremap = true, desc = "Search forward for slime cell delimiter" })
-    vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', { noremap = true, desc = "Send cell to slime" })
+      -- keymaps
+      vim.keymap.set('n', '<leader>e', vim.cmd.SlimeSend, { noremap = true, desc = 'send line to term' })
+      vim.keymap.set('n', '<leader>cv', vim.cmd.SlimeConfig, { noremap = true, desc = "Open slime configuration" })
+      vim.keymap.set('x', '<leader>e', '<Plug>SlimeRegionSend', { noremap = true, desc = 'send line to tmux' })
+      vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', { noremap = true, desc = "Send Paragraph with Slime" })
+      vim.keymap.set('n', '<leader>ck', prev_cell, { noremap = true, desc = "Search backward for slime cell delimiter" })
+      vim.keymap.set('n', '<leader>cj', next_cell, { noremap = true, desc = "Search forward for slime cell delimiter" })
+      vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', { noremap = true, desc = "Send cell to slime" })
 
-  end
+    end
+  },
+  {
+    'goerz/jupytext.vim',
+    config = function()
+      vim.g.jupytext_fmt = 'py:percent'
+    end
+  },
 }
