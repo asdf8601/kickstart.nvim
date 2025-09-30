@@ -6,7 +6,7 @@ local servers = {
   --    https://github.com/pmizio/typescript-tools.nvim
   bashls = {},
   dockerls = {},
-  golangci_lint_ls = {},
+  -- golangci_lint_ls = {},
   gopls = {
     settings = {
       gopls = {
