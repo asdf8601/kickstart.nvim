@@ -436,20 +436,20 @@ autocmd({ 'FileType' }, {
   pattern = 'dbui',
   command = 'nmap <buffer> <leader>w <Plug>(DBUI_SaveQuery)',
 })
-
-vim.keymap.set('n', '<leader>sq', '<Plug>(DBUI_SaveQuery)', { noremap = true })
-
-autocmd({ 'FileType' }, {
-  group = ASDF8601,
-  pattern = 'markdown',
-  command = 'normal zR',
-})
-
 autocmd({ 'FileType' }, {
   group = ASDF8601,
   pattern = 'dbui',
   command = 'setl nonumber norelativenumber',
 })
+
+vim.keymap.set('n', '<leader>sq', '<Plug>(DBUI_SaveQuery)', { noremap = true })
+
+-- autocmd({ 'FileType' }, {
+--   group = ASDF8601,
+--   pattern = 'markdown',
+--   command = 'normal zR',
+-- })
+
 
 autocmd({ 'BufWritePost' }, {
   group = ASDF8601,
@@ -460,36 +460,8 @@ autocmd({ 'BufWritePost' }, {
 -- autocommand for WebDev {{{
 
 -- [[ astro ]] {{{
-vim.filetype.add {
-  extension = {
-    mdx = 'mdx',
-  },
-}
+vim.filetype.add { extension = { mdx = 'mdx', } }
 vim.treesitter.language.register('markdown', 'mdx') -- the mdx filetype will use the markdown parser and queries.
 -- }}}
 
--- [[ JS ]]  {{{
-local JS = vim.api.nvim_create_augroup('JS', { clear = true })
-
-autocmd({ 'FileType' }, {
-  callback = function()
-    vim.cmd [[
-      colorscheme onedark
-    ]]
-  end,
-  group = JS,
-  pattern = { '*.css', '*.js', '*.json', '*.html', '*.astro' },
-})
-
-autocmd({ 'BufWritePost' }, {
-  callback = function()
-    vim.cmd [[
-      silent execute('!npx prettier --write . --plugin=prettier-plugin-astro')
-    ]]
-  end,
-  group = JS,
-  pattern = { '*.css', '*.js', '*.json', '*.html', '*.astro' },
-})
--- }}}
--- }}}
 -- vim: ts=2 sts=2 sw=2 et tw=0

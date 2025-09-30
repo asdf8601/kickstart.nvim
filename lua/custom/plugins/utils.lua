@@ -1,5 +1,6 @@
 -- toggle numbers
 vim.g.number = 1
+
 function ToggleNumbers()
   if vim.g.number == 1 then
     vim.g.number = 0
@@ -64,15 +65,68 @@ vim.api.nvim_set_keymap('n', '<leader>gg', ':GsutilImport<cr>', { noremap = true
 -- gs://hola/mundo/que/tal/
 
 return {
-  'tpope/vim-repeat', -- better repeat
-  'tpope/vim-speeddating',
-  'tpope/vim-unimpaired',
-  'szw/vim-maximizer',
+  -- 'tpope/vim-unimpaired',
+  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
   'RRethy/vim-illuminate',
   'folke/zen-mode.nvim',
   'junegunn/vim-easy-align',
   'lunarVim/bigfile.nvim',
+  'mzlogin/vim-markdown-toc',
+  'szw/vim-maximizer',
+  'tpope/vim-dispatch',
+  'tpope/vim-fugitive', -- git extension
+  'tpope/vim-repeat', -- better repeat
+  'tpope/vim-rhubarb', -- github extension
+  'tpope/vim-sleuth',
+  'tpope/vim-speeddating',
 
+  {
+    'folke/todo-comments.nvim',
+    event = 'VimEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = { signs = false },
+  },
+
+  {
+    -- Add indentation guides even on blank lines
+    'lukas-reineke/indent-blankline.nvim',
+    -- Enable `lukas-reineke/indent-blankline.nvim`
+    -- See `:help ibl`
+    main = 'ibl',
+    opts = {},
+  },
+
+  {
+    'kylechui/nvim-surround',
+    version = '*', -- Use for stability; omit to use `main` branch for the latest features
+    event = 'VeryLazy',
+    config = function()
+      require('nvim-surround').setup {
+        -- Configuration here, or leave empty to use defaults
+      }
+    end,
+  },
+
+  {
+    'mbbill/undotree',
+    init = function()
+      vim.keymap.set('n', '<leader>u', ':UndotreeToggle<CR>', { noremap = true, desc = 'Open/close UndoTree' })
+    end,
+  },
+
+  {
+    'altermo/ultimate-autopair.nvim',
+    event = { 'InsertEnter', 'CmdlineEnter' },
+    -- branch='v0.6', --recommended as each new version will have breaking changes
+    opts = {
+      --Config goes here
+    },
+  },
+  {
+    -- git diff view
+    'sindrets/diffview.nvim',
+    cmd = 'DiffviewOpen',
+  },
   {
     -- A Neovim plugin that display prettier diagnostic messages. Display one
     -- line diagnostic messages where the cursor is, with icons and colors.
@@ -145,22 +199,11 @@ return {
         },
       }
     end,
-
-    -- For blink.cmp's completion
-    -- source
     dependencies = {
       'saghen/blink.cmp',
     },
   },
 
-  {
-    'altermo/ultimate-autopair.nvim',
-    event = { 'InsertEnter', 'CmdlineEnter' },
-    -- branch='v0.6', --recommended as each new version will have breaking changes
-    opts = {
-      --Config goes here
-    },
-  },
 
   {
     'stevearc/oil.nvim',
@@ -288,38 +331,6 @@ return {
     end,
   },
 
-  -- {
-  --   -- TODO: what is this about?
-  --   'Bekaboo/dropbar.nvim',
-  --   -- optional, but required for fuzzy finder support
-  --   dependencies = {
-  --     'nvim-telescope/telescope-fzf-native.nvim',
-  --     build = 'make'
-  --   }
-  -- },
-
-  {
-    -- git diff view
-    'sindrets/diffview.nvim',
-    cmd = 'DiffviewOpen',
-  },
-
-  -- {
-  --   -- live share
-  --   "azratul/live-share.nvim",
-  --   dependencies = {
-  --     "jbyuki/instant.nvim",
-  --   },
-  --   config = function()
-  --     vim.g.instant_username = "asdfg0x2199"
-  --     require("live-share").setup({
-  --       port_internal = 8765,
-  --       max_attempts = 20, -- 5 seconds
-  --       service = "serveo.net"
-  --     })
-  --   end
-  -- },
-
   {
     'nvim-pack/nvim-spectre',
     config = function()
@@ -348,12 +359,6 @@ return {
       require('nvim-ts-autotag').setup()
     end,
   },
-
-  -- {
-  --   -- astro
-  --   "virchau13/tree-sitter-astro",
-  -- },
-
   {
     -- better quickfix
     'kevinhwang91/nvim-bqf',
@@ -367,181 +372,6 @@ return {
       },
     },
   },
-
-  -- {
-  --   -- database support in vim
-  --   'tpope/vim-dadbod',
-  --   dependencies = {
-  --     'kristijanhusak/vim-dadbod-ui',
-  --   }
-  -- },
-
-  {
-    'stevearc/conform.nvim',
-    opts = {},
-    config = function()
-      require('conform').setup {
-        formatters_by_ft = {
-          lua = { 'stylua' },
-          -- Conform will run multiple formatters sequentially
-          python = { 'isort -m3', 'black -l79' },
-          -- Use a sub-list to run only the first available formatter
-          javascript = { { 'prettierd', 'prettier' } },
-          sh = { 'beautysh' },
-        },
-      }
-      vim.api.nvim_create_user_command('Format', function(args)
-        local range = nil
-        if args.count ~= -1 then
-          local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
-          range = {
-            start = { args.line1, 0 },
-            ['end'] = { args.line2, end_line:len() },
-          }
-        end
-        require('conform').format { async = true, lsp_fallback = true, range = range }
-      end, { range = true })
-    end,
-  },
-
-  -- {
-  --   "NTBBloodbath/rest.nvim",
-  --   enable = executable "jq",
-  --   ft = { "http" },
-  --   dependencies = {
-  --     {
-  --       "vhyrro/luarocks.nvim",
-  --       priority = 1000,
-  --       config = true,
-  --     },
-  --   },
-  --   config = function()
-  --     require("rest-nvim").setup({
-  --       client = "curl",
-  --       env_file = ".env",
-  --       env_pattern = "\\.env$",
-  --       env_edit_command = "tabedit",
-  --       encode_url = true,
-  --       skip_ssl_verification = false,
-  --       custom_dynamic_variables = {},
-  --       logs = {
-  --         level = "info",
-  --         save = true,
-  --       },
-  --       result = {
-  --         split = {
-  --           horizontal = false,
-  --           in_place = false,
-  --           stay_in_current_window_after_split = true,
-  --         },
-  --         behavior = {
-  --           decode_url = true,
-  --           show_info = {
-  --             url = true,
-  --             headers = true,
-  --             http_info = true,
-  --             curl_command = true,
-  --           },
-  --           statistics = {
-  --             enable = true,
-  --             ---@see https://curl.se/libcurl/c/curl_easy_getinfo.html
-  --             stats = {
-  --               { "total_time",      title = "Time taken:" },
-  --               { "size_download_t", title = "Download size:" },
-  --             },
-  --           },
-  --           formatters = {
-  --             json = "jq",
-  --             html = function(body)
-  --               if vim.fn.executable("tidy") == 0 then
-  --                 return body, { found = false, name = "tidy" }
-  --               end
-  --               local fmt_body = vim.fn.system({
-  --                 "tidy",
-  --                 "-i",
-  --                 "-q",
-  --                 "--tidy-mark", "no",
-  --                 "--show-body-only", "auto",
-  --                 "--show-errors", "0",
-  --                 "--show-warnings", "0",
-  --                 "-",
-  --               }, body):gsub("\n$", "")
-  --
-  --               return fmt_body, { found = true, name = "tidy" }
-  --             end,
-  --           },
-  --         },
-  --       },
-  --       highlight = {
-  --         enable = true,
-  --         timeout = 750,
-  --       },
-  --       ---@see vim.keymap.set
-  --       keybinds = {
-  --         {
-  --           "<localleader>rr", ":Rest run", "Run request under the cursor",
-  --         },
-  --         {
-  --           "<localleader>rl", ":Rest run last", "Re-run latest request",
-  --         },
-  --       },
-  --     })
-  --     -- vim.api.nvim_set_keymap("n", "<leader>rr", "<Plug>RestNvim", { noremap = true, silent = true })
-  --   end,
-  -- },
-
-  -- {
-  --   "klen/nvim-test",
-  --   config = function()
-  --     require('nvim-test').setup({})
-  --   end
-  -- },
-
-  { 'mzlogin/vim-markdown-toc' },
-
-  -- {
-  --   "iamcco/markdown-preview.nvim",
-  --   build = "cd app && npm install",
-  --   config = function() vim.g.mkdp_filetypes = { "markdown" } end,
-  --   ft = { "markdown" },
-  -- },
-
-  -- { 'mracos/mermaid.vim' },
-  {
-    -- Spawning interactive processes
-    'tpope/vim-dispatch',
-  },
-
-  {
-    'folke/todo-comments.nvim',
-    event = 'VimEnter',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    opts = { signs = false },
-  },
-
-  {
-    -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help ibl`
-    main = 'ibl',
-    opts = {},
-  },
-
-  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
-  'tpope/vim-sleuth',
-  'tpope/vim-fugitive', -- git extension
-  'tpope/vim-rhubarb', -- github extension
-
-  -- {
-  --   -- resize window automatically
-  --   "nvim-focus/focus.nvim",
-  --   config = function()
-  --     require('focus').setup({
-  --       enable=false
-  --     })
-  --   end,
-  -- },
 
   { -- Autoformat
     'stevearc/conform.nvim',
@@ -563,7 +393,7 @@ return {
         lua = { 'stylua' },
         python = { 'ruff', 'mypy' },
         go = { 'gofumpt' },
-        ['_'] = { 'trim_whitespace' },
+        -- ['_'] = { 'trim_whitespace' },
       },
       format_on_save = function(bufnr)
         local disable_filetypes = { c = true, cpp = true }
@@ -578,25 +408,6 @@ return {
       end,
     },
   },
-
-  {
-    'kylechui/nvim-surround',
-    version = '*', -- Use for stability; omit to use `main` branch for the latest features
-    event = 'VeryLazy',
-    config = function()
-      require('nvim-surround').setup {
-        -- Configuration here, or leave empty to use defaults
-      }
-    end,
-  },
-
-  {
-    'mbbill/undotree',
-    init = function()
-      vim.keymap.set('n', '<leader>u', ':UndotreeToggle<CR>', { noremap = true, desc = 'Open/close UndoTree' })
-    end,
-  },
-
   {
     'ThePrimeagen/harpoon',
     init = function()
@@ -614,4 +425,24 @@ return {
       vim.keymap.set('n', '<leader>hm', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true, desc = "Harpoon's quick menu" })
     end,
   },
+
+  -- {
+  --   -- resize window automatically
+  --   "nvim-focus/focus.nvim",
+  --   config = function()
+  --     require('focus').setup({
+  --       enable=false
+  --     })
+  --   end,
+  -- },
+
+  -- {
+  --   -- TODO: what is this about?
+  --   'Bekaboo/dropbar.nvim',
+  --   -- optional, but required for fuzzy finder support
+  --   dependencies = {
+  --     'nvim-telescope/telescope-fzf-native.nvim',
+  --     build = 'make'
+  --   }
+  -- },
 }
