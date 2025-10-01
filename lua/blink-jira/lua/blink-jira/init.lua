@@ -7,7 +7,7 @@
 ---@field cache_duration? number Cache duration in seconds (default: 300)
 ---@field trigger_character? string Character that triggers Jira completion (default: "#")
 ---@field background_refresh? boolean Enable background cache refresh (default: true)
----@field debug? boolean Enable debug logging (default: false)
+
 ---@field cache_file? string Path to cache file (default: stdpath("cache")/blink-jira-cache.json)
 
 ---@class JiraSource : blink.cmp.Source, blink-jira.Options
@@ -18,25 +18,7 @@
 ---@field cache_file_path string Full path to cache file
 local jira_source = {}
 
----Debug logging function
----@param self JiraSource
----@param level string
----@param message string
----@param data? any
-local function debug_log(self, level, message, data)
-  if not self.debug then
-    return
-  end
 
-  local timestamp = os.date '%H:%M:%S'
-  local prefix = string.format('[%s] blink-jira [%s]:', timestamp, level:upper())
-
-  if data then
-    vim.notify(string.format('%s %s\n%s', prefix, message, vim.inspect(data)), vim.log.levels.INFO)
-  else
-    vim.notify(string.format('%s %s', prefix, message), vim.log.levels.INFO)
-  end
-end
 
 ---Save cache to disk
 ---@param self JiraSource
@@ -62,24 +44,16 @@ local function save_cache_to_disk(self)
 
   local ok, encoded = pcall(vim.json.encode, cache_data)
   if not ok then
-    debug_log(self, 'error', 'Failed to encode cache data', { error = encoded })
     return
   end
 
   local file = io.open(self.cache_file_path, 'w')
   if not file then
-    debug_log(self, 'error', 'Failed to open cache file for writing', { path = self.cache_file_path })
     return
   end
 
   file:write(encoded)
   file:close()
-
-  debug_log(self, 'debug', 'Cache saved to disk', {
-    path = self.cache_file_path,
-    item_count = #self.completion_items,
-    file_size = vim.fn.getfsize(self.cache_file_path),
-  })
 end
 
 ---Load cache from disk
@@ -87,13 +61,11 @@ end
 ---@return boolean success
 local function load_cache_from_disk(self)
   if not self.cache_file_path or vim.fn.filereadable(self.cache_file_path) == 0 then
-    debug_log(self, 'debug', 'Cache file not found or not readable', { path = self.cache_file_path })
     return false
   end
 
   local file = io.open(self.cache_file_path, 'r')
   if not file then
-    debug_log(self, 'error', 'Failed to open cache file for reading', { path = self.cache_file_path })
     return false
   end
 
@@ -101,16 +73,11 @@ local function load_cache_from_disk(self)
   file:close()
 
   if not content or content == '' then
-    debug_log(self, 'error', 'Cache file is empty', { path = self.cache_file_path })
     return false
   end
 
   local ok, cache_data = pcall(vim.json.decode, content)
   if not ok or type(cache_data) ~= 'table' then
-    debug_log(self, 'error', 'Failed to decode cache file', {
-      path = self.cache_file_path,
-      error = cache_data,
-    })
     return false
   end
 
@@ -122,10 +89,6 @@ local function load_cache_from_disk(self)
   })
 
   if cache_data.config_hash ~= current_config_hash then
-    debug_log(self, 'info', 'Cache invalidated due to configuration change', {
-      old_hash = cache_data.config_hash,
-      new_hash = current_config_hash,
-    })
     return false
   end
 
@@ -134,10 +97,6 @@ local function load_cache_from_disk(self)
   local cache_age = current_time - (cache_data.cache_time or 0)
 
   if cache_age > self.cache_duration then
-    debug_log(self, 'info', 'Cache expired', {
-      cache_age = cache_age,
-      cache_duration = self.cache_duration,
-    })
     return false
   end
 
@@ -145,16 +104,9 @@ local function load_cache_from_disk(self)
   if cache_data.completion_items and type(cache_data.completion_items) == 'table' then
     self.completion_items = cache_data.completion_items
     self.cache_time = cache_data.cache_time or current_time
-
-    debug_log(self, 'info', 'Cache loaded from disk', {
-      path = self.cache_file_path,
-      item_count = #self.completion_items,
-      cache_age = cache_age,
-    })
     return true
   end
 
-  debug_log(self, 'error', 'Invalid cache data structure', { path = self.cache_file_path })
   return false
 end
 
@@ -257,38 +209,17 @@ local function fetch_jira_tickets_async(self, project, status, max_results, call
 
   local cmd = table.concat(cmd_parts, ' ')
 
-  debug_log(self, 'info', 'Executing jira-cli command', {
-    project = project,
-    status = status,
-    max_results = max_results,
-    command = cmd,
-  })
-
-  local start_time = vim.loop.hrtime()
-
   -- Use vim.system for async execution (Neovim 0.10+)
   if vim.system then
     vim.system({ 'sh', '-c', cmd }, { text = true }, function(result)
       vim.schedule(function()
-        local duration_ms = (vim.loop.hrtime() - start_time) / 1000000
-
         if result.code ~= 0 or not result.stdout or result.stdout == '' then
-          debug_log(self, 'error', 'jira-cli command failed', {
-            exit_code = result.code,
-            stderr = result.stderr,
-            duration_ms = duration_ms,
-          })
           callback {}
           return
         end
 
         local ok, tickets = pcall(vim.fn.json_decode, result.stdout)
         if not ok or type(tickets) ~= 'table' then
-          debug_log(self, 'error', 'Failed to parse JSON response', {
-            error = tickets,
-            raw_output = result.stdout:sub(1, 200) .. (result.stdout:len() > 200 and '...' or ''),
-            duration_ms = duration_ms,
-          })
           callback {}
           return
         end
@@ -307,14 +238,6 @@ local function fetch_jira_tickets_async(self, project, status, max_results, call
           end
         end
 
-        debug_log(self, 'info', 'Successfully fetched Jira tickets', {
-          ticket_count = #completion_items,
-          duration_ms = duration_ms,
-          sample_tickets = vim.tbl_map(function(item)
-            return item.label
-          end, vim.list_slice(completion_items, 1, 3)),
-        })
-
         callback(completion_items)
       end)
     end)
@@ -323,7 +246,6 @@ local function fetch_jira_tickets_async(self, project, status, max_results, call
     vim.schedule(function()
       local handle = io.popen(cmd)
       if not handle then
-        debug_log(self, 'error', 'Failed to execute jira-cli command (handle is nil)')
         callback {}
         return
       end
@@ -331,23 +253,13 @@ local function fetch_jira_tickets_async(self, project, status, max_results, call
       local result = handle:read '*a'
       handle:close()
 
-      local duration_ms = (vim.loop.hrtime() - start_time) / 1000000
-
       if not result or result == '' then
-        debug_log(self, 'error', 'jira-cli command returned empty result', {
-          duration_ms = duration_ms,
-        })
         callback {}
         return
       end
 
       local ok, tickets = pcall(vim.fn.json_decode, result)
       if not ok or type(tickets) ~= 'table' then
-        debug_log(self, 'error', 'Failed to parse JSON response (fallback)', {
-          error = tickets,
-          raw_output = result:sub(1, 200) .. (result:len() > 200 and '...' or ''),
-          duration_ms = duration_ms,
-        })
         callback {}
         return
       end
@@ -366,14 +278,6 @@ local function fetch_jira_tickets_async(self, project, status, max_results, call
         end
       end
 
-      debug_log(self, 'info', 'Successfully fetched Jira tickets (fallback)', {
-        ticket_count = #completion_items,
-        duration_ms = duration_ms,
-        sample_tickets = vim.tbl_map(function(item)
-          return item.label
-        end, vim.list_slice(completion_items, 1, 3)),
-      })
-
       callback(completion_items)
     end)
   end
@@ -388,27 +292,17 @@ local function start_background_refresh(self)
 
   local refresh_interval = math.max(self.cache_duration * 1000 / 2, 30000) -- Half cache duration, min 30s
 
-  debug_log(self, 'info', 'Starting background cache refresh', {
-    refresh_interval_ms = refresh_interval,
-    cache_duration = self.cache_duration,
-  })
-
   self.refresh_timer = vim.fn.timer_start(refresh_interval, function()
     if self.is_refreshing then
-      debug_log(self, 'debug', 'Skipping background refresh - already in progress')
       return
     end
 
-    debug_log(self, 'debug', 'Starting background cache refresh')
     self.is_refreshing = true
     fetch_jira_tickets_async(self, self.jira_project, self.jira_status, self.max_results, function(items)
       self.completion_items = items
       self.cache_time = os.time()
       self.is_refreshing = false
       save_cache_to_disk(self)
-      debug_log(self, 'debug', 'Background cache refresh completed', {
-        item_count = #items,
-      })
     end)
   end, { ['repeat'] = -1 })
 end
@@ -417,9 +311,6 @@ end
 ---@param self JiraSource
 local function stop_background_refresh(self)
   if self.refresh_timer then
-    debug_log(self, 'info', 'Stopping background cache refresh', {
-      timer_id = self.refresh_timer,
-    })
     vim.fn.timer_stop(self.refresh_timer)
     self.refresh_timer = nil
   end
@@ -436,7 +327,7 @@ function jira_source.new(opts)
   vim.validate('blink-jira.opts.cache_duration', opts.cache_duration, { 'number' }, true)
   vim.validate('blink-jira.opts.trigger_character', opts.trigger_character, { 'string' }, true)
   vim.validate('blink-jira.opts.background_refresh', opts.background_refresh, { 'boolean' }, true)
-  vim.validate('blink-jira.opts.debug', opts.debug, { 'boolean' }, true)
+
   vim.validate('blink-jira.opts.cache_file', opts.cache_file, { 'string' }, true)
 
   ---@type blink-jira.Options
@@ -445,7 +336,7 @@ function jira_source.new(opts)
     cache_duration = 300,
     trigger_character = '#',
     background_refresh = true,
-    debug = false,
+
   }
 
   opts = vim.tbl_deep_extend('keep', opts, default_opts)
@@ -463,14 +354,7 @@ function jira_source.new(opts)
 
   local instance = setmetatable(opts, { __index = jira_source })
 
-  debug_log(
-    instance,
-    'info',
-    'Initializing blink-jira source',
-    vim.tbl_extend('force', opts, {
-      cache_file_path = instance.cache_file_path,
-    })
-  )
+
 
   -- Try to load cache from disk first
   local cache_loaded = load_cache_from_disk(instance)
@@ -481,21 +365,14 @@ function jira_source.new(opts)
 
     -- Initial cache load only if no valid cache was loaded from disk
     if not cache_loaded then
-      debug_log(instance, 'info', 'No valid disk cache found, loading initial cache from API')
       instance.is_refreshing = true
       fetch_jira_tickets_async(instance, instance.jira_project, instance.jira_status, instance.max_results, function(items)
         instance.completion_items = items
         instance.cache_time = os.time()
         instance.is_refreshing = false
         save_cache_to_disk(instance)
-        debug_log(instance, 'info', 'Initial cache load completed', {
-          item_count = #items,
-        })
       end)
     end
-  elseif not cache_loaded then
-    -- If background refresh is disabled and no cache loaded, we'll fetch on first use
-    debug_log(instance, 'info', 'Background refresh disabled and no cache loaded - will fetch on first use')
   end
 
   return instance
@@ -517,40 +394,20 @@ function jira_source:get_completions(context, callback)
   -- Look for the trigger character
   local trigger_pos = line_before_cursor:find(trigger_char .. '[^%s]*$')
   if not trigger_pos then
-    debug_log(self, 'debug', 'No trigger character found', {
-      trigger_char = trigger_char,
-      line_before_cursor = line_before_cursor,
-    })
     return function()
       cancelled = true
     end -- return cancellation function
   end
 
-  debug_log(self, 'debug', 'Trigger character detected, providing completions', {
-    trigger_char = trigger_char,
-    trigger_pos = trigger_pos,
-    cached_items = #self.completion_items,
-  })
-
   local current_time = os.time()
   local cache_age = current_time - self.cache_time
-
-  debug_log(self, 'debug', 'Cache status', {
-    cache_age = cache_age,
-    cache_duration = self.cache_duration,
-    is_expired = cache_age > self.cache_duration,
-    background_refresh = self.background_refresh,
-    is_refreshing = self.is_refreshing,
-  })
 
   -- If background refresh is disabled or cache is expired, refresh manually
   if not self.background_refresh and (current_time - self.cache_time > self.cache_duration or #self.completion_items == 0) then
     if not self.is_refreshing then
-      debug_log(self, 'info', 'Starting manual cache refresh')
       self.is_refreshing = true
       fetch_jira_tickets_async(self, self.jira_project, self.jira_status, self.max_results, function(items)
         if cancelled then
-          debug_log(self, 'debug', 'Request cancelled, ignoring results')
           return
         end
 
@@ -558,10 +415,6 @@ function jira_source:get_completions(context, callback)
         self.cache_time = current_time
         self.is_refreshing = false
         save_cache_to_disk(self)
-
-        debug_log(self, 'info', 'Manual cache refresh completed, returning items', {
-          item_count = #items,
-        })
 
         callback {
           is_incomplete_forward = false,
@@ -574,11 +427,6 @@ function jira_source:get_completions(context, callback)
       end
     end
   end
-
-  -- Always return cached items immediately (non-blocking)
-  debug_log(self, 'debug', 'Returning cached items', {
-    item_count = #self.completion_items,
-  })
 
   -- NOTE: blink.cmp will mutate the items, so we must vim.deepcopy them
   callback {
@@ -626,7 +474,6 @@ end
 
 ---Clean up resources when source is destroyed
 function jira_source:destroy()
-  debug_log(self, 'info', 'Destroying blink-jira source')
   stop_background_refresh(self)
 end
 
