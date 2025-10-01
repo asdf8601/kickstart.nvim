@@ -207,11 +207,11 @@ local make_jira_completion_item = function(ticket_key, title, status, assignee, 
 
   ---@type lsp.CompletionItem
   return {
-    label = ticket_key,
-    insertText = ticket_key,
+    label = ticket_key .. " " .. title, -- Show key + title in completion menu
+    insertText = ticket_key, -- But only insert the ticket key
     insertTextFormat = vim.lsp.protocol.InsertTextFormat.PlainText,
     kind = require('blink.cmp.types').CompletionItemKind.Reference,
-    detail = title,
+    detail = string.format("%s • %s", status, assignee or "Unassigned"), -- Show status and assignee in detail
     filterText = searchable_text, -- This allows filtering by key, title, and description
     -- Store raw data for lazy resolution
     data = {
