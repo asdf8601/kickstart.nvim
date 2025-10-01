@@ -399,7 +399,7 @@ local autocmd = vim.api.nvim_create_autocmd
 ASDF8601 = augroup('ASDF8601', { clear = true })
 
 autocmd('BufWritePre', { group = ASDF8601, pattern = '*', command = '%s/\\s\\+$//e' })
-autocmd('FileType', { group = ASDF8601, pattern = 'markdown', command = 'setl conceallevel=2 spl=en,es | TSBufDisable highlight' })
+-- autocmd('FileType', { group = ASDF8601, pattern = 'markdown', command = 'setl conceallevel=2 spl=en,es | TSBufDisable highlight' })
 autocmd('FileType', { group = ASDF8601, pattern = 'make', command = 'setl noexpandtab shiftwidth=4 softtabstop=0' })
 autocmd('TermOpen', { group = ASDF8601, pattern = '*', command = 'setl nonumber norelativenumber' })
 autocmd('FileType', { group = ASDF8601, pattern = 'fugitive', command = 'setl nonumber norelativenumber' })

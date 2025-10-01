@@ -23,12 +23,20 @@ return {
       'disrupted/blink-cmp-conventional-commits',
       'Kaiser-Yang/blink-cmp-git',
       'bydlw98/blink-cmp-env',
-      { dir = '/Users/mgreco/.config/nvim/lua/blink-jira/' },
+      -- 'asdf8601/blink-cmp-jira',
+      { dir = '~/github.com/asdf8601/blink-cmp-jira' },
     },
     opts = {
-      keymap = { preset = 'default' },
       appearance = { nerd_font_variant = 'mono' },
       completion = { documentation = { auto_show = false, auto_show_delay_ms = 500 } },
+      keymap = {
+        preset = 'default',
+        ['<C-q>'] = {
+          function(cmp)
+            cmp.show { providers = { 'jira' } }
+          end,
+        },
+      },
       sources = {
         default = { 'jira', 'copilot', 'lsp', 'path', 'buffer', 'avante', 'cvcm', 'git', 'env' },
         providers = {
