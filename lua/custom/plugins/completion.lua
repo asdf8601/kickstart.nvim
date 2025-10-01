@@ -1,8 +1,8 @@
 return {
   {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
+    event = 'InsertEnter',
     opts = {
       suggestion = { enabled = false },
       panel = { enabled = false },
@@ -17,17 +17,61 @@ return {
     -- event = 'VimEnter',
     version = '1.*',
     optional = true,
-    dependencies = { "fang2hou/blink-copilot" },
+    dependencies = {
+      'fang2hou/blink-copilot',
+      'Kaiser-Yang/blink-cmp-avante',
+      'disrupted/blink-cmp-conventional-commits',
+      'Kaiser-Yang/blink-cmp-git',
+      'bydlw98/blink-cmp-env',
+      { dir = '/Users/mgreco/.config/nvim/lua/blink-jira/' },
+    },
     opts = {
-      keymap = { preset = 'default', },
-      appearance = { nerd_font_variant = 'mono', },
-      completion = { documentation = { auto_show = false, auto_show_delay_ms = 500, }, },
+      keymap = { preset = 'default' },
+      appearance = { nerd_font_variant = 'mono' },
+      completion = { documentation = { auto_show = false, auto_show_delay_ms = 500 } },
       sources = {
-        default = { 'copilot', 'lsp', 'path', 'buffer' },
+        default = { 'jira', 'copilot', 'lsp', 'path', 'buffer', 'avante', 'cvcm', 'git', 'env' },
         providers = {
+          jira = {
+            name = 'blink-jira',
+            module = 'blink-jira',
+            opts = {
+              jira_project = 'GC',
+              jira_status = { 'In Progress', 'To Do', 'In Review' },
+              max_results = 50,
+              cache_duration = 10,
+              -- debug = true,
+            },
+          },
+          env = {
+            name = 'Env',
+            module = 'blink-cmp-env',
+            opts = {
+              -- item_kind = require('blink.cmp.types').CompletionItemKind.Variable,
+              show_braces = false,
+              show_documentation_window = true,
+            },
+          },
+          git = {
+            module = 'blink-cmp-git',
+            name = 'Git',
+            -- opts = { },
+          },
+          cvcm = {
+            name = 'Conventional Commits',
+            module = 'blink-cmp-conventional-commits',
+            enabled = function()
+              return vim.bo.filetype == 'gitcommit'
+            end,
+          },
+          avante = {
+            module = 'blink-cmp-avante',
+            name = 'Avante',
+            -- opts = {},
+          },
           copilot = {
-            name = "copilot",
-            module = "blink-copilot",
+            name = 'copilot',
+            module = 'blink-copilot',
             score_offset = 100,
             async = true,
           },
@@ -113,9 +157,9 @@ return {
   --   end
   -- },
   {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
+    event = 'InsertEnter',
     opts = {
       suggestion = { enabled = false },
       panel = { enabled = false },
@@ -126,13 +170,13 @@ return {
     },
   },
   {
-    "olimorris/codecompanion.nvim",
+    'olimorris/codecompanion.nvim',
     dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
     },
-    config = function ()
-      require("codecompanion").setup({
+    config = function()
+      require('codecompanion').setup {
 
         display = {
           diff = {
@@ -142,56 +186,56 @@ return {
 
         prompt_library = {
 
-          ["Code Expert"] = {
-            strategy = "chat",
-            description = "Get some special advice from an LLM",
+          ['Code Expert'] = {
+            strategy = 'chat',
+            description = 'Get some special advice from an LLM',
             opts = {
-              modes = { "v" },
-              short_name = "expert",
+              modes = { 'v' },
+              short_name = 'expert',
               auto_submit = true,
               stop_context_insertion = true,
               user_prompt = true,
             },
             prompts = {
               {
-                role = "system",
+                role = 'system',
                 content = function(context)
-                  return "I want you to act as a senior "
+                  return 'I want you to act as a senior '
                     .. context.filetype
-                    .. " developer. I will ask you specific questions and I want you to return concise explanations and codeblock examples."
+                    .. ' developer. I will ask you specific questions and I want you to return concise explanations and codeblock examples.'
                 end,
               },
               {
-                role = "user",
+                role = 'user',
                 content = function(context)
-                  local text = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
-                  return "I have the following code:\n\n```" .. context.filetype .. "\n" .. text .. "\n```\n\n"
+                  local text = require('codecompanion.helpers.actions').get_code(context.start_line, context.end_line)
+                  return 'I have the following code:\n\n```' .. context.filetype .. '\n' .. text .. '\n```\n\n'
                 end,
                 opts = {
                   contains_code = true,
-                }
+                },
               },
             },
           },
 
-          ["PR body"] = {
-            strategy = "chat",
-            description = "Create a PR body based on git diff main",
+          ['PR body'] = {
+            strategy = 'chat',
+            description = 'Create a PR body based on git diff main',
             opts = {
-              modes = { "n" },
-              short_name = "pr_body",
+              modes = { 'n' },
+              short_name = 'pr_body',
               auto_submit = true,
               stop_context_insertion = true,
               user_prompt = false,
-              placement = "chat", -- or "replace"|"add"|"before"|"chat"
+              placement = 'chat', -- or "replace"|"add"|"before"|"chat"
               adapter = {
-                name = "gemini",
-                model = "gemini-2.5-pro",
+                name = 'gemini',
+                model = 'gemini-2.5-pro',
               },
             },
             prompts = {
               {
-                role = "system",
+                role = 'system',
                 content = [[
                   <goal>
                   You’re an assistant that takes a Git diff and writes a short,
@@ -266,10 +310,10 @@ return {
                   ]],
               },
               {
-                role = "user",
+                role = 'user',
                 content = function(_)
-                  local diff = vim.fn.system("git diff main")
-                  return "Here is the diff:\n\n```diff\n" .. diff .. "\n```\n\n"
+                  local diff = vim.fn.system 'git diff main'
+                  return 'Here is the diff:\n\n```diff\n' .. diff .. '\n```\n\n'
                 end,
                 opts = {
                   contains_code = true,
@@ -277,27 +321,27 @@ return {
               },
             },
           },
-          ["fix grammar"] = {
-            strategy = "inline",
-            description = "Fix Grammar",
+          ['fix grammar'] = {
+            strategy = 'inline',
+            description = 'Fix Grammar',
             opts = {
-              modes = { "v" },
-              short_name = "fix_grammar",
+              modes = { 'v' },
+              short_name = 'fix_grammar',
               auto_submit = true,
               stop_context_insertion = true,
               user_prompt = false,
-              placement = "add" -- or "replace"|"add"|"before"|"chat"
+              placement = 'add', -- or "replace"|"add"|"before"|"chat"
             },
             prompts = {
               {
-                role = "system",
-                content = "You are a grammar fixer, I need from you rewrite the text to make it correct and clear but keep the original tone and intention. Return only the text corrected.",
+                role = 'system',
+                content = 'You are a grammar fixer, I need from you rewrite the text to make it correct and clear but keep the original tone and intention. Return only the text corrected.',
               },
               {
-                role = "user",
+                role = 'user',
                 content = function(context)
-                  local text = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
-                  return "I have the following text:\n\n" .. text .. "\n\n"
+                  local text = require('codecompanion.helpers.actions').get_code(context.start_line, context.end_line)
+                  return 'I have the following text:\n\n' .. text .. '\n\n'
                 end,
                 opts = {
                   contains_code = false,
@@ -306,19 +350,19 @@ return {
             },
           },
 
-          ["translate spa"] = {
-            strategy = "inline",
-            description = "Translate text",
+          ['translate spa'] = {
+            strategy = 'inline',
+            description = 'Translate text',
             prompts = {
               {
-                role = "system",
+                role = 'system',
                 content = "You are a translation assistant. Please translate the provided text between languages while preserving meaning and tone. If the source language isn't specified, detect it and translate to English. If the target language isn't specified, translate to Spanish. Return only the translated text without any explanations.",
               },
               {
-                role = "user",
+                role = 'user',
                 content = function(context)
-                  local text = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
-                  return "I have the following text:\n\n" .. text .. "\n\n"
+                  local text = require('codecompanion.helpers.actions').get_code(context.start_line, context.end_line)
+                  return 'I have the following text:\n\n' .. text .. '\n\n'
                 end,
                 opts = {
                   contains_code = false,
@@ -327,19 +371,19 @@ return {
             },
           },
 
-          ["translate eng"] = {
-            strategy = "inline",
-            description = "Translate text",
+          ['translate eng'] = {
+            strategy = 'inline',
+            description = 'Translate text',
             prompts = {
               {
-                role = "system",
+                role = 'system',
                 content = "You are a translation assistant. Please translate the provided text between languages while preserving meaning and tone. If the source language isn't specified, detect it and translate to English. If the target language isn't specified, translate to English. Return only the translated text without any explanations.",
               },
               {
-                role = "user",
+                role = 'user',
                 content = function(context)
-                  local text = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
-                  return "I have the following text:\n\n" .. text .. "\n\n"
+                  local text = require('codecompanion.helpers.actions').get_code(context.start_line, context.end_line)
+                  return 'I have the following text:\n\n' .. text .. '\n\n'
                 end,
                 opts = {
                   contains_code = false,
@@ -347,103 +391,100 @@ return {
               },
             },
           },
-
         },
 
         strategies = {
           chat = {
             -- adapter = "gemini",
-            adapter = "copilot",
+            adapter = 'copilot',
           },
           inline = {
             -- adapter = "gemini",
-            adapter = "copilot",
+            adapter = 'copilot',
           },
           agent = {
             -- adapter = "gemini",
-            adapter = "copilot",
+            adapter = 'copilot',
           },
         },
 
         adapters = {
           http = {
             copilot = function()
-              return require("codecompanion.adapters.http").extend("copilot", {
+              return require('codecompanion.adapters.http').extend('copilot', {
                 schema = {
                   model = {
                     -- default = "claude-3.7-sonnet",
                     -- default = "o4-mini",
-                    default = "claude-sonnet-4",
+                    default = 'claude-sonnet-4',
                   },
                 },
               })
             end,
 
             gemini = function()
-              return require("codecompanion.adapters.http").extend("gemini", {
+              return require('codecompanion.adapters.http').extend('gemini', {
                 schema = {
                   model = {
                     -- default = "gemini-2.0-flash",
                     -- default = "gemini-2.5-flash-preview-04-17",
-                    default = "gemini-2.5-pro",
+                    default = 'gemini-2.5-pro',
                   },
                 },
               })
             end,
-
-          }
+          },
         },
-      })
+      }
 
-      vim.keymap.set({ "n", "v" }, "<C-c><C-c>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true, desc = "Show CodeCompanion Actions" })
-      vim.keymap.set({ "n", "v" }, "<LocalLeader>c", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true, desc = "Toggle CodeCompanion Chat" })
-      vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true, desc = "Add selection to CodeCompanion Chat" })
-
-    end
+      vim.keymap.set({ 'n', 'v' }, '<C-c><C-c>', '<cmd>CodeCompanionActions<cr>', { noremap = true, silent = true, desc = 'Show CodeCompanion Actions' })
+      vim.keymap.set({ 'n', 'v' }, '<LocalLeader>c', '<cmd>CodeCompanionChat Toggle<cr>', { noremap = true, silent = true, desc = 'Toggle CodeCompanion Chat' })
+      vim.keymap.set('v', 'ga', '<cmd>CodeCompanionChat Add<cr>', { noremap = true, silent = true, desc = 'Add selection to CodeCompanion Chat' })
+    end,
   },
 
   {
     -- chatgpt like plugin
-    "yetone/avante.nvim",
-    event = "VeryLazy",
+    'yetone/avante.nvim',
+    event = 'VeryLazy',
     lazy = false,
     version = false, -- set this if you want to always pull the latest change
     opts = {
-      provider = "gemini",
+      provider = 'gemini',
       providers = {
         copilot = {
           -- model = "claude-3.7-sonnet", -- bad
           -- model = "claude-3.5-sonnet",
           -- model = "o4-mini",
-          model = "claude-sonnet-4",
+          model = 'claude-sonnet-4',
           extra_request_body = {
             temperature = 0,
             max_tokens = 81920,
-          }
+          },
         },
         gemini = {
           -- model = "gemini-2.0-flash"
           -- model = "gemini-2.5-flash-lite-preview-06-17",
           -- model = "gemini-2.5-pro",
-          model = "gemini-2.5-flash",
+          model = 'gemini-2.5-flash',
           extra_request_body = {
             temperature = 0,
             max_tokens = 81920,
-          }
+          },
         },
       },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    build = "make",
+    build = 'make',
     -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
     dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "stevearc/dressing.nvim",
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
+      'nvim-treesitter/nvim-treesitter',
+      'stevearc/dressing.nvim',
+      'nvim-lua/plenary.nvim',
+      'MunifTanjim/nui.nvim',
       --- The below dependencies are optional,
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-      "zbirenbaum/copilot.lua",      -- for providers='copilot'
+      'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
+      'zbirenbaum/copilot.lua', -- for providers='copilot'
 
       -- {
       --   -- support for image pasting
@@ -648,5 +689,4 @@ return {
   --     -- https://github.com/Robitx/gp.nvim?tab=readme-ov-file#4-configuration
   --   end,
   -- },
-
 }

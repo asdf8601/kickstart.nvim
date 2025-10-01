@@ -28,7 +28,6 @@ return {
       'nvim-neotest/neotest-python',
       'nvim-neotest/neotest-vim-test',
       'nvim-neotest/nvim-nio',
-      'nvim-treesitter/nvim-treesitter',
       {
         'nvim-treesitter/nvim-treesitter', -- Optional, but recommended
         branch = 'main', -- NOTE; not the master branch!
@@ -39,7 +38,7 @@ return {
       {
         'fredrikaverpil/neotest-golang',
         dependencies = {
-          "leoluz/nvim-dap-go"
+          'leoluz/nvim-dap-go',
         },
         version = '*', -- Optional, but recommended; track releases
         build = function()
@@ -144,38 +143,40 @@ return {
   },
 
   {
-    "rcarriga/nvim-dap-ui",
+    'rcarriga/nvim-dap-ui',
     dependencies = {
-      "mfussenegger/nvim-dap",
-      "nvim-neotest/nvim-nio",
+      'mfussenegger/nvim-dap',
+      'nvim-neotest/nvim-nio',
       'leoluz/nvim-dap-go',
       'mfussenegger/nvim-dap-python',
       'theHamsta/nvim-dap-virtual-text',
     },
     config = function()
-      require("dapui").setup()
-      require("nvim-dap-virtual-text").setup({})
-      require("dap-python").setup()
-      require('dap-go').setup({
+      require('dapui').setup()
+      require('nvim-dap-virtual-text').setup {}
+      require('dap-python').setup()
+      require('dap-go').setup {
         dap_configurations = {
           {
-            type = "go",
-            name = "Attach remote",
-            mode = "remote",
-            request = "attach",
+            type = 'go',
+            name = 'Attach remote',
+            mode = 'remote',
+            request = 'attach',
           },
         },
         delve = {
-          path = "dlv",
+          path = 'dlv',
           initialize_timeout_sec = 20,
-          port = "${port}",
+          port = '${port}',
           args = {},
-          build_flags = "",
+          build_flags = '',
         },
-      })
+      }
 
-      local dap = require('dap')
-      vim.keymap.set('n', '<leader>B', function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end, { noremap = true, desc = 'dap set breakpoint condition' })
+      local dap = require 'dap'
+      vim.keymap.set('n', '<leader>B', function()
+        dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
+      end, { noremap = true, desc = 'dap set breakpoint condition' })
       vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { noremap = true, desc = 'dap toggle breakpoint' })
       vim.keymap.set('n', '<leader>dc', dap.continue, { noremap = true, desc = 'dap continue' })
       vim.keymap.set('n', '<leader>dh', dap.step_out, { noremap = true, desc = 'dap step out ←' })
@@ -186,7 +187,7 @@ return {
       vim.keymap.set('n', '<leader>dr', dap.run_last, { noremap = true, desc = 'dap run last' })
       vim.keymap.set('n', '<leader>dq', dap.disconnect, { noremap = true, desc = 'dap disconnect' })
 
-      local dapui = require('dapui')
+      local dapui = require 'dapui'
       vim.keymap.set('n', '<leader>du', dapui.toggle, { noremap = true, desc = 'toggle dap ui' })
       vim.keymap.set('n', '<leader>do', dapui.open, { noremap = true, desc = 'toggle dap ui' })
       vim.keymap.set('n', '<leader>dx', dapui.close, { noremap = true, desc = 'toggle dap ui' })
@@ -246,5 +247,4 @@ return {
       require('dap-go').setup()
     end,
   },
-
 }

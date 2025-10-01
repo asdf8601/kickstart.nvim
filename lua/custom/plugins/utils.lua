@@ -65,6 +65,22 @@ vim.api.nvim_set_keymap('n', '<leader>gg', ':GsutilImport<cr>', { noremap = true
 -- gs://hola/mundo/que/tal/
 
 return {
+  {
+    -- statusline
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    init = function()
+      require('lualine').setup {
+        options = {
+          theme = 'auto',
+          -- theme = '16color',
+          globalstatus = true,
+          section_separators = { left = '', right = '' },
+          component_separators = { left = '', right = '' },
+        },
+      }
+    end,
+  },
   -- 'tpope/vim-unimpaired',
   'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
   'RRethy/vim-illuminate',
@@ -203,7 +219,6 @@ return {
       'saghen/blink.cmp',
     },
   },
-
 
   {
     'stevearc/oil.nvim',

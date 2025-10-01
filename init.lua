@@ -1,5 +1,3 @@
-local vim = vim
-
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 vim.opt.splitright = true
@@ -450,7 +448,6 @@ vim.keymap.set('n', '<leader>sq', '<Plug>(DBUI_SaveQuery)', { noremap = true })
 --   command = 'normal zR',
 -- })
 
-
 autocmd({ 'BufWritePost' }, {
   group = ASDF8601,
   pattern = '~/.Xresources',
@@ -460,7 +457,7 @@ autocmd({ 'BufWritePost' }, {
 -- autocommand for WebDev {{{
 
 -- [[ astro ]] {{{
-vim.filetype.add { extension = { mdx = 'mdx', } }
+vim.filetype.add { extension = { mdx = 'mdx' } }
 vim.treesitter.language.register('markdown', 'mdx') -- the mdx filetype will use the markdown parser and queries.
 -- }}}
 
