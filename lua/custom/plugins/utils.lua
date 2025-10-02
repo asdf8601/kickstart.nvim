@@ -297,10 +297,21 @@ return {
     opts = {
       notify_on_error = false,
       formatters_by_ft = {
+        css = { { 'prettierd', 'prettier' } },
+        go = { 'gofumpt', 'golines', 'goimports' },
+        html = { { 'prettierd', 'prettier' } },
+        javascript = { { 'prettierd', 'prettier' } },
+        json = { { 'prettierd', 'prettier' } },
         lua = { 'stylua' },
-        python = { 'ruff', 'mypy' },
-        go = { 'gofumpt' },
-        -- ['_'] = { 'trim_whitespace' },
+        markdown = { { 'prettierd', 'prettier' } },
+        python = { 'ruff_fix', 'ruff_format', 'docformatter' },
+        sql = { 'sqlfmt' },
+        yaml = { 'prettier' },
+        bash = { 'shfmt' },
+        sh = { 'shfmt' },
+        docker = { 'dockerfmt' },
+        -- ['*'] = { 'codespell' }, -- apply to all
+        -- ['_'] = { 'trim_whitespace' }, -- for the rest
       },
       format_on_save = function(bufnr)
         local disable_filetypes = { c = true, cpp = true }
@@ -308,7 +319,7 @@ return {
           return nil
         else
           return {
-            timeout_ms = 500,
+            timeout_ms = 300,
             lsp_format = 'fallback',
           }
         end
