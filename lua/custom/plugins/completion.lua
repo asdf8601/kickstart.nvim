@@ -47,7 +47,7 @@ return {
               jira_project = 'GC',
               jira_status = { 'In Progress', 'To Do', 'In Review' },
               max_results = 50,
-              cache_duration = 10,
+              cache_duration = 300,
               -- debug = true,
             },
           },

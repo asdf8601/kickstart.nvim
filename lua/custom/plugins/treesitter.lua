@@ -27,9 +27,19 @@ local ensure_installed = {
 
 return {
   {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    branch = 'main',
+    -- NOTE: this causes error:
+    -- config = function()
+    --   require 'config.treesitter-textobjects'
+    -- end,
+  },
+  {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    lazy = false,
     build = ':TSUpdate',
+    -- NOTE: this causes error:
     -- main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     opts = {
       ensure_installed = ensure_installed,
@@ -40,8 +50,9 @@ return {
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
+    -- NOTE: this causes error:
     -- config = function(_, opts)
-    --   require("nvim-treesitter.configs").setup(opts)
+    --   require('config.treesitter').setup(opts)
     -- end,
   },
 }
