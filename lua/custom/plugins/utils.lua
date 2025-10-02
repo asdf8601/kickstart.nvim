@@ -203,55 +203,6 @@ return {
   },
 
   {
-    -- A hackable Markdown, HTML, LaTeX, Typst & YAML previewer for Neovim.
-    -- https://github.com/OXY2DEV/markview.nvim
-    'OXY2DEV/markview.nvim',
-    lazy = false,
-    config = function()
-      require('markview').setup {
-        preview = {
-          icon_provider = 'internal', -- "internal", "mini" or "devicons"
-        },
-      }
-
-      require('markview.extras.editor').setup()
-
-      require('markview.extras.checkboxes').setup {
-        --- Default checkbox state(used when adding checkboxes).
-        ---@type string
-        default = 'X',
-
-        --- Changes how checkboxes are removed.
-        ---@type
-        ---| "disable" Disables the checkbox.
-        ---| "checkbox" Removes the checkbox.
-        ---| "list_item" Removes the list item markers too.
-        remove_style = 'disable',
-
-        --- Various checkbox states.
-        ---
-        --- States are in sets to quickly change between them
-        --- when there are a lot of states.
-        ---@type string[][]
-        states = {
-          { ' ', '/', 'X' },
-          { '<', '>' },
-          { '?', '!', '*' },
-          { '"' },
-          { 'l', 'b', 'i' },
-          { 'S', 'I' },
-          { 'p', 'c' },
-          { 'f', 'k', 'w' },
-          { 'u', 'd' },
-        },
-      }
-    end,
-    dependencies = {
-      'saghen/blink.cmp',
-    },
-  },
-
-  {
     -- A task runner and job management plugin for Neovim
     -- https://github.com/stevearc/overseer.nvim
     'stevearc/overseer.nvim',
@@ -298,7 +249,7 @@ return {
       notify_on_error = false,
       formatters_by_ft = {
         css = { { 'prettierd', 'prettier' } },
-        go = { 'gofumpt', 'golines', 'goimports' },
+        go = { 'gofumpt', 'goimports' },
         html = { { 'prettierd', 'prettier' } },
         javascript = { { 'prettierd', 'prettier' } },
         json = { { 'prettierd', 'prettier' } },

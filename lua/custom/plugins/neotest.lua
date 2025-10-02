@@ -15,6 +15,7 @@ local go_config = {
     '-v',
   },
   go_list_args = { '-tags=unit,integration' },
+  warn_test_name_dupes = false,
 }
 
 return {
@@ -44,6 +45,7 @@ return {
         build = function()
           vim.system({ 'go', 'install', 'gotest.tools/gotestsum@latest' }):wait() -- Optional, but recommended
         end,
+        warn_test_name_dupes = false,
       },
     },
     keys = {

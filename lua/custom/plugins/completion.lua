@@ -21,36 +21,47 @@ return {
       'fang2hou/blink-copilot',
       'Kaiser-Yang/blink-cmp-avante',
       'disrupted/blink-cmp-conventional-commits',
-      'Kaiser-Yang/blink-cmp-git',
       'bydlw98/blink-cmp-env',
+      -- 'Kaiser-Yang/blink-cmp-git',
       -- 'asdf8601/blink-cmp-jira',
-      { dir = '~/github.com/asdf8601/blink-cmp-jira' },
+      -- { dir = '~/github.com/asdf8601/blink-cmp-jira' },
     },
     opts = {
       appearance = { nerd_font_variant = 'mono' },
-      completion = { documentation = { auto_show = false, auto_show_delay_ms = 500 } },
+      completion = { documentation = { auto_show = true, auto_show_delay_ms = 200 } },
       keymap = {
         preset = 'default',
-        ['<C-q>'] = {
+        -- ['<C-q>'] = {
+        --   function(cmp)
+        --     cmp.show { providers = { 'jira' } }
+        --   end,
+        -- },
+        ['<C-g><C-g>'] = {
           function(cmp)
-            cmp.show { providers = { 'jira' } }
+            cmp.show { providers = { 'copilot' } }
           end,
         },
       },
       sources = {
-        default = { 'jira', 'copilot', 'lsp', 'path', 'buffer', 'avante', 'cvcm', 'git', 'env' },
+        -- default = { 'jira', 'copilot', 'lsp', 'path', 'buffer', 'avante', 'cvcm', 'git', 'env' },
+        default = { 'lsp', 'path', 'buffer', 'avante', 'cvcm', 'env' },
         providers = {
-          jira = {
-            name = 'blink-jira',
-            module = 'blink-jira',
-            opts = {
-              jira_project = 'GC',
-              jira_status = { 'In Progress', 'To Do', 'In Review' },
-              max_results = 50,
-              cache_duration = 300,
-              -- debug = true,
-            },
-          },
+          -- jira = {
+          --   name = 'blink-jira',
+          --   module = 'blink-jira',
+          --   opts = {
+          --     jira_project = 'GC',
+          --     jira_status = { 'In Progress', 'To Do', 'In Review' },
+          --     max_results = 50,
+          --     cache_duration = 300,
+          --     -- debug = true,
+          --   },
+          -- },
+          -- git = {
+          --   module = 'blink-cmp-git',
+          --   name = 'Git',
+          --   -- opts = { },
+          -- },
           env = {
             name = 'Env',
             module = 'blink-cmp-env',
@@ -59,11 +70,6 @@ return {
               show_braces = false,
               show_documentation_window = true,
             },
-          },
-          git = {
-            module = 'blink-cmp-git',
-            name = 'Git',
-            -- opts = { },
           },
           cvcm = {
             name = 'Conventional Commits',
@@ -80,7 +86,7 @@ return {
           copilot = {
             name = 'copilot',
             module = 'blink-copilot',
-            score_offset = 100,
+            score_offset = 2,
             async = true,
           },
         },
@@ -90,6 +96,7 @@ return {
       signature = { enabled = true },
     },
   },
+
   -- {
   --   -- Autocompletion
   --   'hrsh7th/nvim-cmp',
