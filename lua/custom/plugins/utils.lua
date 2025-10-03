@@ -248,19 +248,19 @@ return {
     opts = {
       notify_on_error = false,
       formatters_by_ft = {
+        bash = { 'shfmt' },
         css = { { 'prettierd', 'prettier' } },
+        docker = { 'dockerfmt' },
         go = { 'gofumpt', 'goimports' },
         html = { { 'prettierd', 'prettier' } },
         javascript = { { 'prettierd', 'prettier' } },
         json = { { 'prettierd', 'prettier' } },
         lua = { 'stylua' },
-        markdown = { { 'prettierd', 'prettier' } },
         python = { 'ruff_fix', 'ruff_format', 'docformatter' },
+        sh = { 'shfmt' },
         sql = { 'sqlfmt' },
         yaml = { 'prettier' },
-        bash = { 'shfmt' },
-        sh = { 'shfmt' },
-        docker = { 'dockerfmt' },
+        -- markdown = { { 'prettierd', 'prettier' } },
         -- ['*'] = { 'codespell' }, -- apply to all
         -- ['_'] = { 'trim_whitespace' }, -- for the rest
       },

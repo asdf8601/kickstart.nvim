@@ -1,6 +1,5 @@
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 -- table.insert(vim._so_trails, '/?.dylib')
-
 vim.g.have_nerd_font = true
 vim.opt.splitright = true
 vim.opt.splitbelow = true
@@ -31,8 +30,8 @@ vim.g.netrw_winsize = 20
 vim.opt.laststatus = 3
 -- }}}
 
--- tag bar
-vim.g.completion_matching_strategy_list = { 'exact', 'substring', 'fuzzy' }
+-- -- tag bar
+-- vim.g.completion_matching_strategy_list = { 'exact', 'substring', 'fuzzy' }
 
 -- [[ Setting options ]] {{{
 -- See `:help vim.o`
@@ -80,7 +79,7 @@ vim.opt.updatetime = 250
 vim.opt.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
-vim.opt.completeopt = 'menuone,noselect'
+vim.opt.completeopt = 'menu,menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
 vim.opt.termguicolors = true
@@ -163,14 +162,12 @@ vim.keymap.set('v', '<C-G>', ':GBrowse!<cr>', { noremap = true, desc = 'yank git
 -- }}}
 
 -- terminal settings {{{
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { noremap = true, desc = 'Switch to normal mode from terminal' })
+vim.keymap.set('t', '<esc><esc>', '<C-\\><C-n>', { noremap = true, desc = 'Switch to normal mode from terminal' })
 vim.keymap.set('t', '<C-w>h', '<C-\\><C-n><C-w>h', { noremap = true, desc = 'Move cursor to the left window' })
 vim.keymap.set('t', '<C-w>j', '<C-\\><C-n><C-w>j', { noremap = true, desc = 'Move cursor to the below window' })
 vim.keymap.set('t', '<C-w>k', '<C-\\><C-n><C-w>k', { noremap = true, desc = 'Move cursor to the above window' })
 vim.keymap.set('t', '<C-w>l', '<C-\\><C-n><C-w>l', { noremap = true, desc = 'Move cursor to the right window' })
 vim.keymap.set('t', '<C-w>w', '<C-\\><C-n><C-w>w', { noremap = true, desc = 'Switch to the next window' })
--- vim.keymap.set('t', '<C-P>', '<C-\\><C-n>pi<cr>', { noremap = true })
--- vim.keymap.set('n', '<C-l>', 'i<C-l>', {noremap = true})
 -- }}}
 
 -- [[ luasnip:snippets ]] {{{
@@ -303,9 +300,6 @@ autocmd('TermOpen', { group = ASDF8601, pattern = '*', command = 'setl nonumber 
 autocmd('FileType', { group = ASDF8601, pattern = 'fugitive', command = 'setl nonumber norelativenumber' })
 autocmd('FileType', { group = ASDF8601, pattern = 'json*', command = 'setl tw=0' })
 autocmd('FileType', { group = ASDF8601, pattern = 'make', command = 'setl noexpandtab shiftwidth=4 softtabstop=0' })
-autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F7> :!ruff check -l80 %<CR><CR>' })
-autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F8> :!ruff format % && ruff check % --fix<CR><CR>' })
-autocmd('FileType', { group = ASDF8601, pattern = 'python', command = 'nnoremap <buffer> <F9> :!ruff check -l80 --fix %<CR><CR>' })
 autocmd('FileType', {
   group = ASDF8601,
   pattern = 'qf',

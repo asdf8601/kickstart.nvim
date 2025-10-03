@@ -99,7 +99,7 @@ local new_maker = function(filepath, bufnr, opts)
   opts = opts or {}
 
   filepath = vim.fn.expand(filepath)
-  vim.loop.fs_stat(filepath, function(_, stat)
+  vim.uv.fs_stat(filepath, function(_, stat)
     if not stat then
       return
     end
@@ -230,25 +230,24 @@ return {
       -- vim.keymap.set('n', '<leader>fl', ':Telescope diagnostics<cr>', { noremap = true, desc = "[telescope] Find errors, lint, diagnostics", silent = false })
       -- vim.keymap.set('n', '<leader>sc', search_scio, { desc = "Search scio", noremap = true })
 
-      vim.keymap.set('n', '<leader>rc', search_vimrc, { desc = '[telescope] Search nvim config', noremap = true })
       vim.keymap.set('n', '<C-p>', find_files_from_project_git_root, { noremap = true, desc = '[telescope] Find files from git root' })
-      vim.keymap.set('n', '<leader>fb', find_buffer_cwd, { desc = '[telescope] Search files in current buffer dir', noremap = true })
-      vim.keymap.set('n', 'ts', find_emojis, { desc = '[telescope] Search emoji', noremap = true })
-      vim.keymap.set('n', '<C-p>', require('telescope.builtin').git_files, { desc = '[telescope] Search [G]it [F]iles' })
+      -- vim.keymap.set('n', '<C-p>', require('telescope.builtin').git_files, { desc = '[telescope] Search [G]it [F]iles' })
       vim.keymap.set('n', '<leader>/', find_fuzzy_buffer, { desc = '[telescope] Fuzzily search in current buffer' })
       vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[telescope] Find existing buffers' })
       vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[telescope] Find recently opened files' })
       vim.keymap.set('n', '<leader>dot', search_dotfiles, { desc = '[telescope] Search dotfiles', noremap = true })
+      vim.keymap.set('n', '<leader>fb', find_buffer_cwd, { desc = '[telescope] Search files in current buffer dir', noremap = true })
       vim.keymap.set('n', '<leader>fc', ':Telescope commands<cr>', { noremap = true, desc = '[telescope] Find commands', silent = false })
       vim.keymap.set('n', '<leader>ff', my_find_files, { desc = 'Find files', noremap = true })
-      vim.keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags, { desc = '[telescope] [S]earch [H]elp' })
       vim.keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags, { desc = '[telescope] [S]earch [H]elp' })
       vim.keymap.set('n', '<leader>fj', find_project, { desc = '[telescope] Find projects and open it in a new win' })
       vim.keymap.set('n', '<leader>fk', ':Telescope keymaps<cr>', { noremap = true, desc = '[telescope] Find keymaps', silent = false })
       vim.keymap.set('n', '<leader>fp', find_cwd_git_files, { desc = '[telescope] Search git files in current buffer dir]', noremap = true })
       vim.keymap.set('n', '<leader>gc', git_branches, { desc = '[telescope] Git branches', noremap = true })
       vim.keymap.set('n', '<leader>gs', require('telescope.builtin').git_stash, { noremap = true, desc = '[telescope] Git stash' })
+      vim.keymap.set('n', '<leader>rc', search_vimrc, { desc = '[telescope] Search nvim config', noremap = true })
       vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[telescope] [S]earch [D]iagnostics across workspace' })
+      vim.keymap.set('n', 'ts', find_emojis, { desc = '[telescope] Search emoji', noremap = true })
       vim.keymap.set(
         'n',
         '<leader>sg',

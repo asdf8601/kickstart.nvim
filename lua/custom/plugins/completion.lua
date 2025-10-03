@@ -1,17 +1,4 @@
 return {
-  {
-    'zbirenbaum/copilot.lua',
-    cmd = 'Copilot',
-    event = 'InsertEnter',
-    opts = {
-      suggestion = { enabled = false },
-      panel = { enabled = false },
-      filetypes = {
-        markdown = true,
-        help = true,
-      },
-    },
-  },
   { -- Autocompletion
     'saghen/blink.cmp',
     -- event = 'VimEnter',
@@ -22,46 +9,38 @@ return {
       'Kaiser-Yang/blink-cmp-avante',
       'disrupted/blink-cmp-conventional-commits',
       'bydlw98/blink-cmp-env',
-      -- 'Kaiser-Yang/blink-cmp-git',
-      -- 'asdf8601/blink-cmp-jira',
-      -- { dir = '~/github.com/asdf8601/blink-cmp-jira' },
+      'Kaiser-Yang/blink-cmp-git',
+      'asdf8601/blink-cmp-jira',
+      { dir = '~/github.com/asdf8601/blink-cmp-jira' },
     },
     opts = {
       appearance = { nerd_font_variant = 'mono' },
       completion = { documentation = { auto_show = true, auto_show_delay_ms = 200 } },
       keymap = {
         preset = 'default',
-        -- ['<C-q>'] = {
-        --   function(cmp)
-        --     cmp.show { providers = { 'jira' } }
-        --   end,
-        -- },
-        ['<C-g><C-g>'] = {
-          function(cmp)
-            cmp.show { providers = { 'copilot' } }
-          end,
-        },
+        -- ['<C-q>'] = { function(cmp) cmp.show { providers = { 'jira' } } end, },
+        -- ['<C-g><C-g>'] = { function(cmp) cmp.show { providers = { 'copilot' } } end, },
       },
       sources = {
-        -- default = { 'jira', 'copilot', 'lsp', 'path', 'buffer', 'avante', 'cvcm', 'git', 'env' },
-        default = { 'lsp', 'path', 'buffer', 'avante', 'cvcm', 'env' },
+        -- default = { 'lsp', 'path', 'buffer', 'avante', 'cvcm', 'env' },
+        default = { 'jira', 'copilot', 'lsp', 'path', 'buffer', 'avante', 'cvcm', 'git', 'env' },
         providers = {
-          -- jira = {
-          --   name = 'blink-jira',
-          --   module = 'blink-jira',
-          --   opts = {
-          --     jira_project = 'GC',
-          --     jira_status = { 'In Progress', 'To Do', 'In Review' },
-          --     max_results = 50,
-          --     cache_duration = 300,
-          --     -- debug = true,
-          --   },
-          -- },
-          -- git = {
-          --   module = 'blink-cmp-git',
-          --   name = 'Git',
-          --   -- opts = { },
-          -- },
+          jira = {
+            name = 'blink-cmp-jira',
+            module = 'blink-cmp-jira',
+            opts = {
+              trigger_character = 'GC-',
+              jira_project = 'GC',
+              jira_status = { 'In Progress', 'To Do', 'In Review' },
+              max_results = 50,
+              cache_duration = 300,
+            },
+          },
+          git = {
+            module = 'blink-cmp-git',
+            name = 'Git',
+            opts = {},
+          },
           env = {
             name = 'Env',
             module = 'blink-cmp-env',
@@ -97,80 +76,19 @@ return {
     },
   },
 
-  -- {
-  --   -- Autocompletion
-  --   'hrsh7th/nvim-cmp',
-  --   dependencies = {
-  --     'L3MON4D3/LuaSnip',
-  --     'hrsh7th/cmp-cmdline',
-  --     'hrsh7th/cmp-nvim-lsp',
-  --     'hrsh7th/cmp-path',
-  --     'saadparwaiz1/cmp_luasnip',
-  --     {
-  --       "zbirenbaum/copilot-cmp",
-  --       dependencies = { {"zbirenbaum/copilot.lua", opts = {}} },
-  --       opts = {},
-  --     },
-  --     -- 'rafamadriz/friendly-snippets',
-  --   },
-  --   config = function()
-  --       -- https://github.com/zbirenbaum/copilot-cmp?tab=readme-ov-file#packer
-  --       require("copilot").setup({
-  --         suggestion = { enabled = false },
-  --         panel = { enabled = false },
-  --       })
-  --
-  --       local cmp = require('cmp')
-  --
-  --       local luasnip = require('luasnip')
-  --       local ls = require("luasnip")
-  --       local s = ls.snippet
-  --       local t = ls.text_node
-  --       ls.add_snippets('all', { s('hola', t 'hola mundo!') })
-  --       ls.add_snippets('python', { s('pdb', t 'breakpoint()') })
-  --       ls.add_snippets('python', { s('pm', t '__import__("pdb").pm()') })
-  --
-  --       -- date
-  --       ls.add_snippets('all', { s('date', t(os.date('%Y-%m-%d'))) })
-  --       ls.add_snippets('all', { s('time', t(os.date('%H:%M:%S'))) })
-  --
-  --       luasnip.config.setup({})
-  --
-  --
-  --       cmp.setup({
-  --         performance = {
-  --           max_view_entries = 5,
-  --         },
-  --         snippet = {
-  --           expand = function(args)
-  --             luasnip.lsp_expand(args.body)
-  --           end,
-  --         },
-  --         mapping = cmp.mapping.preset.insert {
-  --           ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-  --           ['<C-f>'] = cmp.mapping.scroll_docs(4),
-  --           ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-  --           ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-  --           -- ['<C-l>'] = cmp.mapping.complete(),
-  --           ['<C-l>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true, }),
-  --         },
-  --         sources = {
-  --           { name = 'copilot' },
-  --           { name = 'luasnip' },
-  --           { name = 'nvim_lsp' },
-  --           { name = 'buffer' },
-  --           { name = 'path' },
-  --           per_filetype = {
-  --             codecompanion = { "codecompanion" },
-  --           },
-  --           -- { name = "codeium" },
-  --           -- { name = 'nvim_lsp_signature_help' },
-  --           -- { name = 'neorg' },
-  --           -- { name = 'orgmode' },
-  --         },
-  --       })
-  --   end
-  -- },
+  {
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
+    event = 'InsertEnter',
+    opts = {
+      suggestion = { enabled = false },
+      panel = { enabled = false },
+      filetypes = {
+        markdown = true,
+        help = true,
+      },
+    },
+  },
   {
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',
@@ -431,7 +349,8 @@ return {
                   model = {
                     -- default = "claude-3.7-sonnet",
                     -- default = "o4-mini",
-                    default = 'claude-sonnet-4',
+                    -- default = 'claude-sonnet-4',
+                    default = 'claude-sonnet-4.5',
                   },
                 },
               })
@@ -465,13 +384,13 @@ return {
     lazy = false,
     version = false, -- set this if you want to always pull the latest change
     opts = {
-      provider = 'gemini',
+      provider = 'copilot',
       providers = {
         copilot = {
           -- model = "claude-3.7-sonnet", -- bad
           -- model = "claude-3.5-sonnet",
           -- model = "o4-mini",
-          model = 'claude-sonnet-4',
+          model = 'claude-sonnet-4.5',
           extra_request_body = {
             temperature = 0,
             max_tokens = 81920,
@@ -501,207 +420,14 @@ return {
       'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
       'zbirenbaum/copilot.lua', -- for providers='copilot'
 
-      -- {
-      --   -- support for image pasting
-      --   "HakonHarnes/img-clip.nvim",
-      --   event = "VeryLazy",
-      --   opts = {
-      --     -- recommended settings
-      --     default = {
-      --       embed_image_as_base64 = false,
-      --       prompt_for_file_name = false,
-      --       drag_and_drop = {
-      --         insert_mode = true,
-      --       },
-      --       -- required for Windows users
-      --       use_absolute_path = true,
-      --     },
-      --   },
-      -- },
-
-      -- {
-      --   -- Make sure to set this up properly if you have lazy=true
-      --   'MeanderingProgrammer/render-markdown.nvim',
-      --   opts = {
-      --     file_types = { "markdown", "Avante" },
-      --   },
-      --   ft = { "markdown", "Avante" },
-      -- },
+      {
+        -- Make sure to set this up properly if you have lazy=true
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { 'markdown', 'Avante' },
+        },
+        ft = { 'markdown', 'Avante' },
+      },
     },
   },
-
-  -- {
-  --   "robitx/gp.nvim",
-  --   lazy = false,
-  --   init = function()
-  --     require("gp").setup({
-  --       providers = {
-  --         ollama = {
-  --           endpoint = "http://localhost:11434/v1/chat/completions",
-  --         },
-  --       },
-  --
-  --       agents = {
-  --         {
-  --           name = "Llama3",
-  --           chat = true,
-  --           command = true,
-  --           provider = "ollama",
-  --           model = { model = "llama3", stream = false },
-  --           system_prompt = "Your are a general AI assistant better than ChatGPT4.",
-  --         },
-  --         {
-  --           name = "ChatGPT4",
-  --           chat = true,
-  --           command = false,
-  --           model = { model = "gpt-4o", temperature = 1.1, top_p = 1 },
-  --           -- system prompt (use this to specify the persona/role of the AI)
-  --           system_prompt = "You are a general AI assistant.\n\n"
-  --               .. "The user provided the additional info about how they would like you to respond:\n\n"
-  --               .. "- If you're unsure don't guess and say you don't know instead.\n"
-  --               .. "- Ask question if you need clarification to provide better answer.\n"
-  --               .. "- Think deeply and carefully from first principles step by step.\n"
-  --               .. "- Zoom out first to see the big picture and then zoom in to details.\n"
-  --               .. "- Use Socratic method to improve your thinking and coding skills.\n"
-  --               .. "- Don't elide any code from your output if the answer requires coding.\n"
-  --               .. "- Take a deep breath; You've got this! Be extremely concise.\n",
-  --         },
-  --         {
-  --           name = "ChatGPT3-5",
-  --           chat = true,
-  --           command = false,
-  --           -- string with model name or table with model name and parameters
-  --           model = { model = "gpt-3.5-turbo", temperature = 1.1, top_p = 1 },
-  --           -- system prompt (use this to specify the persona/role of the AI)
-  --           system_prompt = "You are a general AI assistant.\n\n"
-  --               .. "The user provided the additional info about how they would like you to respond:\n\n"
-  --               .. "- If you're unsure don't guess and say you don't know instead.\n"
-  --               .. "- Ask question if you need clarification to provide better answer.\n"
-  --               .. "- Think deeply and carefully from first principles step by step.\n"
-  --               .. "- Zoom out first to see the big picture and then zoom in to details.\n"
-  --               .. "- Use Socratic method to improve your thinking and coding skills.\n"
-  --               .. "- Don't elide any code from your output if the answer requires coding.\n"
-  --               .. "- Take a deep breath; You've got this!\n",
-  --         },
-  --         {
-  --           name = "CodeGPT4",
-  --           chat = false,
-  --           command = true,
-  --           -- string with model name or table with model name and parameters
-  --           model = { model = "gpt-4o", temperature = 0.8, top_p = 1 },
-  --           -- system prompt (use this to specify the persona/role of the AI)
-  --           system_prompt = "You are an AI working as a code editor.\n\n"
-  --               .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
-  --               .. "START AND END YOUR ANSWER WITH:\n\n```",
-  --         },
-  --         {
-  --           name = "CodeGPT3-5",
-  --           chat = false,
-  --           command = true,
-  --           -- string with model name or table with model name and parameters
-  --           model = { model = "gpt-3.5-turbo", temperature = 0.8, top_p = 1 },
-  --           -- system prompt (use this to specify the persona/role of the AI)
-  --           system_prompt = "You are an AI working as a code editor.\n\n"
-  --               .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
-  --               .. "START AND END YOUR ANSWER WITH:\n\n```",
-  --         },
-  --
-  --       },
-  --
-  --       hooks = {
-  --
-  --         -- GpInspectPlugin provides a detailed inspection of the plugin state
-  --         InspectPlugin = function(plugin, params)
-  --           local bufnr = vim.api.nvim_create_buf(false, true)
-  --           local copy = vim.deepcopy(plugin)
-  --           local key = copy.config.openai_api_key or ""
-  --           copy.config.openai_api_key = key:sub(1, 3) .. string.rep("*", #key - 6) .. key:sub(-3)
-  --           local plugin_info = string.format("Plugin structure:\n%s", vim.inspect(copy))
-  --           local params_info = string.format("Command params:\n%s", vim.inspect(params))
-  --           local lines = vim.split(plugin_info .. "\n" .. params_info, "\n")
-  --           vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-  --           vim.api.nvim_win_set_buf(0, bufnr)
-  --         end,
-  --
-  --         -- GpInspectLog for checking the log file
-  --         InspectLog = function(plugin, _)
-  --           local log_file = plugin.config.log_file
-  --           local buffer = plugin.helpers.get_buffer(log_file)
-  --           if not buffer then
-  --             vim.cmd("e " .. log_file)
-  --           else
-  --             vim.cmd("buffer " .. buffer)
-  --           end
-  --         end,
-  --
-  --         -- GpImplement rewrites the provided selection/range based on comments in it
-  --         Implement = function(gp, params)
-  --           local template = "Having following from {{filename}}:\n\n"
-  --               .. "```{{filetype}}\n{{selection}}\n```\n\n"
-  --               .. "Please rewrite this according to the contained instructions."
-  --               .. "\n\nRespond exclusively with the snippet that should replace the selection above."
-  --
-  --           local agent = gp.get_command_agent()
-  --           gp.logger.info("Implementing selection with agent: " .. agent.name)
-  --
-  --           gp.Prompt(
-  --             params,
-  --             gp.Target.rewrite,
-  --             agent,
-  --             template,
-  --             nil, -- command will run directly without any prompting for user input
-  --             nil  -- no predefined instructions (e.g. speech-to-text from Whisper)
-  --           )
-  --         end,
-  --
-  --         -- your own functions can go here, see README for more examples like
-  --         -- :GpExplain, :GpUnitTests.., :GpTranslator etc.
-  --
-  --         -- example of making :%GpChatNew a dedicated command which
-  --         -- opens new chat with the entire current buffer as a context
-  --         BufferChatNew = function(gp, _)
-  --           -- call GpChatNew command in range mode on whole buffer
-  --           vim.api.nvim_command("%" .. gp.config.cmd_prefix .. "ChatNew")
-  --         end,
-  --
-  --         -- example of adding command which opens new chat dedicated for translation
-  --         Translator = function(gp, params)
-  --           local chat_system_prompt = "You are a Translator, please translate between English and Chinese."
-  --           gp.cmd.ChatNew(params, chat_system_prompt)
-  --           -- you can also create a chat with a specific fixed agent like this:
-  --           -- local agent = gp.get_chat_agent("ChatGPT4o")
-  --           -- gp.cmd.ChatNew(params, chat_system_prompt, agent)
-  --         end,
-  --
-  --         -- example of adding command which writes unit tests for the selected code
-  --         UnitTests = function(gp, params)
-  --           local template = "I have the following code from {{filename}}:\n\n"
-  --               .. "```{{filetype}}\n{{selection}}\n```\n\n"
-  --               .. "Please respond by writing table driven unit tests for the code above."
-  --           local agent = gp.get_command_agent()
-  --           gp.Prompt(params, gp.Target.enew, agent, template)
-  --         end,
-  --
-  --         -- example of adding command which explains the selected code
-  --         Explain = function(gp, params)
-  --           local template = "I have the following code from {{filename}}:\n\n"
-  --               .. "```{{filetype}}\n{{selection}}\n```\n\n"
-  --               .. "Please respond by explaining the code above."
-  --           local agent = gp.get_chat_agent()
-  --           gp.Prompt(params, gp.Target.popup, agent, template)
-  --         end,
-  --
-  --         CodeReview = function(gp, params)
-  --           local template = "I have the following code from {{filename}}:\n\n"
-  --               .. "```{{filetype}}\n{{selection}}\n```\n\n"
-  --               .. "Please analyze for code smells and suggest improvements."
-  --           local agent = gp.get_chat_agent()
-  --           gp.Prompt(params, gp.Target.enew("markdown"), agent, template)
-  --         end,
-  --
-  --       },
-  --     })
-  --     -- https://github.com/Robitx/gp.nvim?tab=readme-ov-file#4-configuration
-  --   end,
-  -- },
 }
