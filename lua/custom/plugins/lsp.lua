@@ -15,12 +15,13 @@ local servers = {
       },
     },
   },
-  gotestsum = {},
-  golines = {},
+  -- gotestsum = {},
   html = { filetypes = { 'html', 'twig', 'hbs' } },
   jsonls = {},
   jsonnet_ls = {},
   pyright = {},
+  -- uv = {},
+  -- debugpy = {},
   ruff = {},
   rust_analyzer = {},
   taplo = {},
@@ -175,44 +176,55 @@ return {
           end,
         },
       }
-
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
       })
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-      require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-        automatic_installation = false,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            if server_name == 'gopls' then
-              vim.print 'configuring gopls'
-            end
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
-      }
-
-      -- vim.lsp.config.gopls = servers.gopls
+      for server_name, config in pairs(servers) do
+        vim.lsp.config(server_name, config)
+        vim.lsp.enable(server_name)
+      end
+      -- NOTE: Some servers may require an old setup until they are updated.
+      -- For the full list refer here:
+      -- https://github.com/neovim/nvim-lspconfig/issues/3705
+      -- These servers will have to be manually set up with:
+      -- require("lspconfig").server_name.setup{}
     end,
   },
   {
     'rcarriga/nvim-dap-ui',
     dependencies = {
-      'mfussenegger/nvim-dap',
+      -- {
+      --   'mfussenegger/nvim-dap-python',
+      --   lazy = true,
+      --   disable = true,
+      --   config = function()
+      --     local python = vim.fn.expand '~/.local/share/nvim/mason/packages/debugpy/venv/bin/python'
+      --     require('dap-python').setup(python)
+      --   end,
+      --   -- Consider the mappings at
+      --   -- https://github.com/mfussenegger/nvim-dap-python?tab=readme-ov-file#mappings
+      --   dependencies = {
+      --     'mfussenegger/nvim-dap',
+      --   },
+      -- },
       'theHamsta/nvim-dap-virtual-text',
-      'mfussenegger/nvim-dap-python',
       'leoluz/nvim-dap-go',
+      {
+        'williamboman/mason.nvim',
+        'mfussenegger/nvim-dap',
+        'jay-babu/mason-nvim-dap.nvim',
+      },
     },
     config = function()
+      require('mason-nvim-dap').setup {
+        ensure_installed = { 'python', 'delve' },
+      }
       require('dapui').setup()
       require('nvim-dap-virtual-text').setup {}
-      require('dap-python').setup()
+      -- require('nvim-dap-python').setup {}
       require('dap-go').setup {
         dap_configurations = {
           {

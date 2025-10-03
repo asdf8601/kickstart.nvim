@@ -1,4 +1,6 @@
 -- Set to true if you have a Nerd Font installed and selected in the terminal
+-- table.insert(vim._so_trails, '/?.dylib')
+
 vim.g.have_nerd_font = true
 vim.opt.splitright = true
 vim.opt.splitbelow = true

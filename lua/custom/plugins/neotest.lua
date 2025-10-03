@@ -150,13 +150,13 @@ return {
       'mfussenegger/nvim-dap',
       'nvim-neotest/nvim-nio',
       'leoluz/nvim-dap-go',
-      'mfussenegger/nvim-dap-python',
+      -- 'mfussenegger/nvim-dap-python',
       'theHamsta/nvim-dap-virtual-text',
     },
     config = function()
       require('dapui').setup()
       require('nvim-dap-virtual-text').setup {}
-      require('dap-python').setup()
+      -- require('dap-python').setup()
       require('dap-go').setup {
         dap_configurations = {
           {
@@ -170,7 +170,7 @@ return {
           path = 'dlv',
           initialize_timeout_sec = 20,
           port = '${port}',
-          args = {},
+          args = { '-tag=unit,integration' },
           build_flags = '',
         },
       }
