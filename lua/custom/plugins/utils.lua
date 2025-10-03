@@ -174,6 +174,7 @@ return {
     'sindrets/diffview.nvim',
     cmd = 'DiffviewOpen',
   },
+  { 'lewis6991/gitsigns.nvim' },
   {
     -- A Neovim plugin that display prettier diagnostic messages. Display one
     -- line diagnostic messages where the cursor is, with icons and colors.

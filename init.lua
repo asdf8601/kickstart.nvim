@@ -28,7 +28,6 @@ vim.g.netrw_nogx = 1
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 20
 vim.opt.laststatus = 3
--- }}}
 
 -- -- tag bar
 -- vim.g.completion_matching_strategy_list = { 'exact', 'substring', 'fuzzy' }
@@ -115,18 +114,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.hl.on_yank()
   end,
 })
--- }}}
 
--- Diagnostic keymaps {{{
+-- Diagnostic keymaps
 vim.keymap.set('n', '[d', function()
   vim.diagnostic.jump { count = -1, float = true }
 end, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', function()
   vim.diagnostic.jump { count = 1, float = true }
 end, { desc = 'Go to next diagnostic message' })
--- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
--- }}}
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -145,41 +142,31 @@ rtp:prepend(lazypath)
 
 require('lazy').setup({
   { import = 'custom.plugins' },
-  -- { import = 'custom.plugins.runner' },
 }, {})
 
--- [settings] {{{
--- [[keymaps]] {{{
+-- [settings]
+-- [[keymaps]]
 vim.keymap.set('i', '<C-e>', '<C-o>$', { noremap = true, silent = true, desc = 'Move to end of line in insert mode' })
 --
--- [[ fugitive ]] {{{
+-- [[ fugitive ]]
 vim.keymap.set('n', '<leader>w', ':Git<cr>', { noremap = true, desc = 'Open Git status' })
 vim.keymap.set('n', '<leader>W', ':tab Git<cr>', { noremap = true, desc = 'Open Git status in a new tab' })
 vim.keymap.set('n', '<C-g>', ':GBrowse<cr>', { noremap = true, desc = 'browse current file on github' })
 vim.keymap.set('v', '<C-g>', ':GBrowse<cr>', { noremap = true, desc = 'browse current file and line on github' })
 vim.keymap.set('n', '<C-G>', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current file' })
 vim.keymap.set('v', '<C-G>', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current line' })
--- }}}
 
--- terminal settings {{{
+-- terminal settings
 vim.keymap.set('t', '<esc><esc>', '<C-\\><C-n>', { noremap = true, desc = 'Switch to normal mode from terminal' })
 vim.keymap.set('t', '<C-w>h', '<C-\\><C-n><C-w>h', { noremap = true, desc = 'Move cursor to the left window' })
 vim.keymap.set('t', '<C-w>j', '<C-\\><C-n><C-w>j', { noremap = true, desc = 'Move cursor to the below window' })
 vim.keymap.set('t', '<C-w>k', '<C-\\><C-n><C-w>k', { noremap = true, desc = 'Move cursor to the above window' })
 vim.keymap.set('t', '<C-w>l', '<C-\\><C-n><C-w>l', { noremap = true, desc = 'Move cursor to the right window' })
 vim.keymap.set('t', '<C-w>w', '<C-\\><C-n><C-w>w', { noremap = true, desc = 'Switch to the next window' })
--- }}}
-
--- [[ luasnip:snippets ]] {{{
--- }}}
 
 -- escape
 vim.keymap.set('i', 'kj', '<esc>', { noremap = true, silent = true, desc = 'Exit insert mode with kj' })
 vim.keymap.set('i', 'jk', '<esc>', { noremap = true, silent = true, desc = 'Exit insert mode with jk' })
-
--- This doesn't work as expected
--- vim.keymap.set('t' , 'jk' , '<esc><esc>' , { noremap = true , silent = true, desc = 'Exit terminal mode with jk' })
--- vim.keymap.set('t' , 'kj' , '<esc><esc>' , { noremap = true , silent = true, desc = 'Exit terminal mode with kj' })
 
 -- [shebang]
 vim.keymap.set('n', '<leader>sh', ":mark m<cr>:0<cr>O#!/usr/bin/env bash<esc>'m:delm m<cr>", { desc = 'Add shebang line' })
@@ -194,7 +181,7 @@ vim.keymap.set('v', '<leader>xs', ':w !sh<cr>', { noremap = true, desc = 'E[X]ec
 
 -- Explore
 -- vim.keymap.set('n', '-', ':Ex<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
-vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
+-- vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>', { desc = "Open the current file's directory in the file explorer", silent = false })
 
 -- paste / yank / copy
 vim.keymap.set('n', '<leader>0', '"0p', { desc = 'Paste from register 0', silent = false })
@@ -207,10 +194,8 @@ vim.keymap.set('n', '<leader>yf', ':let @+ = expand("%:p")<cr>:echo expand("%:p"
 
 -- [reload]
 vim.keymap.set('n', '<leader><cr>', ':source ~/.config/nvim/init.lua<cr>', { noremap = true })
--- vim.keymap.set('n', '<leader>rc', ':vnew ~/.config/nvim/init.lua<cr>', { noremap = true })
 
 -- replace in all file
--- vim.keymap.set('n', '<leader>s', ':s/<C-r><C-w>/<C-r><C-w>/gI<left><left><left>', { noremap = true, desc = 'search and replace word under cursor' })
 vim.keymap.set('n', '<leader>s', ':%s/<C-r><C-w>/<C-r><C-w>/gI<left><left><left>', { noremap = true, desc = 'search and replace word under cursor' })
 vim.keymap.set('n', '<leader>gw', ":grep '<C-R><C-W>'", { desc = 'Find word using grep command' })
 
@@ -225,8 +210,6 @@ vim.keymap.set('n', '<leader>j', ':m .+1<cr>==', { noremap = true, desc = 'move 
 vim.keymap.set('n', '<leader>cn', ':cnext<cr>', { noremap = true, desc = 'next error' })
 vim.keymap.set('n', '<leader>cp', ':cprev<cr>', { noremap = true, desc = 'previous error' })
 
--- }}}
-
 vim.cmd [[
 augroup Latex
   au!
@@ -234,7 +217,7 @@ augroup Latex
 augroup end
 ]]
 
--- terraform {{{
+-- terraform
 -- https://www.mukeshsharma.dev/2022/02/08/neovim-workflow-for-terraform.html
 vim.cmd [[
 augroup terraform
@@ -258,33 +241,20 @@ if vim.fn.has 'mac' == 1 then
   ]]
 end
 
--- }}}
--- }}}
-
--- vim.keymap.set('n', '<leader>sn', ':\'<,\'>!sort -n -k 2', { noremap = true, desc = 'sort lines numerically' })
--- vim.keymap.set('v', '<leader>s', ':\'<,\'>!sort -f<cr>', { noremap = true, desc = 'sort lines' })
--- vim.keymap.set('v', '<leader>sf', ':!sqlformat  -k upper -r --indent_after_first --indent_columns -<cr>', { noremap = true })
--- vim.keymap.set('v', '<leader>sf', ':!sqlfmt -<cr>', { noremap = true })
-
--- file operations {{{
+-- file operations
 vim.keymap.set('n', '<leader>cd', ':lcd %:p:h<cr>', { noremap = true, silent = true, desc = 'Change to the directory of the current file' })
 vim.keymap.set('n', '<leader>fn', ":echo expand('%')<cr>", { noremap = true })
--- }}}
 
--- Create command to call jq '.' % and replace the buffer with the output {{{
--- vim.api.nvim_command('command! -buffer Jq %!jq "."')
+-- Create command to call jq '.' % and replace the buffer with the output
 vim.api.nvim_create_user_command('Jq', '%!jq', { nargs = 0 })
--- }}}
 
--- grep program {{{
+-- grep program
 if vim.fn.executable 'rg' == 1 then
   vim.o.grepprg = 'rg --hidden --glob "!.git" --glob "!node_modules" --glob "!.venv" --vimgrep'
   vim.o.grepformat = '%f:%l:%c:%m'
 else
   vim.print 'ripgrep not found'
 end
--- }}}
--- }}}
 
 -- [[ autocomands ]]
 local augroup = vim.api.nvim_create_augroup
@@ -335,22 +305,15 @@ autocmd({ 'FileType' }, {
 
 vim.keymap.set('n', '<leader>sq', '<Plug>(DBUI_SaveQuery)', { noremap = true })
 
--- autocmd({ 'FileType' }, {
---   group = ASDF8601,
---   pattern = 'markdown',
---   command = 'normal zR',
--- })
-
 autocmd({ 'BufWritePost' }, {
   group = ASDF8601,
   pattern = '~/.Xresources',
   command = 'silent !xrdb <afile> > /dev/null',
 })
 
--- autocommand for WebDev {{{
 -- [[ astro ]]
+-- autocommand for WebDev
 vim.filetype.add { extension = { mdx = 'mdx' } }
 vim.treesitter.language.register('markdown', 'mdx') -- the mdx filetype will use the markdown parser and queries.
--- }}}
 
 -- vim: ts=2 sts=2 sw=2 et tw=0
