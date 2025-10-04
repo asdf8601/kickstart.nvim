@@ -296,23 +296,13 @@ return {
     end,
   },
 
-  -- {
-  --   -- resize window automatically
-  --   "nvim-focus/focus.nvim",
-  --   config = function()
-  --     require('focus').setup({
-  --       enable=false
-  --     })
-  --   end,
-  -- },
-
-  -- {
-  --   -- TODO: what is this about?
-  --   'Bekaboo/dropbar.nvim',
-  --   -- optional, but required for fuzzy finder support
-  --   dependencies = {
-  --     'nvim-telescope/telescope-fzf-native.nvim',
-  --     build = 'make'
-  --   }
-  -- },
+  {
+    -- TODO: what is this about?
+    'Bekaboo/dropbar.nvim',
+    -- optional, but required for fuzzy finder support
+    dependencies = {
+      'nvim-telescope/telescope-fzf-native.nvim',
+      build = 'make',
+    },
+  },
 }

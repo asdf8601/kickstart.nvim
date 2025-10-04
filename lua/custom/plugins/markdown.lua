@@ -24,6 +24,7 @@ vim.g.mkdp_theme = 'light'
 
 return {
 
+  'mzlogin/vim-markdown-toc',
   {
     -- A hackable Markdown, HTML, LaTeX, Typst & YAML previewer for Neovim.
     -- https://github.com/OXY2DEV/markview.nvim
@@ -35,26 +36,10 @@ return {
           icon_provider = 'internal', -- "internal", "mini" or "devicons"
         },
       }
-
       require('markview.extras.editor').setup()
-
       require('markview.extras.checkboxes').setup {
-        --- Default checkbox state(used when adding checkboxes).
-        ---@type string
         default = 'X',
-
-        --- Changes how checkboxes are removed.
-        ---@type
-        ---| "disable" Disables the checkbox.
-        ---| "checkbox" Removes the checkbox.
-        ---| "list_item" Removes the list item markers too.
-        remove_style = 'disable',
-
-        --- Various checkbox states.
-        ---
-        --- States are in sets to quickly change between them
-        --- when there are a lot of states.
-        ---@type string[][]
+        remove_style = 'disable', -- disable, checkbox, list_item
         states = {
           { ' ', '/', 'X' },
           { '<', '>' },
