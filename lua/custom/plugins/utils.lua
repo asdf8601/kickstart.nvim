@@ -103,7 +103,8 @@ return {
           { 'branch', fmt = shorten_branch },
         },
         options = {
-          theme = 'auto',
+          -- theme = 'auto',
+          theme = 'modus-vivendi',
           -- theme = '16color',
           globalstatus = true,
           section_separators = { left = '', right = '' },
@@ -296,13 +297,12 @@ return {
     end,
   },
 
-  {
-    -- TODO: what is this about?
-    'Bekaboo/dropbar.nvim',
-    -- optional, but required for fuzzy finder support
-    dependencies = {
-      'nvim-telescope/telescope-fzf-native.nvim',
-      build = 'make',
-    },
-  },
+  -- {
+  --   'Bekaboo/dropbar.nvim',
+  --   -- optional, but required for fuzzy finder support
+  --   dependencies = {
+  --     'nvim-telescope/telescope-fzf-native.nvim',
+  --     build = 'make',
+  --   },
+  -- },
 }

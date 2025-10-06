@@ -1,6 +1,7 @@
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 -- table.insert(vim._so_trails, '/?.dylib')
 vim.g.have_nerd_font = true
+vim.opt.winbar = '%=%m %f'
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.scrollback = 20000
@@ -15,10 +16,8 @@ vim.opt.undodir = os.getenv 'HOME' .. '/.vim/undodir'
 vim.opt.undofile = true
 vim.opt.incsearch = true
 vim.opt.scrolloff = 8
--- vim.opt.signcolumn='no'
 vim.opt.cmdheight = 1
 vim.opt.updatetime = 50
--- vim.opt.shortmess = vim.opt.shortmess .. 'c'
 vim.opt.textwidth = 79
 vim.opt.cursorline = true
 vim.opt.colorcolumn = '80' -- works! (using integer will fail)
@@ -28,6 +27,8 @@ vim.g.netrw_nogx = 1
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 20
 vim.opt.laststatus = 3
+-- vim.opt.signcolumn='no'
+-- vim.opt.shortmess = vim.opt.shortmess, 'scA'
 
 -- -- tag bar
 -- vim.g.completion_matching_strategy_list = { 'exact', 'substring', 'fuzzy' }
