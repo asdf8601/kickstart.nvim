@@ -2,6 +2,7 @@ return {
 
   {
     'ishan9299/modus-theme-vim',
+    priority = 1000,
     config = function()
       vim.g.modus_yellow_comments = 0
       vim.g.modus_green_strings = 0
@@ -22,7 +23,7 @@ return {
         variant = 'default',
         transparent = true,
       }
-      vim.cmd.colorscheme = 'modus_vivendi'
+      -- vim.cmd.colorscheme = 'modus_vivendi'
     end,
   },
 

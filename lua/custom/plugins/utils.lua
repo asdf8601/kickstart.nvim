@@ -233,6 +233,7 @@ return {
     },
   },
 
+  { 'stevanmilic/nvim-lspimport' },
   { -- Autoformat
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
@@ -258,7 +259,7 @@ return {
         javascript = { { 'prettierd', 'prettier' } },
         json = { { 'prettierd', 'prettier' } },
         lua = { 'stylua' },
-        python = { 'ruff_fix', 'ruff_format', 'docformatter' },
+        python = { 'autoimport_fix', 'ruff_fix', 'ruff_format', 'docformatter' },
         sh = { 'shfmt' },
         sql = { 'sqlfmt' },
         yaml = { 'prettier' },
@@ -266,17 +267,17 @@ return {
         -- ['*'] = { 'codespell' }, -- apply to all
         -- ['_'] = { 'trim_whitespace' }, -- for the rest
       },
-      format_on_save = function(bufnr)
-        local disable_filetypes = { c = true, cpp = true }
-        if disable_filetypes[vim.bo[bufnr].filetype] then
-          return nil
-        else
-          return {
-            timeout_ms = 300,
-            lsp_format = 'fallback',
-          }
-        end
-      end,
+      formatters = {
+        autoimport_fix = {
+          command = 'autoimport',
+          args = { '$FILENAME' },
+          stdin = false,
+          condition = function(_, ctx)
+            return vim.fn.executable 'autoimport' == 1 and ctx.filename:match '%.py$'
+          end,
+          exit_codes = { 0 },
+        },
+      },
     },
   },
   {

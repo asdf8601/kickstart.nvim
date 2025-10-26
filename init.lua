@@ -145,6 +145,10 @@ require('lazy').setup({
   { import = 'custom.plugins' },
 }, {})
 
+
+-- vim.cmd.colorscheme 'modus-vivendi'
+vim.cmd.colorscheme 'modus_vivendi'
+
 -- [settings]
 -- [[keymaps]]
 vim.keymap.set('i', '<C-e>', '<C-o>$', { noremap = true, silent = true, desc = 'Move to end of line in insert mode' })
