@@ -1,5 +1,5 @@
-local branch = 'master'
-local ensure_installed = {
+local branch = 'main'
+local filetypes_ensure_installed = {
   'astro', -- astro
   'tsx', -- astro
   'c',
@@ -22,6 +22,7 @@ local ensure_installed = {
   'markdown',
   'markdown_inline',
   'toml',
+  'jsonnet',
   -- 'groovy',
   'terraform',
 }
@@ -33,10 +34,9 @@ return {
     lazy = false,
     build = ':TSUpdate',
     branch = branch,
-    -- NOTE: this causes error on main
-    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    main = 'nvim-treesitter.config', -- Sets main module to use for opts
     opts = {
-      ensure_installed = ensure_installed,
+      ensure_installed = filetypes_ensure_installed,
       auto_install = true,
       highlight = {
         enable = true,
@@ -44,10 +44,16 @@ return {
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
-    -- NOTE: this causes error on main
     config = function(_, opts)
-      -- require('config.treesitter').setup(opts)
-      require('nvim-treesitter.configs').setup(opts)
+      require('nvim-treesitter.config').setup(opts)
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = filetypes_ensure_installed,
+        callback = function()
+          vim.treesitter.start()
+        end,
+      })
+      vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
     end,
   },
   {
