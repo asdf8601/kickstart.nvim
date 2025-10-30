@@ -288,7 +288,7 @@ autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'Dockerfile.*',
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'Jenkinsfile', command = 'setl ft=groovy' })
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'compose.*.yml', command = 'setl ft=yaml' })
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'requirements*.txt', command = 'setl ft=requirements' })
-autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = { '.autoenv', '.env' }, command = 'setl ft=bash' })
+autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = { '.autoenv', '.env' }, command = 'setl ft=bash syntax=bash' })
 
 -- local yank_group = augroup('HighlightYank', {})
 autocmd({ 'BufWritePre' }, {
