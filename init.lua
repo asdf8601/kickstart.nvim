@@ -205,8 +205,8 @@ vim.keymap.set('n', '<leader>s', ':%s/<C-r><C-w>/<C-r><C-w>/gI<left><left><left>
 vim.keymap.set('n', '<leader>gw', ":grep '<C-R><C-W>'", { desc = 'Find word using grep command' })
 
 -- [move line]
-vim.keymap.set('i', '<C-k>', '<esc>:.m-2 | startinsert<cr>', { noremap = true, desc = 'move line up' })
-vim.keymap.set('i', '<C-j>', '<esc>:.m+1 | startinsert<cr>', { noremap = true, desc = 'move line down' })
+vim.keymap.set('i', '<C-j>', '<esc>:.m+1<cr>==gi', { noremap = true, desc = 'move line down' })
+vim.keymap.set('i', '<C-k>', '<esc>:m .-2<cr>==gi', { noremap = true, desc = 'move line up' })
 vim.keymap.set('n', '<leader>k', ':m .-2<cr>==', { noremap = true, desc = 'move line up' })
 vim.keymap.set('n', '<leader>j', ':m .+1<cr>==', { noremap = true, desc = 'move line down' })
 
