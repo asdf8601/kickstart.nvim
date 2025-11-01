@@ -1,4 +1,5 @@
 -- [[ checkbox ]]
+-- [ ]
 function SummaryCheckboxes()
   local line = vim.fn.line('.')
   -- local line_orig = vim.fn.getline('.')
