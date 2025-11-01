@@ -23,7 +23,6 @@ vim.g.mkdp_theme = 'light'
 -- }}}
 
 return {
-
   'mzlogin/vim-markdown-toc',
   {
     -- A hackable Markdown, HTML, LaTeX, Typst & YAML previewer for Neovim.

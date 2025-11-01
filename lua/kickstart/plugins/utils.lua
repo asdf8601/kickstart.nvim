@@ -86,12 +86,6 @@ local function shorten_branch(branch)
   return abbreviate(branch)
 end
 
--- Examples
--- ========
--- "gs://hola/mundo/que/tal/estas.txt"
--- 'gs://hola/mundo/que/tal/estas.txt'
--- gs://hola/mundo/que/tal/
-
 return {
   {
     -- statusline
@@ -114,12 +108,10 @@ return {
     end,
   },
   -- 'tpope/vim-unimpaired',
-  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
   'RRethy/vim-illuminate',
   'folke/zen-mode.nvim',
   'junegunn/vim-easy-align',
   'lunarVim/bigfile.nvim',
-  'mzlogin/vim-markdown-toc',
   'szw/vim-maximizer',
   'tpope/vim-dispatch',
   'tpope/vim-fugitive', -- git extension
@@ -127,6 +119,7 @@ return {
   'tpope/vim-rhubarb', -- github extension
   'tpope/vim-sleuth',
   'tpope/vim-speeddating',
+  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
 
   {
     'folke/todo-comments.nvim',
@@ -176,33 +169,6 @@ return {
     cmd = 'DiffviewOpen',
   },
   { 'lewis6991/gitsigns.nvim' },
-  {
-    -- A Neovim plugin that display prettier diagnostic messages. Display one
-    -- line diagnostic messages where the cursor is, with icons and colors.
-    -- https://github.com/rachartier/tiny-inline-diagnostic.nvim
-    'rachartier/tiny-inline-diagnostic.nvim',
-    event = 'VeryLazy', -- Or `LspAttach`
-    priority = 1000, -- needs to be loaded in first
-    config = function()
-      require('tiny-inline-diagnostic').setup {
-        -- Style preset for diagnostic messages
-        -- Available options:
-        -- "modern", "classic", "minimal", "powerline",
-        -- "ghost", "simple", "nonerdfont", "amongus"
-        preset = 'nonerdfont',
-        -- Configuration for breaking long messages into separate lines
-        options = {
-          break_line = {
-            -- Enable the feature to break messages after a specific length
-            enabled = true,
-            -- Number of characters after which to break the line
-            after = 30,
-          },
-        },
-      }
-      vim.diagnostic.config { virtual_text = false } -- Only if needed in your configuration, if you already have native LSP diagnostics
-    end,
-  },
 
   {
     -- A task runner and job management plugin for Neovim
@@ -233,7 +199,6 @@ return {
     },
   },
 
-  { 'stevanmilic/nvim-lspimport' },
   {
     'ThePrimeagen/harpoon',
     init = function()
