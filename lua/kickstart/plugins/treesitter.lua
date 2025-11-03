@@ -50,36 +50,36 @@ return {
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
-    config = function(_, opts)
-      -- require('nvim-tresitter').setup()
-      require'nvim-treesitter'.install(filetypes_ensure_installed)
-      require('nvim-treesitter.config').setup(opts)
-
-
-      vim.treesitter.language.register('markdown', 'mdx')
-      vim.treesitter.language.register('bash', 'zsh')
-
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = '*',
-        callback = function(args)
-          local filetype = args.match
-          local parser_name = vim.treesitter.language.get_lang(filetype)
-
-          if not parser_name then
-            return
-          end
-
-          if not pcall(vim.treesitter.get_parser, args.buf, parser_name) then
-            return
-          end
-
-          vim.treesitter.start()
-          vim.wo.foldmethod = 'expr'
-          vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-        end,
-      })
-    end,
+    -- config = function(_, opts)
+    --   -- require('nvim-tresitter').setup()
+    --   require'nvim-treesitter'.install(filetypes_ensure_installed)
+    --   require('nvim-treesitter.config').setup(opts)
+    --
+    --
+    --   vim.treesitter.language.register('markdown', 'mdx')
+    --   vim.treesitter.language.register('bash', 'zsh')
+    --
+    --   vim.api.nvim_create_autocmd('FileType', {
+    --     pattern = '*',
+    --     callback = function(args)
+    --       local filetype = args.match
+    --       local parser_name = vim.treesitter.language.get_lang(filetype)
+    --
+    --       if not parser_name then
+    --         return
+    --       end
+    --
+    --       if not pcall(vim.treesitter.get_parser, args.buf, parser_name) then
+    --         return
+    --       end
+    --
+    --       vim.treesitter.start()
+    --       vim.wo.foldmethod = 'expr'
+    --       vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+    --       vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    --     end,
+    --   })
+    -- end,
   },
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
