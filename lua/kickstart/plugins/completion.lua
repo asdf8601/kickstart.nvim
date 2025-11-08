@@ -423,7 +423,7 @@ return {
     lazy = false,
     version = false, -- set this if you want to always pull the latest change
     opts = {
-      provider = 'copilot',
+      provider = 'gemini',
       providers = {
         copilot = {
           -- model = "claude-3.7-sonnet", -- bad
@@ -438,8 +438,8 @@ return {
         gemini = {
           -- model = "gemini-2.0-flash"
           -- model = "gemini-2.5-flash-lite-preview-06-17",
-          -- model = "gemini-2.5-pro",
-          model = 'gemini-2.5-flash',
+          -- model = 'gemini-2.5-flash',
+          model = "gemini-2.5-pro",
           extra_request_body = {
             temperature = 0,
             max_tokens = 81920,

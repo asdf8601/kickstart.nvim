@@ -1,6 +1,10 @@
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 -- table.insert(vim._so_trails, '/?.dylib')
 vim.g.have_nerd_font = true
+
+vim.opt.exrc = true
+vim.opt.secure = true
+
 vim.opt.winbar = '%=%m %f'
 vim.opt.splitright = true
 vim.opt.splitbelow = true
@@ -145,6 +149,7 @@ require('lazy').setup({
   { import = 'kickstart.plugins' },
 }, {})
 
+require('rush')
 
 -- vim.cmd.colorscheme 'modus-vivendi'
 vim.cmd.colorscheme 'modus_vivendi'

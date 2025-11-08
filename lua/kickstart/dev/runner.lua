@@ -2,6 +2,7 @@
 -- This file contains the configuration to run commands automatically
 -- when the file is saved and display the output in a new buffer under the same
 -- name with the suffix .out.
+local M = {}
 
 function CallbackFactory(config)
   local callback = function()
@@ -97,6 +98,7 @@ local defaultConfig = {
   outSuffix = ".out",
   group = "AutoRunner",
   event = "BufWritePost",
+  autocmd = true,
 }
 
 function RunnerRemove(config)
@@ -105,8 +107,9 @@ end
 
 function RunnerNew(config)
   config = mergeConfigs(config, defaultConfig)
-  autocmdFactory(config)
+  if config.autocmd == true then
+    autocmdFactory(config)
+  end
 end
 
-
-return {}
+return M
