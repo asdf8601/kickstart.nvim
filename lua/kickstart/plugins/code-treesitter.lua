@@ -35,6 +35,13 @@ local filetypes_ensure_installed = {
 
 return {
   {
+    -- TODO: why?????
+    'windwp/nvim-ts-autotag',
+    config = function()
+      require('nvim-ts-autotag').setup()
+    end,
+  },
+  {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     lazy = false,

@@ -47,4 +47,3 @@ end
 vim.keymap.set('n', '<leader>x', OpenUrl, { noremap = true, silent = true })
 vim.keymap.set('v', '<leader>x', OpenUrl, { noremap = true, silent = false })
 
-return {}

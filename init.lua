@@ -149,7 +149,7 @@ require('lazy').setup({
   { import = 'kickstart.plugins' },
 }, {})
 
-require('rush')
+require('asdf8601.rush')
 
 -- vim.cmd.colorscheme 'modus-vivendi'
 vim.cmd.colorscheme 'modus_vivendi'
