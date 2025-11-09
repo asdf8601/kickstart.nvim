@@ -1,4 +1,3 @@
-
 -- toggle numbers
 vim.g.number = 1
 
