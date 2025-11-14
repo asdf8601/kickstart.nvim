@@ -38,13 +38,14 @@ return {
       'bydlw98/blink-cmp-env',
       'Kaiser-Yang/blink-cmp-git',
       'asdf8601/blink-cmp-jira',
-      { dir = '~/github.com/asdf8601/blink-cmp-jira' },
+      -- { dir = '~/github.com/asdf8601/blink-cmp-jira' },
     },
     opts = {
       appearance = { nerd_font_variant = 'mono' },
       completion = { documentation = { auto_show = true, auto_show_delay_ms = 100 } },
       keymap = {
         preset = 'default',
+        ['<C-k>'] = { 'fallback' },  -- Permite que Neovim maneje el keybind normalmente
         -- ['<C-k>'] = nil,
         -- ['<C-q>'] = { function(cmp) cmp.show { providers = { 'jira' } } end, },
         -- ['<C-g><C-g>'] = { function(cmp) cmp.show { providers = { 'copilot' } } end, },
