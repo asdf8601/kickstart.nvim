@@ -292,7 +292,7 @@ autocmd('FileType', {
 })
 
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = '*.astro', command = 'set ft=astro' })
-autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'Dockerfile.*', command = 'setl ft=dokerfile' })
+autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'Dockerfile.*', command = 'setl ft=dockerfile' })
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'Jenkinsfile', command = 'setl ft=groovy' })
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'compose.*.yml', command = 'setl ft=yaml' })
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'requirements*.txt', command = 'setl ft=requirements' })

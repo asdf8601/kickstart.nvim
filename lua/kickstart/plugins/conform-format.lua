@@ -14,12 +14,11 @@ return {
       },
     },
     opts = {
-      notify_on_error = false,
       formatters_by_ft = {
         bash = { 'shfmt' },
         css = { 'prettier' },
         docker = { 'dockerfmt' },
-        go = { 'gofumpt', 'goimports' },
+        go = { 'goimports', 'gofmt', 'gofumpt'},
         html = { 'prettier' },
         javascript = { 'prettier' },
         json = { 'prettier' },
@@ -28,6 +27,15 @@ return {
         sh = { 'shfmt' },
         sql = { 'sqlfmt' },
         yaml = { 'prettier' },
+      },
+      default_format_opts = {
+        lsp_format = "fallback",
+      },
+      notify_on_error = true,
+      format_on_save = {
+        -- I recommend these options. See :help conform.format for details.
+        lsp_format = "fallback",
+        timeout_ms = 500,
       },
     },
   },
