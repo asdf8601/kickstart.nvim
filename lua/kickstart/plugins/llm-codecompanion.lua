@@ -247,6 +247,7 @@ return {
                     -- default = "claude-3.7-sonnet",
                     -- default = "o4-mini",
                     -- default = 'claude-sonnet-4',
+                    -- default = 'claude-sonnet-4.5',
                     default = 'claude-sonnet-4.5',
                   },
                 },
@@ -259,7 +260,10 @@ return {
                   model = {
                     -- default = "gemini-2.0-flash",
                     -- default = "gemini-2.5-flash-preview-04-17",
-                    default = 'gemini-2.5-pro',
+                    -- default = 'gemini-3-pro',
+                    default = 'gemini-3-flash',
+                    flash = 'gemini-3-flash',
+                    pro = 'gemini-3-pro',
                   },
                 },
               })
