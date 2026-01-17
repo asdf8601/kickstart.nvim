@@ -22,7 +22,7 @@ return {
           -- model = "gemini-2.0-flash"
           -- model = "gemini-2.5-flash-lite-preview-06-17",
           -- model = 'gemini-2.5-flash',
-          model = 'gemini-2.5-pro',
+          model = 'gemini-3-flash-preview',
           extra_request_body = {
             temperature = 0,
             max_tokens = 81920,

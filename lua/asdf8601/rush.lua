@@ -1,5 +1,3 @@
-local M = {}
-
 -- Counter to generate unique buffer names
 local buffer_counter = 0
 
@@ -226,4 +224,4 @@ vim.api.nvim_create_user_command('RushClear', function()
   print(string.format('Rush: Cleared %d command(s) from history', count))
 end, {})
 
-return M
+return {}

@@ -16,7 +16,6 @@ function ToggleNumbers()
 end
 vim.api.nvim_create_user_command('ToggleNumbers', ToggleNumbers, {})
 
-
 -- bucket
 function GetVisual(mode)
   local data
