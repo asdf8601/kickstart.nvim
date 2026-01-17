@@ -149,10 +149,11 @@ require('lazy').setup({
   { import = 'kickstart.plugins' },
 }, {})
 
-require('asdf8601')
-require('asdf8601.rush')
-require('asdf8601.openurl')
-require('asdf8601.skiz')
+require 'asdf8601'
+require 'asdf8601.rush'
+require 'asdf8601.rwsh' -- read and write selection using sh
+require 'asdf8601.openurl'
+require 'asdf8601.skiz'
 
 -- vim.cmd.colorscheme 'modus-vivendi'
 vim.cmd.colorscheme 'modus_vivendi'
