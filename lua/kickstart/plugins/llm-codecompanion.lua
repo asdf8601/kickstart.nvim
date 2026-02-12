@@ -134,7 +134,14 @@ return {
             -- adapter = 'copilot',
           },
         },
-
+        interactions = {
+          chat = {
+            adapter = {
+              name = 'opencode',
+              model = 'google-vertex/gemini-3-flash-preview',
+            },
+          },
+        },
         adapters = {
           http = {
             copilot = function()
