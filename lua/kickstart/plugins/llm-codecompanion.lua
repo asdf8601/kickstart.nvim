@@ -134,14 +134,14 @@ return {
             -- adapter = 'copilot',
           },
         },
-        interactions = {
-          chat = {
-            adapter = {
-              name = 'opencode',
-              model = 'google-vertex/gemini-3-flash-preview',
-            },
-          },
-        },
+        -- interactions = {
+        --   chat = {
+        --     adapter = {
+        --       name = 'opencode',
+        --       model = 'google-vertex/gemini-3-flash-preview',
+        --     },
+        --   },
+        -- },
         adapters = {
           http = {
             copilot = function()
@@ -175,10 +175,9 @@ return {
           },
         },
       }
-
-      vim.keymap.set({ 'n', 'v' }, '<C-c><C-c>', '<cmd>CodeCompanionActions<cr>', { noremap = true, silent = true, desc = 'Show CodeCompanion Actions' })
-      vim.keymap.set({ 'n', 'v' }, '<LocalLeader>c', '<cmd>CodeCompanionChat Toggle<cr>', { noremap = true, silent = true, desc = 'Toggle CodeCompanion Chat' })
-      vim.keymap.set('v', 'ga', '<cmd>CodeCompanionChat Add<cr>', { noremap = true, silent = true, desc = 'Add selection to CodeCompanion Chat' })
+      -- vim.keymap.set({ 'n', 'v' }, '<C-c><C-c>', '<cmd>CodeCompanionActions<cr>', { noremap = true, silent = true, desc = 'Show CodeCompanion Actions' })
+      -- vim.keymap.set({ 'n', 'v' }, '<LocalLeader>c', '<cmd>CodeCompanionChat Toggle<cr>', { noremap = true, silent = true, desc = 'Toggle CodeCompanion Chat' })
+      -- vim.keymap.set('v', 'ga', '<cmd>CodeCompanionChat Add<cr>', { noremap = true, silent = true, desc = 'Add selection to CodeCompanion Chat' })
     end,
   },
 }

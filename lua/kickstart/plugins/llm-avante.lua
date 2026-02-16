@@ -5,12 +5,12 @@ return {
     event = 'VeryLazy',
     lazy = false,
     version = false, -- set this if you want to always pull the latest change
-    acp_providers = {
-      ['opencode'] = {
-        command = 'opencode',
-        args = { 'acp' },
-      },
-    },
+    -- acp_providers = {
+    --   ['opencode'] = {
+    --     command = 'opencode',
+    --     args = { 'acp' },
+    --   },
+    -- },
     opts = {
       provider = 'gemini',
       providers = {
