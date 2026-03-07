@@ -11,13 +11,16 @@ return {
       local basename = vim.fs.basename(cwd)
       _99.setup {
         -- provider = _99.Providers.ClaudeCodeProvider, -- default: OpenCodeProvider
+        -- model = 'claude-sonnet-4-6',
         provider = _99.Providers.OpenCodeProvider, -- default: OpenCodeProvider
-        model = 'claude-sonnet-4-6',
-        -- logger = {
-        --   level = _99.DEBUG,
-        --   path = '/tmp/' .. basename .. '.99.debug',
-        --   print_on_error = true,
-        -- },
+        -- model = 'anthropic/claude-opus-4-6',
+        -- model = 'anthropic/claude-sonnet-4-6',
+        model = 'anthropic/claude-haiku-4-5',
+        logger = {
+          level = _99.DEBUG,
+          path = '/tmp/' .. basename .. '.99.debug',
+          print_on_error = true,
+        },
         -- When setting this to something that is not inside the CWD tools
         -- such as claude code or opencode will have permission issues
         -- and generation will fail refer to tool documentation to resolve
