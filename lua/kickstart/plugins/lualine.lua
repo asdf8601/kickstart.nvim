@@ -37,8 +37,8 @@ return {
           { 'branch', fmt = shorten_branch },
         },
         options = {
-          -- theme = 'auto',
-          theme = 'modus-vivendi',
+          theme = 'auto',
+          -- theme = 'modus-vivendi',
           -- theme = '16color',
           globalstatus = true,
           section_separators = { left = '', right = '' },

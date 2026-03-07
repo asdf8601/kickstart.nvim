@@ -122,15 +122,18 @@ return {
 
         strategies = {
           chat = {
-            adapter = 'gemini',
+            adapter = 'anthropic',
+            -- adapter = 'gemini',
             -- adapter = 'copilot',
           },
           inline = {
-            adapter = 'gemini',
+            adapter = 'anthropic',
+            -- adapter = 'gemini',
             -- adapter = 'copilot',
           },
           agent = {
-            adapter = 'gemini',
+            adapter = 'anthropic',
+            -- adapter = 'gemini',
             -- adapter = 'copilot',
           },
         },
@@ -144,6 +147,17 @@ return {
         -- },
         adapters = {
           http = {
+            anthropic = function()
+              return require('codecompanion.adapters.http').extend('anthropic', {
+                schema = {
+                  model = {
+                    default = 'claude-sonnet-4.6',
+                    -- default = 'claude-opus-4.6',
+                  },
+                },
+              })
+            end,
+
             copilot = function()
               return require('codecompanion.adapters.http').extend('copilot', {
                 schema = {
@@ -175,8 +189,8 @@ return {
           },
         },
       }
-      -- vim.keymap.set({ 'n', 'v' }, '<C-c><C-c>', '<cmd>CodeCompanionActions<cr>', { noremap = true, silent = true, desc = 'Show CodeCompanion Actions' })
-      -- vim.keymap.set({ 'n', 'v' }, '<LocalLeader>c', '<cmd>CodeCompanionChat Toggle<cr>', { noremap = true, silent = true, desc = 'Toggle CodeCompanion Chat' })
+      vim.keymap.set({ 'n', 'v' }, '<C-c><C-c>', '<cmd>CodeCompanionActions<cr>', { noremap = true, silent = true, desc = 'Show CodeCompanion Actions' })
+      vim.keymap.set({ 'n', 'v' }, '<LocalLeader>c', '<cmd>CodeCompanionChat Toggle<cr>', { noremap = true, silent = true, desc = 'Toggle CodeCompanion Chat' })
       -- vim.keymap.set('v', 'ga', '<cmd>CodeCompanionChat Add<cr>', { noremap = true, silent = true, desc = 'Add selection to CodeCompanion Chat' })
     end,
   },

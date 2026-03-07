@@ -155,8 +155,57 @@ require 'asdf8601.rwsh' -- read and write selection using sh
 require 'asdf8601.openurl'
 require 'asdf8601.skiz'
 
--- vim.cmd.colorscheme 'modus-vivendi'
-vim.cmd.colorscheme 'modus_vivendi'
+-- detect macOS system appearance (dark/light)
+local function get_system_appearance()
+  local handle = io.popen 'defaults read -g AppleInterfaceStyle 2>/dev/null'
+  if not handle then
+    return 'dark'
+  end
+  local result = handle:read '*a'
+  handle:close()
+  return result:match 'Dark' and 'dark' or 'light'
+end
+
+local function set_theme(mode)
+  vim.o.background = mode
+  require('modus-themes').setup {
+    variant = 'default',
+    transparent = mode == 'dark',
+  }
+  if mode == 'dark' then
+    vim.cmd.colorscheme 'modus_vivendi'
+  else
+    vim.cmd.colorscheme 'modus_operandi'
+  end
+  -- force cursor color via terminal escape sequences (works in TUI)
+  if mode == 'dark' then
+    io.write '\027]12;#ffffff\007'
+  else
+    io.write '\027]12;#000000\007'
+  end
+end
+
+-- apply on startup
+set_theme(get_system_appearance())
+
+-- poll every 30s for system appearance changes
+local theme_timer = vim.uv.new_timer()
+theme_timer:start(
+  30000,
+  30000,
+  vim.schedule_wrap(function()
+    local mode = get_system_appearance()
+    if mode ~= vim.o.background then
+      set_theme(mode)
+    end
+  end)
+)
+
+-- manual toggle: <leader>tb
+vim.keymap.set('n', '<leader>tb', function()
+  local new_mode = vim.o.background == 'dark' and 'light' or 'dark'
+  set_theme(new_mode)
+end, { desc = '[T]oggle [B]ackground (light/dark)' })
 
 -- [settings]
 -- [[keymaps]]

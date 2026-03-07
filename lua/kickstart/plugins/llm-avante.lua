@@ -14,11 +14,10 @@ return {
     opts = {
       provider = 'gemini',
       providers = {
-        copilot = {
-          -- model = "claude-3.7-sonnet", -- bad
-          -- model = "claude-3.5-sonnet",
-          -- model = "o4-mini",
-          model = 'claude-sonnet-4.5',
+        claude = {
+          endpoint = 'https://api.anthropic.com',
+          auth_type = 'max', -- Use Claude Max subscription via OAuth, otherwise use 'api'
+          model = 'claude-sonnet-4.6',
           extra_request_body = {
             temperature = 0,
             max_tokens = 81920,

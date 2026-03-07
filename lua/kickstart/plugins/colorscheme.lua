@@ -19,7 +19,6 @@ return {
     priority = 1000,
     config = function()
       require('modus-themes').setup {
-        style = 'modus_vivendi',
         variant = 'default',
         transparent = true,
       }
