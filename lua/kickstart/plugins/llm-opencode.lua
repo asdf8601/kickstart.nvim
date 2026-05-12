@@ -1,6 +1,7 @@
 return {
   'nickjvandyke/opencode.nvim',
   version = '*', -- Latest stable release
+  enabled = false, -- Set to `true` to enable this plugin
   dependencies = {
     {
       -- `snacks.nvim` integration is recommended, but optional
@@ -43,12 +44,12 @@ return {
     vim.keymap.set({ 'n', 'x' }, 'go', function() return require('opencode').operator '@this ' end, { desc = 'Add range to opencode', expr = true })
     vim.keymap.set('n', 'goo', function() return require('opencode').operator '@this ' .. '_' .. '\n' end, { desc = 'Add line to opencode', expr = true })
 
-    vim.keymap.set('n', '<S-C-u>', function() require('opencode').command 'session.half.page.up' end, { desc = 'Scroll opencode up' })
-    vim.keymap.set('n', '<S-C-d>', function() require('opencode').command 'session.half.page.down' end, { desc = 'Scroll opencode down' })
+    -- vim.keymap.set('n', '<S-C-u>', function() require('opencode').command 'session.half.page.up' end, { desc = 'Scroll opencode up' })
+    -- vim.keymap.set('n', '<S-C-d>', function() require('opencode').command 'session.half.page.down' end, { desc = 'Scroll opencode down' })
 
     -- You may want these if you use the opinionated `<C-a>` and `<C-x>` keymaps above — otherwise consider `<leader>o…` (and remove terminal mode from the `toggle` keymap)
-    vim.keymap.set('n', '+', '<C-a>', { desc = 'Increment under cursor', noremap = true })
-    vim.keymap.set('n', '-', '<C-x>', { desc = 'Decrement under cursor', noremap = true })
+    -- vim.keymap.set('n', '+', '<C-a>', { desc = 'Increment under cursor', noremap = true })
+    -- vim.keymap.set('n', '-', '<C-x>', { desc = 'Decrement under cursor', noremap = true })
     -- stylua: ignore end
   end,
 }
