@@ -42,16 +42,19 @@ return {
     },
     opts = {
       appearance = { nerd_font_variant = 'mono' },
-      completion = { documentation = { auto_show = true, auto_show_delay_ms = 100 } },
+      completion = {
+        menu = { auto_show_delay_ms = 200 },
+        documentation = { auto_show = true, auto_show_delay_ms = 100 },
+      },
       keymap = {
         preset = 'default',
         ['<C-k>'] = { 'fallback' },  -- Permite que Neovim maneje el keybind normalmente
         -- ['<C-k>'] = nil,
         -- ['<C-q>'] = { function(cmp) cmp.show { providers = { 'jira' } } end, },
-        -- ['<C-g><C-g>'] = { function(cmp) cmp.show { providers = { 'copilot' } } end, },
+        ['<C-g>'] = { function(cmp) cmp.show { providers = { 'copilot' } } end },
       },
       sources = {
-        default = { 'snippets', 'lsp', 'path', 'buffer', 'copilot' },
+        default = { 'snippets', 'lsp', 'path', 'buffer' },
         -- default = { 'lsp', 'path', 'buffer', 'avante', 'cvcm', 'env' },
         -- default = { 'snippets', 'lsp', 'path', 'buffer', 'jira', 'copilot', 'avante', 'cvcm', 'git', 'env' },
         -- default = { 'snippets', 'lsp', 'path', 'buffer', 'jira', 'copilot', 'avante', 'cvcm', 'git', 'env' },
