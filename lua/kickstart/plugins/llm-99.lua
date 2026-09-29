@@ -62,7 +62,7 @@ return {
           --- ... the other rules in that dir ...
           ---
           custom_rules = {
-            'scratch/custom_rules/',
+            vim.fn.expand '~/.claude/skills/',
           },
 
           --- Configure @file completion (all fields optional, sensible defaults)
@@ -127,6 +127,9 @@ return {
 
       vim.keymap.set('n', '<leader>9s', function() _99.search({}) end, { desc = '99 search' })
       vim.keymap.set("n", "<leader>9m", function() require("99.extensions.telescope").select_model() end, { desc = "99 select model" })
+      vim.keymap.set('n', '<leader>9.', function() _99.vibe({}) end, { desc = '99 vibe' })
+      vim.keymap.set('n', '<leader>9/', function() _99.tutorial({}) end, { desc = '99 tutorial' })
+      vim.keymap.set('n', '<leader>9i', function() _99.info() end, { desc = '99 info' })
       vim.keymap.set('n', '<leader>9o', function() _99.open() end, { desc = '99 open last result' })
       vim.keymap.set('n', '<leader>9l', function() _99.view_logs() end, { desc = '99 view logs' })
       vim.keymap.set('n', '<leader>9c', function() _99.clear_previous_requests() end, { desc = '99 clear previous requests' })
