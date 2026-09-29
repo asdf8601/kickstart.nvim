@@ -154,6 +154,7 @@ require 'asdf8601.rush'
 require 'asdf8601.rwsh' -- read and write selection using sh
 require 'asdf8601.openurl'
 require 'asdf8601.skiz'
+require 'asdf8601.lazyreload' -- :LazyReload <plugin>
 
 -- detect macOS system appearance (dark/light)
 local function get_system_appearance()
