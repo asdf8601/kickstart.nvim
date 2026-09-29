@@ -1,6 +1,35 @@
 return {
   {
     'ThePrimeagen/99',
+    -- stylua: ignore start
+    keys = {
+      -- visual selection only in v mode so an old selection is never reused
+      { '<leader>9v', function() require('99').visual {} end, mode = 'v', desc = '99 visual' },
+      { '<leader>9x', function() require('99').stop_all_requests() end, desc = '99 stop all requests' },
+      { '<leader>9s', function() require('99').search {} end, desc = '99 search' },
+      { '<leader>9m', function() require('99.extensions.telescope').select_model() end, desc = '99 select model' },
+      { '<leader>9.', function() require('99').vibe {} end, desc = '99 vibe' },
+      { '<leader>9/', function() require('99').tutorial {} end, desc = '99 tutorial' },
+      { '<leader>9i', function() require('99').info() end, desc = '99 info' },
+      { '<leader>9o', function() require('99').open() end, desc = '99 open last result' },
+      { '<leader>9l', function() require('99').view_logs() end, desc = '99 view logs' },
+      { '<leader>9c', function() require('99').clear_previous_requests() end, desc = '99 clear previous requests' },
+      { '<leader>9t', function() require('99').visual { additional_prompt = 'convert this into a table-driven test using testify require and the unit build tag' } end, mode = 'v', desc = '99 to table test' },
+      { '<leader>9e', function() require('99').visual { additional_prompt = 'wrap each error with fmt.Errorf and %w adding context, do not change the logic' } end, mode = 'v', desc = '99 wrap errors' },
+      {
+        '<leader>9d',
+        function()
+          require('99').search {
+            additional_prompt = [[
+              run `make test` and debug the test failures and provide me a
+              concise set of steps where the tests are breaking
+              ]],
+          }
+        end,
+        desc = '99 debug make test failures',
+      },
+    },
+    -- stylua: ignore end
     config = function()
       local _99 = require '99'
 
@@ -111,40 +140,6 @@ return {
           end, { buffer = ev.buf, nowait = true, desc = '99 submit prompt' })
         end,
       })
-
-      -- stylua: ignore start
-      -- take extra note that i have visual selection only in v mode
-      -- technically whatever your last visual selection is, will be used
-      -- so i have this set to visual mode so i dont screw up and use an
-      -- old visual selection
-      --
-      -- likely ill add a mode check and assert on required visual mode
-      -- so just prepare for it now
-      vim.keymap.set('v', '<leader>9v', function() _99.visual({}) end, {desc = '99 visual'})
-
-      --- if you have a request you dont want to make any changes, just cancel it
-      vim.keymap.set('n', '<leader>9x', function() _99.stop_all_requests() end, {desc = '99 stop all requests'})
-
-      vim.keymap.set('n', '<leader>9s', function() _99.search({}) end, { desc = '99 search' })
-      vim.keymap.set("n", "<leader>9m", function() require("99.extensions.telescope").select_model() end, { desc = "99 select model" })
-      vim.keymap.set('n', '<leader>9.', function() _99.vibe({}) end, { desc = '99 vibe' })
-      vim.keymap.set('n', '<leader>9/', function() _99.tutorial({}) end, { desc = '99 tutorial' })
-      vim.keymap.set('n', '<leader>9i', function() _99.info() end, { desc = '99 info' })
-      vim.keymap.set('n', '<leader>9o', function() _99.open() end, { desc = '99 open last result' })
-      vim.keymap.set('n', '<leader>9l', function() _99.view_logs() end, { desc = '99 view logs' })
-      vim.keymap.set('n', '<leader>9c', function() _99.clear_previous_requests() end, { desc = '99 clear previous requests' })
-      vim.keymap.set('v', '<leader>9t', function() _99.visual({ additional_prompt = 'convert this into a table-driven test using testify require and the unit build tag' }) end, { desc = '99 to table test' })
-      vim.keymap.set('v', '<leader>9e', function() _99.visual({ additional_prompt = 'wrap each error with fmt.Errorf and %w adding context, do not change the logic' }) end, { desc = '99 wrap errors' })
-      vim.keymap.set('n', '<leader>9d', function()
-          --- this function could be used to auto debug your project
-          _99.search({
-            additional_prompt = [[
-              run `make test` and debug the test failures and provide me a
-              concise set of steps where the tests are breaking
-              ]]
-          })
-        end, { desc = '99 debug make test failures' })
-      -- stylua: ignore end
     end,
   },
 }

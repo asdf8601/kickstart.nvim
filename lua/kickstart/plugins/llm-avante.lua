@@ -2,8 +2,45 @@ return {
   {
     -- chatgpt like plugin
     'yetone/avante.nvim',
-    event = 'VeryLazy',
-    lazy = false,
+    cmd = {
+      'AvanteAsk',
+      'AvanteChat',
+      'AvanteChatNew',
+      'AvanteToggle',
+      'AvanteBuild',
+      'AvanteRefresh',
+      'AvanteFocus',
+      'AvanteSwitchProvider',
+      'AvanteClear',
+      'AvanteShowRepoMap',
+      'AvanteModels',
+      'AvanteACPModels',
+      'AvanteACPModes',
+      'AvanteHistory',
+      'AvanteStop',
+    },
+    -- same lhs and modes avante sets itself; the <Plug> rhs exists once it loads
+    -- stylua: ignore start
+    keys = {
+      { '<leader>aa', '<Plug>(AvanteAsk)', mode = { 'n', 'v' }, desc = 'avante: ask' },
+      { '<leader>an', '<Plug>(AvanteAskNew)', mode = { 'n', 'v' }, desc = 'avante: create new ask' },
+      { '<leader>az', '<Plug>(AvanteZenMode)', mode = { 'n', 'v' }, desc = 'avante: toggle zen mode' },
+      { '<leader>ae', '<Plug>(AvanteEdit)', mode = 'v', desc = 'avante: edit' },
+      { '<leader>aS', '<Plug>(AvanteStop)', desc = 'avante: stop' },
+      { '<leader>ar', '<Plug>(AvanteRefresh)', desc = 'avante: refresh' },
+      { '<leader>af', '<Plug>(AvanteFocus)', desc = 'avante: focus' },
+      { '<leader>at', '<Plug>(AvanteToggle)', desc = 'avante: toggle' },
+      { '<leader>ad', '<Plug>(AvanteToggleDebug)', desc = 'avante: toggle debug' },
+      { '<leader>aC', '<Plug>(AvanteToggleSelection)', desc = 'avante: toggle selection' },
+      { '<leader>as', '<Plug>(AvanteToggleSuggestion)', desc = 'avante: toggle suggestion' },
+      { '<leader>aR', '<Plug>(AvanteShowRepoMap)', desc = 'avante: display repo map' },
+      { '<leader>a?', '<Plug>(AvanteSelectModel)', desc = 'avante: select model' },
+      { '<leader>ah', '<Plug>(AvanteSelectHistory)', desc = 'avante: select history' },
+      { '<leader>aM', '<Plug>(AvanteSelectACPModel)', desc = 'avante: select ACP model' },
+      { '<leader>am', '<Plug>(AvanteSelectACPMode)', desc = 'avante: select ACP mode' },
+      { '<leader>aB', '<Plug>(AvanteAddAllBuffers)', desc = 'avante: add all open buffers' },
+    },
+    -- stylua: ignore end
     version = false, -- set this if you want to always pull the latest change
     -- acp_providers = {
     --   ['opencode'] = {
