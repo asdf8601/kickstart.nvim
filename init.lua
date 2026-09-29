@@ -1,3 +1,6 @@
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+
 -- Set to true if you have a Nerd Font installed and selected in your terminal
 vim.g.have_nerd_font = true
 
@@ -21,15 +24,10 @@ vim.opt.undofile = true
 vim.opt.incsearch = true
 vim.opt.scrolloff = 8
 vim.opt.cmdheight = 1
-vim.opt.updatetime = 50
 vim.opt.textwidth = 79
 vim.opt.cursorline = true
 vim.opt.colorcolumn = '80' -- works! (using integer will fail)
-vim.opt.completeopt = 'menuone,noselect'
-vim.g.netrw_hide = 0
 vim.g.netrw_nogx = 1
-vim.g.netrw_banner = 0
-vim.g.netrw_winsize = 20
 vim.opt.laststatus = 3
 -- vim.opt.signcolumn='no'
 -- vim.opt.shortmess = vim.opt.shortmess, 'scA'
@@ -43,7 +41,6 @@ vim.opt.laststatus = 3
 
 -- search highlight
 vim.opt.hlsearch = false
-vim.opt.breakindent = true
 vim.wo.number = true
 
 vim.opt.list = true
@@ -68,9 +65,6 @@ vim.opt.mouse = 'a'
 -- Enable break indent
 vim.opt.breakindent = true
 
--- Save undo history
-vim.opt.undofile = true
-
 -- Case-insensitive searching UNLESS \C or capital in search
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
@@ -87,17 +81,6 @@ vim.opt.completeopt = 'menu,menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
 vim.opt.termguicolors = true
-
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-
--- [[ Setting options ]] {{{
-if vim.fn.has 'mac' == 1 then
-  vim.g.netrw_browsex_viewer = 'open'
-else
-  -- Set the default viewer for other operating systems
-  vim.g.netrw_browsex_viewer = 'xdg-open'
-end
 
 -- [[ Basic Keymaps ]]
 
@@ -157,14 +140,33 @@ require 'asdf8601.skiz'
 require 'asdf8601.lazyreload' -- :LazyReload <plugin>
 
 -- detect macOS system appearance (dark/light)
+local appearance_cmd = { 'defaults', 'read', '-g', 'AppleInterfaceStyle' }
+
+local function parse_appearance(obj)
+  return (obj.stdout or ''):match 'Dark' and 'dark' or 'light'
+end
+
 local function get_system_appearance()
-  local handle = io.popen 'defaults read -g AppleInterfaceStyle 2>/dev/null'
-  if not handle then
-    return 'dark'
+  local ok, obj = pcall(function()
+    return vim.system(appearance_cmd, { text = true }):wait()
+  end)
+  if not ok then
+    return 'light'
   end
-  local result = handle:read '*a'
-  handle:close()
-  return result:match 'Dark' and 'dark' or 'light'
+  return parse_appearance(obj)
+end
+
+local function get_system_appearance_async(callback)
+  local ok = pcall(vim.system, appearance_cmd, { text = true }, function(obj)
+    vim.schedule(function()
+      callback(parse_appearance(obj))
+    end)
+  end)
+  if not ok then
+    vim.schedule(function()
+      callback 'light'
+    end)
+  end
 end
 
 local function set_theme(mode)
@@ -193,12 +195,13 @@ local theme_timer = vim.uv.new_timer()
 theme_timer:start(
   30000,
   30000,
-  vim.schedule_wrap(function()
-    local mode = get_system_appearance()
-    if mode ~= vim.o.background then
-      set_theme(mode)
-    end
-  end)
+  function()
+    get_system_appearance_async(function(mode)
+      if mode ~= vim.o.background then
+        set_theme(mode)
+      end
+    end)
+  end
 )
 
 -- manual toggle: <leader>tb
@@ -273,25 +276,13 @@ vim.keymap.set('n', '<leader>j', ':m .+1<cr>==', { noremap = true, desc = 'move 
 vim.keymap.set('n', '<leader>cn', ':cnext<cr>', { noremap = true, desc = 'next error' })
 vim.keymap.set('n', '<leader>cp', ':cprev<cr>', { noremap = true, desc = 'previous error' })
 
-vim.cmd [[
-augroup Latex
-  au!
-  au BufWritePost *.tex silent !dex pdflatex % && firefox %:t:r.pdf
-augroup end
-]]
-
 -- terraform
 -- https://www.mukeshsharma.dev/2022/02/08/neovim-workflow-for-terraform.html
-vim.cmd [[
-augroup terraform
-  autocmd!
-  silent! autocmd! filetypedetect BufRead,BufNewFile *.tf
-  autocmd BufRead,BufNewFile *.hcl set filetype=hcl
-  autocmd BufRead,BufNewFile .terraformrc,terraform.rc set filetype=hcl
-  autocmd BufRead,BufNewFile *.tf,*.tfvars set filetype=terraform
-  autocmd BufRead,BufNewFile *.tfstate,*.tfstate.backup set filetype=json
-augroup end
-]]
+vim.filetype.add {
+  extension = { tfvars = 'terraform', tfstate = 'json' },
+  filename = { ['.terraformrc'] = 'hcl', ['terraform.rc'] = 'hcl' },
+  pattern = { ['.*%.tfstate%.backup'] = 'json' },
+}
 
 -- if macos then
 if vim.fn.has 'mac' == 1 then
@@ -341,19 +332,9 @@ autocmd('FileType', {
   end,
 })
 
-autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = '*.astro', command = 'set ft=astro' })
-autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'Dockerfile.*', command = 'setl ft=dockerfile' })
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'Jenkinsfile', command = 'setl ft=groovy' })
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'compose.*.yml', command = 'setl ft=yaml' })
-autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = 'requirements*.txt', command = 'setl ft=requirements' })
 autocmd({ 'BufEnter', 'BufRead' }, { group = ASDF8601, pattern = { '.autoenv', '.env' }, command = 'setl ft=bash syntax=bash' })
-
--- local yank_group = augroup('HighlightYank', {})
-autocmd({ 'BufWritePre' }, {
-  group = ASDF8601,
-  pattern = '*',
-  command = '%s/\\s\\+$//e',
-})
 
 autocmd({ 'FileType' }, {
   group = ASDF8601,
