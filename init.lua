@@ -127,7 +127,7 @@ end, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', function()
   vim.diagnostic.jump { count = 1, float = true }
 end, { desc = 'Go to next diagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -216,8 +216,8 @@ vim.keymap.set('n', '<leader>w', ':Git<cr>', { noremap = true, desc = 'Open Git 
 vim.keymap.set('n', '<leader>W', ':tab Git<cr>', { noremap = true, desc = 'Open Git status in a new tab' })
 vim.keymap.set('n', '<C-g>', ':GBrowse<cr>', { noremap = true, desc = 'browse current file on github' })
 vim.keymap.set('v', '<C-g>', ':GBrowse<cr>', { noremap = true, desc = 'browse current file and line on github' })
-vim.keymap.set('n', '<C-G>', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current file' })
-vim.keymap.set('v', '<C-G>', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current line' })
+vim.keymap.set('n', '<leader>gy', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current file' })
+vim.keymap.set('v', '<leader>gy', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current line' })
 
 -- terminal settings
 vim.keymap.set('t', '<esc><esc>', '<C-\\><C-n>', { noremap = true, desc = 'Switch to normal mode from terminal' })
@@ -229,7 +229,7 @@ vim.keymap.set('t', '<C-w>w', '<C-\\><C-n><C-w>w', { noremap = true, desc = 'Swi
 
 -- escape
 vim.keymap.set('i', 'kj', '<esc>', { noremap = true, silent = true, desc = 'Exit insert mode with kj' })
-vim.keymap.set('i', 'jk', '<esc>', { noremap = true, silent = true, desc = 'Exit insert mode with jk' })
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = 'Clear search highlight' })
 
 -- [shebang]
 vim.keymap.set('n', '<leader>sh', ":mark m<cr>:0<cr>O#!/usr/bin/env bash<esc>'m:delm m<cr>", { desc = 'Add shebang line' })
@@ -251,7 +251,7 @@ vim.keymap.set('n', '<leader>0', '"0p', { desc = 'Paste from register 0', silent
 vim.keymap.set('n', '<leader>1', '"1p', { desc = 'Paste from register 1', silent = false })
 vim.keymap.set('n', '<leader>p', '"+p', { desc = 'Paste clipboard register' })
 vim.keymap.set('v', '<leader>p', '"+p', { desc = 'Paste clipboard register' })
-vim.keymap.set('n', '<leader>y', '"+yy', { noremap = true, desc = 'copy to system clipboard' })
+vim.keymap.set('n', '<leader>yy', '"+yy', { noremap = true, desc = 'copy to system clipboard' })
 vim.keymap.set('v', '<leader>y', '"+y', { noremap = true, desc = 'copy to system clipboard' })
 vim.keymap.set('n', '<leader>yf', ':let @+ = expand("%:p")<cr>:echo expand("%:p").."copied"<cr>', { noremap = true, desc = 'yank filename path' })
 
@@ -259,7 +259,7 @@ vim.keymap.set('n', '<leader>yf', ':let @+ = expand("%:p")<cr>:echo expand("%:p"
 vim.keymap.set('n', '<leader><cr>', ':source ~/.config/nvim/init.lua<cr>', { noremap = true })
 
 -- replace in all file
-vim.keymap.set('n', '<leader>s', ':%s/<C-r><C-w>/<C-r><C-w>/gI<left><left><left>', { noremap = true, desc = 'search and replace word under cursor' })
+vim.keymap.set('n', '<leader>rw', ':%s/<C-r><C-w>/<C-r><C-w>/gI<left><left><left>', { noremap = true, desc = 'search and replace word under cursor' })
 vim.keymap.set('n', '<leader>gw', ":grep '<C-R><C-W>'", { desc = 'Find word using grep command' })
 
 -- [move line]

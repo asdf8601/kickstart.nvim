@@ -44,6 +44,6 @@ function OpenUrl()
 end
 
 
-vim.keymap.set('n', '<leader>x', OpenUrl, { noremap = true, silent = true })
-vim.keymap.set('v', '<leader>x', OpenUrl, { noremap = true, silent = false })
+vim.keymap.set('n', '<leader>xo', OpenUrl, { noremap = true, silent = true })
+vim.keymap.set('v', '<leader>xo', OpenUrl, { noremap = true, silent = false })
 

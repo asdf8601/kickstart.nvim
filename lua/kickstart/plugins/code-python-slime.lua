@@ -20,7 +20,7 @@ function AddPdbrc()
 end
 -- }}}
 
-vim.keymap.set('n', 'bp', AddPdbrc, { noremap = true, silent = true, desc = 'Add pdbrc' })
+vim.keymap.set('n', '<leader>db', AddPdbrc, { noremap = true, silent = true, desc = 'Add pdbrc' })
 
 -- cells
 vim.g.custom_fold_enabled = false

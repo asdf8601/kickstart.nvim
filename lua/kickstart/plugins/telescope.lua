@@ -230,7 +230,7 @@ return {
       -- vim.keymap.set('n', '<leader>fl', ':Telescope diagnostics<cr>', { noremap = true, desc = "[telescope] Find errors, lint, diagnostics", silent = false })
       -- vim.keymap.set('n', '<leader>sc', search_scio, { desc = "Search scio", noremap = true })
 
-      vim.keymap.set('n', '<leader>dot', search_dotfiles, { desc = '[telescope] Search dotfiles', noremap = true })
+      vim.keymap.set('n', '<leader>dd', search_dotfiles, { desc = '[telescope] Search dotfiles', noremap = true })
       vim.keymap.set('n', '<leader>rc', search_vimrc, { desc = '[telescope] Search nvim config', noremap = true })
 
       vim.keymap.set('n', '<C-p>', find_files_from_project_git_root, { noremap = true, desc = '[telescope] Find files from git root' })
@@ -248,7 +248,7 @@ return {
       vim.keymap.set('n', '<leader>gc', git_branches, { desc = '[telescope] Git branches', noremap = true })
       vim.keymap.set('n', '<leader>gs', require('telescope.builtin').git_stash, { noremap = true, desc = '[telescope] Git stash' })
       vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[telescope] [S]earch [D]iagnostics across workspace' })
-      vim.keymap.set('n', 'ts', find_emojis, { desc = '[telescope] Search emoji', noremap = true })
+      vim.keymap.set('n', '<leader>se', find_emojis, { desc = '[telescope] Search emoji', noremap = true })
       vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[telescope] [S]earch by [G]rep - Live search text across all files' })
       vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[telescope] Resume last search' })
       vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[telescope] [S]earch current [W]ord under cursor in all files' })

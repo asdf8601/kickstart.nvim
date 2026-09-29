@@ -2,10 +2,9 @@
 vim.keymap.set('n', '<leader>tu', 'yypVr-', { noremap = true, desc = 'underline word under cursor' })
 vim.keymap.set('n', '<leader>tx', ':s/\\[\\s\\?\\]/[x]/<cr>', { noremap = true, desc = 'check a box in markdown' })
 vim.keymap.set('n', '<leader>t<space>', ':s/\\[x\\]/[ ]/<cr>', { noremap = true, desc = 'uncheck a box in markdown' })
-vim.keymap.set('n', '<leader>ta', 'I- [ ] <esc>', { noremap = true, desc = 'append empty checkbox in markdown' })
+vim.keymap.set('n', '<leader>tc', 'I- [ ] <esc>', { noremap = true, desc = 'append empty checkbox in markdown' })
 vim.keymap.set('n', '<leader>m', ':MaximizerToggle<cr>', { noremap = true, desc = 'Maximize current window' })
 
-vim.keymap.set('n', '<leader>/', '/<C-r><C-w>', { desc = '[S]earch [R]esume' })
 
 vim.keymap.set('n', '<leader>zz', '<cmd>ZenMode<cr>', { noremap = true, desc = 'ZenMode toggle' })
 vim.keymap.set('v', '<leader>h', ':<c-u>HSHighlight 2<cr>', { noremap = true, desc = 'high-str' })
