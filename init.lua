@@ -170,7 +170,6 @@ end
 local function set_theme(mode)
   vim.o.background = mode
   require('modus-themes').setup {
-    variant = 'default',
     transparent = mode == 'dark',
   }
   if mode == 'dark' then

@@ -19,7 +19,6 @@ return {
     priority = 1000,
     config = function()
       require('modus-themes').setup {
-        variant = 'default',
         transparent = true,
       }
       -- vim.cmd.colorscheme = 'modus_vivendi'
