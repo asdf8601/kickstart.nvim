@@ -57,3 +57,14 @@ end
 
 vim.api.nvim_create_user_command('GsutilImport', GsutilImport, { nargs = 0 })
 vim.api.nvim_set_keymap('n', '<leader>gg', ':GsutilImport<cr>', { noremap = true, silent = false })
+
+-- Wrap the selected lines in `# fmt: off` / `# fmt: on`, indented like the first line
+local function FmtOff(opts)
+  local first = vim.fn.getline(opts.line1)
+  local indent = first:match '^%s*'
+  vim.api.nvim_buf_set_lines(0, opts.line2, opts.line2, false, { indent .. '# fmt: on' })
+  vim.api.nvim_buf_set_lines(0, opts.line1 - 1, opts.line1 - 1, false, { indent .. '# fmt: off' })
+end
+
+vim.api.nvim_create_user_command('FmtOff', FmtOff, { range = true })
+vim.keymap.set('x', '<leader>fo', ':FmtOff<cr>', { desc = 'Wrap selection in [F]mt [O]ff' })
