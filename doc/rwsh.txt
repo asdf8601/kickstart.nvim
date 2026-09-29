@@ -1,0 +1,26 @@
+*rwsh.txt*    Run selected lines as a shell command and paste output
+
+==============================================================================
+RUNSH                                                                  *RunSh*
+
+:[range]RunSh
+
+Runs the lines in [range] as a shell command and inserts the command's
+standard output into the buffer just below the range.
+
+Without an explicit range, the current line is used. The selection/range is
+NOT replaced; output is appended after it.
+
+Examples:~
+  :RunSh            Run the current line.
+  :5,10RunSh        Run lines 5 to 10.
+  :%RunSh           Run the whole buffer.
+
+Mapping:~
+  In visual mode, <leader>r runs the selected lines (|RunSh|).
+
+Notes:~
+  - Uses |systemlist()|, so only stdout is captured (no stderr).
+  - Shell errors are not checked (see |v:shell_error|).
+
+vim:tw=78:ts=8:ft=help:norl:
