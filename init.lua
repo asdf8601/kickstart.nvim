@@ -1,4 +1,4 @@
--- Set to true if you have a Nerd Font installed and selected in the terminal
+-- Set to true if you have a Nerd Font installed and selected in your terminal
 vim.g.have_nerd_font = true
 
 vim.opt.exrc = true

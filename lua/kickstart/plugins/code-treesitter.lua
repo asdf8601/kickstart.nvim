@@ -75,11 +75,12 @@ return {
             return
           end
 
-          if not pcall(vim.treesitter.get_parser, args.buf, parser_name) then
+          local ok, parser = pcall(vim.treesitter.get_parser, args.buf, parser_name)
+          if not ok or not parser then
             return
           end
 
-          vim.treesitter.start()
+          vim.treesitter.start(args.buf, parser_name)
           vim.wo.foldmethod = 'expr'
           vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
           vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"

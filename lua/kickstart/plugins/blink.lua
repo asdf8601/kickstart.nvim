@@ -49,6 +49,11 @@ return {
       keymap = {
         preset = 'default',
         ['<C-k>'] = { 'fallback' },  -- Permite que Neovim maneje el keybind normalmente
+        -- Tab and Shift-Tab always insert a tab. The default preset binds them to
+        -- snippet_forward/backward, which jump into placeholders of snippets
+        -- expanded earlier.
+        ['<Tab>'] = { 'fallback' },
+        ['<S-Tab>'] = { 'fallback' },
         -- ['<C-k>'] = nil,
         -- ['<C-q>'] = { function(cmp) cmp.show { providers = { 'jira' } } end, },
         ['<C-g>'] = { function(cmp) cmp.show { providers = { 'copilot' } } end },

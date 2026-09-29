@@ -112,7 +112,9 @@ local function slime_use_neovim()
   vim.b.slime_config = nil
   vim.g.slime_target = 'neovim'
   vim.g.slime_bracketed_paste = 1
-  vim.g.slime_python_ipython = 1
+  -- %cpaste reads with plain input(), which doesn't strip the bracketed-paste markers,
+  -- so its `--` sentinel never matches; IPython handles bracketed paste on its own
+  vim.g.slime_python_ipython = 0
   vim.g.slime_no_mappings = 1
 
   if vim.fn.has 'mac' == 0 then
