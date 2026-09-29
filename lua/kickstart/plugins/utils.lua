@@ -1,29 +1,69 @@
+-- Big file guard: replaces the unmaintained lunarVim/bigfile.nvim
+local bigfile_size = 1.5 * 1024 * 1024
+local bigfile_line_len = 10000
+local bigfile_group = vim.api.nvim_create_augroup('bigfile_guard', { clear = true })
+
+local function bigfile_disable(buf)
+  vim.b[buf].bigfile = true
+  vim.bo[buf].swapfile = false
+  vim.bo[buf].undofile = false
+  vim.api.nvim_buf_call(buf, function()
+    vim.opt_local.foldmethod = 'manual'
+    vim.opt_local.foldenable = false
+  end)
+end
+
+local function bigfile_disable_highlight(buf)
+  if not vim.api.nvim_buf_is_valid(buf) then return end
+  pcall(vim.treesitter.stop, buf)
+  vim.bo[buf].syntax = 'off'
+  vim.api.nvim_buf_call(buf, function()
+    vim.opt_local.foldmethod = 'manual'
+    vim.opt_local.foldenable = false
+  end)
+end
+
+vim.api.nvim_create_autocmd('BufReadPre', {
+  group = bigfile_group,
+  desc = 'Disable heavy features for big files',
+  callback = function(args)
+    local size = vim.fn.getfsize(vim.api.nvim_buf_get_name(args.buf))
+    if size > bigfile_size then bigfile_disable(args.buf) end
+  end,
+})
+
+vim.api.nvim_create_autocmd('BufReadPost', {
+  group = bigfile_group,
+  desc = 'Disable heavy features for files with very long lines',
+  callback = function(args)
+    if vim.b[args.buf].bigfile then return end
+    for _, line in ipairs(vim.api.nvim_buf_get_lines(args.buf, 0, 50, false)) do
+      if #line > bigfile_line_len then
+        bigfile_disable(args.buf)
+        bigfile_disable_highlight(args.buf)
+        return
+      end
+    end
+  end,
+})
+
+-- treesitter and syntax start on FileType, after BufReadPre, so stop them once they have started
+vim.api.nvim_create_autocmd({ 'FileType', 'BufWinEnter' }, {
+  group = bigfile_group,
+  callback = function(args)
+    if vim.b[args.buf].bigfile then vim.schedule(function() bigfile_disable_highlight(args.buf) end) end
+  end,
+})
+
 return {
   -- 'tpope/vim-unimpaired',
-  'RRethy/vim-illuminate',
-  'folke/zen-mode.nvim',
+  { 'folke/zen-mode.nvim', cmd = 'ZenMode' },
   'junegunn/vim-easy-align',
-  'lunarVim/bigfile.nvim',
-  'szw/vim-maximizer',
+  { 'szw/vim-maximizer', cmd = 'MaximizerToggle' },
   'tpope/vim-dispatch',
   'tpope/vim-repeat', -- better repeat
   'tpope/vim-sleuth',
   'tpope/vim-speeddating',
-  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
-
-  {
-    -- find and replace
-    'nvim-pack/nvim-spectre',
-    config = function()
-      require('spectre').setup()
-      -- vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', { desc = 'Toggle Spectre' })
-      -- vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', { desc = 'Spectre Search current word' })
-      -- vim.keymap.set('v', '<leader>sw', '<esc><cmd>lua require("spectre").open_visual()<CR>', { desc = 'Spectre Search current word' })
-      -- vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', { desc = 'Spectre Search on current file' })
-    end,
-
-    dependencies = { 'nvim-lua/plenary.nvim' },
-  },
 
   {
     'folke/todo-comments.nvim',
@@ -54,9 +94,8 @@ return {
 
   {
     'mbbill/undotree',
-    init = function()
-      vim.keymap.set('n', '<leader>u', ':UndotreeToggle<CR>', { noremap = true, desc = 'Open/close UndoTree' })
-    end,
+    cmd = 'UndotreeToggle',
+    keys = { { '<leader>u', ':UndotreeToggle<CR>', noremap = true, desc = 'Open/close UndoTree' } },
   },
 
   {
@@ -92,20 +131,20 @@ return {
 
   {
     'ThePrimeagen/harpoon',
-    init = function()
-      vim.keymap.set('n', '<C-s><C-h>', ':lua SendToHarpoon(1, 0)<CR>', { noremap = true, desc = 'Send to Harpoon (normal mode)' })
-      vim.keymap.set('v', '<C-s><C-h>', ':lua SendToHarpoon(1, 1)<CR>', { noremap = true, desc = 'Send to Harpoon (visual mode)' })
-      vim.keymap.set('n', '<C-h>', ':lua require("harpoon.ui").nav_file(1)<cr>', { noremap = true, desc = 'Harpoon file 1' })
-      vim.keymap.set('n', '<C-j>', ':lua require("harpoon.ui").nav_file(2)<cr>', { noremap = true, desc = 'Harpoon file 2' })
-      vim.keymap.set('n', '<C-k>', ':lua require("harpoon.ui").nav_file(3)<cr>', { noremap = true, desc = 'Harpoon file 3' })
-      vim.keymap.set('n', '<C-l>', ':lua require("harpoon.ui").nav_file(4)<cr>', { noremap = true, desc = 'Harpoon file 4' })
-      vim.keymap.set('n', '<C-h><C-h>', ':lua require("harpoon.term").gotoTerminal(1)<cr>i', { noremap = true, desc = 'Harpoon Terminal 1' })
-      vim.keymap.set('n', '<C-j><C-j>', ':lua require("harpoon.term").gotoTerminal(2)<cr>i', { noremap = true, desc = 'Harpoon Terminal 2' })
-      vim.keymap.set('n', '<C-k><C-k>', ':lua require("harpoon.term").gotoTerminal(3)<cr>i', { noremap = true, desc = 'Harpoon Terminal 3' })
-      vim.keymap.set('n', '<C-l><C-l>', ':lua require("harpoon.term").gotoTerminal(4)<cr>i', { noremap = true, desc = 'Harpoon Terminal 4' })
-      vim.keymap.set('n', '<leader>hh', ':lua require("harpoon.mark").add_file()<CR>', { desc = 'Add file to Harpoon marks' })
-      vim.keymap.set('n', '<leader>hm', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true, desc = "Harpoon's quick menu" })
-    end,
+    keys = {
+      { '<C-s><C-h>', ':lua SendToHarpoon(1, 0)<CR>', noremap = true, desc = 'Send to Harpoon (normal mode)' },
+      { mode = 'v', '<C-s><C-h>', ':lua SendToHarpoon(1, 1)<CR>', noremap = true, desc = 'Send to Harpoon (visual mode)' },
+      { '<C-h>', ':lua require("harpoon.ui").nav_file(1)<cr>', noremap = true, desc = 'Harpoon file 1' },
+      { '<C-j>', ':lua require("harpoon.ui").nav_file(2)<cr>', noremap = true, desc = 'Harpoon file 2' },
+      { '<C-k>', ':lua require("harpoon.ui").nav_file(3)<cr>', noremap = true, desc = 'Harpoon file 3' },
+      { '<C-l>', ':lua require("harpoon.ui").nav_file(4)<cr>', noremap = true, desc = 'Harpoon file 4' },
+      { '<C-h><C-h>', ':lua require("harpoon.term").gotoTerminal(1)<cr>i', noremap = true, desc = 'Harpoon Terminal 1' },
+      { '<C-j><C-j>', ':lua require("harpoon.term").gotoTerminal(2)<cr>i', noremap = true, desc = 'Harpoon Terminal 2' },
+      { '<C-k><C-k>', ':lua require("harpoon.term").gotoTerminal(3)<cr>i', noremap = true, desc = 'Harpoon Terminal 3' },
+      { '<C-l><C-l>', ':lua require("harpoon.term").gotoTerminal(4)<cr>i', noremap = true, desc = 'Harpoon Terminal 4' },
+      { '<leader>hh', ':lua require("harpoon.mark").add_file()<CR>', noremap = true, desc = 'Add file to Harpoon marks' },
+      { '<leader>hm', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', noremap = true, desc = "Harpoon's quick menu" },
+    },
   },
 
   -- {
