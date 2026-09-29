@@ -9,13 +9,26 @@ return {
       -- logging mechanisms within 99.  This is for more debugging purposes
       local cwd = vim.uv.cwd()
       local basename = vim.fs.basename(cwd)
+
+      -- upstream hardcodes a stale 4.x list because the claude CLI cannot list models
+      _99.Providers.ClaudeCodeProvider.fetch_models = function(callback)
+        callback({
+          'sonnet',
+          'opus',
+          'fable',
+          'claude-fable-5-1',
+          'claude-opus-5-5',
+          'claude-sonnet-5-5',
+          'claude-haiku-4-5',
+        }, nil)
+      end
+
       _99.setup {
-        -- provider = _99.Providers.ClaudeCodeProvider, -- default: OpenCodeProvider
-        -- model = 'claude-sonnet-4-6',
-        provider = _99.Providers.OpenCodeProvider, -- default: OpenCodeProvider
-        -- model = 'anthropic/claude-opus-4-6',
-        -- model = 'anthropic/claude-sonnet-4-6',
-        model = 'anthropic/claude-haiku-4-5',
+        -- claude code carries the Claude subscription via OAuth; opencode has no anthropic credential
+        provider = _99.Providers.ClaudeCodeProvider, -- default: OpenCodeProvider
+        model = 'sonnet', -- alias to the latest sonnet, the CLI also takes 'opus' and 'fable'
+        -- provider = _99.Providers.OpenCodeProvider,
+        -- model = 'anthropic/claude-haiku-4-5',
         logger = {
           level = _99.DEBUG,
           path = '/tmp/' .. basename .. '.99.debug',
@@ -78,9 +91,26 @@ return {
         --- /foo/AGENT.md
         --- assuming that /foo is project root (based on cwd)
         md_files = {
+          'AGENTS.md',
+          'CLAUDE.md',
           'AGENT.md',
         },
       }
+
+      -- the prompt window submits on :w (BufWriteCmd), so <C-s> just triggers a write
+      vim.api.nvim_create_autocmd('FileType', {
+        group = vim.api.nvim_create_augroup('99_prompt_submit', { clear = true }),
+        pattern = { '99', '99prompt' },
+        callback = function(ev)
+          if vim.bo[ev.buf].buftype ~= 'acwrite' then
+            return
+          end
+          vim.keymap.set({ 'n', 'i' }, '<C-s>', function()
+            vim.cmd.stopinsert()
+            vim.cmd.write()
+          end, { buffer = ev.buf, desc = '99 submit prompt' })
+        end,
+      })
 
       -- stylua: ignore start
       -- take extra note that i have visual selection only in v mode
@@ -97,6 +127,11 @@ return {
 
       vim.keymap.set('n', '<leader>9s', function() _99.search({}) end, { desc = '99 search' })
       vim.keymap.set("n", "<leader>9m", function() require("99.extensions.telescope").select_model() end, { desc = "99 select model" })
+      vim.keymap.set('n', '<leader>9o', function() _99.open() end, { desc = '99 open last result' })
+      vim.keymap.set('n', '<leader>9l', function() _99.view_logs() end, { desc = '99 view logs' })
+      vim.keymap.set('n', '<leader>9c', function() _99.clear_previous_requests() end, { desc = '99 clear previous requests' })
+      vim.keymap.set('v', '<leader>9t', function() _99.visual({ additional_prompt = 'convert this into a table-driven test using testify require and the unit build tag' }) end, { desc = '99 to table test' })
+      vim.keymap.set('v', '<leader>9e', function() _99.visual({ additional_prompt = 'wrap each error with fmt.Errorf and %w adding context, do not change the logic' }) end, { desc = '99 wrap errors' })
       vim.keymap.set('n', '<leader>9d', function()
           --- this function could be used to auto debug your project
           _99.search({
