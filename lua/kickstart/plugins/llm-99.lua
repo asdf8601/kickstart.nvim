@@ -108,7 +108,7 @@ return {
           vim.keymap.set({ 'n', 'i' }, '<C-s>', function()
             vim.cmd.stopinsert()
             vim.cmd.write()
-          end, { buffer = ev.buf, desc = '99 submit prompt' })
+          end, { buffer = ev.buf, nowait = true, desc = '99 submit prompt' })
         end,
       })
 
