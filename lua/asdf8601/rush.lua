@@ -37,7 +37,12 @@ end
 ---
 -- Load command history from file
 ---
+local history_loaded = false
 local function load_history()
+  if history_loaded then
+    return
+  end
+  history_loaded = true
   local file = io.open(history_file, 'r')
   if not file then
     return
@@ -62,23 +67,20 @@ local function load_history()
   end
 end
 
--- Load history on module load
-load_history()
-
 ---
 -- Helper function that executes in the main thread.
 -- Creates a scratch buffer and displays the output.
 ---
 local function update_buffer_safely(win_id, lines, exit_code, cmd_string, origin_buf_id)
+  load_history()
   -- 1. Create a new buffer for each execution
   local buf_id = vim.api.nvim_create_buf(true, true)
   buffer_counter = buffer_counter + 1
 
   -- 2. Configure buffer options
-  vim.api.nvim_buf_set_option(buf_id, 'bufhidden', 'hide')
-  vim.api.nvim_buf_set_option(buf_id, 'swapfile', false)
-  vim.api.nvim_buf_set_option(buf_id, 'buftype', 'nofile')
-  vim.api.nvim_buf_set_option(buf_id, 'wrap', false)
+  vim.bo[buf_id].bufhidden = 'hide'
+  vim.bo[buf_id].swapfile = false
+  vim.bo[buf_id].buftype = 'nofile'
 
   -- 3. Assign unique name to buffer
   local buf_name = string.format('[Rush #%d] %s', buffer_counter, cmd_string:sub(1, 50))
@@ -116,6 +118,7 @@ local function update_buffer_safely(win_id, lines, exit_code, cmd_string, origin
   vim.api.nvim_set_current_win(win_id)
   vim.cmd 'split'
   vim.api.nvim_win_set_buf(0, buf_id)
+  vim.wo[0].wrap = false
 
   -- 11. Print final status message
   if exit_code == 0 then
@@ -171,6 +174,7 @@ end, { nargs = '+', complete = 'shellcmd' })
 -- Command :RushList - Show command history in quickfix
 ---
 vim.api.nvim_create_user_command('RushList', function()
+  load_history()
   if #command_history == 0 then
     print 'No commands in history'
     return
@@ -204,6 +208,7 @@ end, {})
 -- Command :RushClear - Clear all Rush memory and buffers
 ---
 vim.api.nvim_create_user_command('RushClear', function()
+  load_history()
   local count = #command_history
 
   -- Delete Rush buffers
