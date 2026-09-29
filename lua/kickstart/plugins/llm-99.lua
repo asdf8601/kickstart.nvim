@@ -143,7 +143,7 @@ return {
               concise set of steps where the tests are breaking
               ]]
           })
-        end)
+        end, { desc = '99 debug make test failures' })
       -- stylua: ignore end
     end,
   },
