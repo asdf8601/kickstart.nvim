@@ -16,7 +16,7 @@ end
 return {
   { -- Autocompletion
     'saghen/blink.cmp',
-    -- event = 'VimEnter',
+    event = { 'InsertEnter', 'CmdlineEnter' },
     version = '1.*',
     optional = true,
     dependencies = {

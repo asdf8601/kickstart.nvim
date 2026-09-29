@@ -1,7 +1,7 @@
 -- toggle numbers
 vim.g.number = 1
 
-function ToggleNumbers()
+local function ToggleNumbers()
   if vim.g.number == 1 then
     vim.g.number = 0
     vim.o.number = false
@@ -17,7 +17,7 @@ end
 vim.api.nvim_create_user_command('ToggleNumbers', ToggleNumbers, {})
 
 -- bucket
-function GetVisual(mode)
+local function GetVisual(mode)
   local data
   local _, ls, cs = unpack(vim.fn.getpos 'v')
   local _, le, ce = unpack(vim.fn.getpos '.')
@@ -56,7 +56,7 @@ local function GsutilImport()
 end
 
 vim.api.nvim_create_user_command('GsutilImport', GsutilImport, { nargs = 0 })
-vim.api.nvim_set_keymap('n', '<leader>gg', ':GsutilImport<cr>', { noremap = true, silent = false })
+vim.keymap.set('n', '<leader>gg', '<cmd>GsutilImport<cr>', { desc = 'gsutil import' })
 
 -- Wrap the selected lines in `# fmt: off` / `# fmt: on`, indented like the first line
 local function FmtOff(opts)
