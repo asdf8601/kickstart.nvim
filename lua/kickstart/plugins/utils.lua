@@ -132,8 +132,6 @@ return {
   {
     'ThePrimeagen/harpoon',
     keys = {
-      { '<C-s><C-h>', ':lua SendToHarpoon(1, 0)<CR>', noremap = true, desc = 'Send to Harpoon (normal mode)' },
-      { mode = 'v', '<C-s><C-h>', ':lua SendToHarpoon(1, 1)<CR>', noremap = true, desc = 'Send to Harpoon (visual mode)' },
       { '<C-h>', ':lua require("harpoon.ui").nav_file(1)<cr>', noremap = true, desc = 'Harpoon file 1' },
       { '<C-j>', ':lua require("harpoon.ui").nav_file(2)<cr>', noremap = true, desc = 'Harpoon file 2' },
       { '<C-k>', ':lua require("harpoon.ui").nav_file(3)<cr>', noremap = true, desc = 'Harpoon file 3' },
