@@ -153,8 +153,116 @@ return {
       -- 'mfussenegger/nvim-dap-python',
       'theHamsta/nvim-dap-virtual-text',
     },
+    keys = {
+      {
+        '<leader>B',
+        function()
+          require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ')
+        end,
+        desc = 'dap set breakpoint condition',
+      },
+      {
+        '<leader>b',
+        function()
+          require('dap').toggle_breakpoint()
+        end,
+        desc = 'dap toggle breakpoint',
+      },
+      {
+        '<leader>dc',
+        function()
+          require('dap').continue()
+        end,
+        desc = 'dap continue',
+      },
+      {
+        '<leader>dh',
+        function()
+          require('dap').step_out()
+        end,
+        desc = 'dap step out ←',
+      },
+      {
+        '<leader>dl',
+        function()
+          require('dap').step_into()
+        end,
+        desc = 'dap step into →',
+      },
+      {
+        '<leader>dk',
+        function()
+          require('dap').step_back()
+        end,
+        desc = 'dap step back ↑',
+      },
+      {
+        '<leader>dj',
+        function()
+          require('dap').step_over()
+        end,
+        desc = 'dap step over ↓',
+      },
+      {
+        '<leader>de',
+        function()
+          require('dap').repl.open()
+        end,
+        desc = 'dap open repl',
+      },
+      {
+        '<leader>dr',
+        function()
+          require('dap').run_last()
+        end,
+        desc = 'dap run last',
+      },
+      {
+        '<leader>dq',
+        function()
+          require('dap').disconnect()
+        end,
+        desc = 'dap disconnect',
+      },
+      {
+        '<leader>du',
+        function()
+          require('dapui').toggle()
+        end,
+        desc = 'toggle dap ui',
+      },
+      {
+        '<leader>do',
+        function()
+          require('dapui').open()
+        end,
+        desc = 'toggle dap ui',
+      },
+      {
+        '<leader>dx',
+        function()
+          require('dapui').close()
+        end,
+        desc = 'toggle dap ui',
+      },
+    },
     config = function()
-      require('dapui').setup()
+      require('dapui').setup {
+        icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
+        controls = {
+          icons = {
+            pause = '⏸',
+            play = '▶',
+            step_into = '⏎',
+            step_over = '⏭',
+            step_out = '⏮',
+            step_back = 'b',
+            run_last = '▶▶',
+            terminate = '⏹',
+            disconnect = '⏏',
+          },
+        },
+      }
       require('nvim-dap-virtual-text').setup {}
       -- require('dap-python').setup()
       require('dap-go').setup {
@@ -175,24 +283,6 @@ return {
         },
       }
 
-      local dap = require 'dap'
-      vim.keymap.set('n', '<leader>B', function()
-        dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
-      end, { noremap = true, desc = 'dap set breakpoint condition' })
-      vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { noremap = true, desc = 'dap toggle breakpoint' })
-      vim.keymap.set('n', '<leader>dc', dap.continue, { noremap = true, desc = 'dap continue' })
-      vim.keymap.set('n', '<leader>dh', dap.step_out, { noremap = true, desc = 'dap step out ←' })
-      vim.keymap.set('n', '<leader>dl', dap.step_into, { noremap = true, desc = 'dap step into →' })
-      vim.keymap.set('n', '<leader>dk', dap.step_back, { noremap = true, desc = 'dap step back ↑' })
-      vim.keymap.set('n', '<leader>dj', dap.step_over, { noremap = true, desc = 'dap step over ↓' })
-      vim.keymap.set('n', '<leader>de', dap.repl.open, { noremap = true, desc = 'dap open repl' })
-      vim.keymap.set('n', '<leader>dr', dap.run_last, { noremap = true, desc = 'dap run last' })
-      vim.keymap.set('n', '<leader>dq', dap.disconnect, { noremap = true, desc = 'dap disconnect' })
-
-      local dapui = require 'dapui'
-      vim.keymap.set('n', '<leader>du', dapui.toggle, { noremap = true, desc = 'toggle dap ui' })
-      vim.keymap.set('n', '<leader>do', dapui.open, { noremap = true, desc = 'toggle dap ui' })
-      vim.keymap.set('n', '<leader>dx', dapui.close, { noremap = true, desc = 'toggle dap ui' })
     end,
   },
 
@@ -200,11 +290,48 @@ return {
     'mfussenegger/nvim-dap',
     dependencies = {
       'rcarriga/nvim-dap-ui',
-      'williamboman/mason.nvim',
+      'mason-org/mason.nvim',
       'jay-babu/mason-nvim-dap.nvim',
       'leoluz/nvim-dap-go',
     },
-
+    cmd = { 'DapContinue', 'DapToggleBreakpoint', 'DapStepOver', 'DapStepInto', 'DapStepOut', 'DapNew', 'DapTerminate', 'DapToggleRepl', 'DapClearBreakpoints' },
+    keys = {
+      {
+        '<F5>',
+        function()
+          require('dap').continue()
+        end,
+        desc = 'Debug: Start/Continue',
+      },
+      {
+        '<F1>',
+        function()
+          require('dap').step_into()
+        end,
+        desc = 'Debug: Step Into',
+      },
+      {
+        '<F2>',
+        function()
+          require('dap').step_over()
+        end,
+        desc = 'Debug: Step Over',
+      },
+      {
+        '<F3>',
+        function()
+          require('dap').step_out()
+        end,
+        desc = 'Debug: Step Out',
+      },
+      {
+        '<F7>',
+        function()
+          require('dapui').toggle()
+        end,
+        desc = 'Debug: See last session result.',
+      },
+    },
     config = function()
       local dap = require 'dap'
       local dapui = require 'dapui'
@@ -216,29 +343,7 @@ return {
         },
       }
 
-      -- Basic debugging keymaps, feel free to change to your liking!
-      vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
-      vim.keymap.set('n', '<F1>', dap.step_into, { desc = 'Debug: Step Into' })
-      vim.keymap.set('n', '<F2>', dap.step_over, { desc = 'Debug: Step Over' })
-      vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
 
-      dapui.setup {
-        icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
-        controls = {
-          icons = {
-            pause = '⏸',
-            play = '▶',
-            step_into = '⏎',
-            step_over = '⏭',
-            step_out = '⏮',
-            step_back = 'b',
-            run_last = '▶▶',
-            terminate = '⏹',
-            disconnect = '⏏',
-          },
-        },
-      }
-      vim.keymap.set('n', '<F7>', dapui.toggle, { desc = 'Debug: See last session result.' })
       dap.listeners.after.event_initialized['dapui_config'] = dapui.open
       dap.listeners.before.event_terminated['dapui_config'] = dapui.close
       dap.listeners.before.event_exited['dapui_config'] = dapui.close
