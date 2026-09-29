@@ -122,18 +122,18 @@ return {
 
         strategies = {
           chat = {
-            adapter = 'anthropic',
-            -- adapter = 'gemini',
+            -- adapter = 'anthropic',
+            adapter = 'gemini',
             -- adapter = 'copilot',
           },
           inline = {
-            adapter = 'anthropic',
-            -- adapter = 'gemini',
+            -- adapter = 'anthropic',
+            adapter = 'gemini',
             -- adapter = 'copilot',
           },
           agent = {
-            adapter = 'anthropic',
-            -- adapter = 'gemini',
+            -- adapter = 'anthropic',
+            adapter = 'gemini',
             -- adapter = 'copilot',
           },
         },
@@ -171,9 +171,9 @@ return {
                     -- default = "gemini-2.0-flash",
                     -- default = "gemini-2.5-flash-preview-04-17",
                     -- default = 'gemini-3-pro',
-                    default = 'gemini-3-flash-preview',
-                    flash = 'gemini-3-flash-preview',
-                    pro = 'gemini-3-pro-preview',
+                    default = 'gemini-3.8-flash-preview',
+                    flash = 'gemini-3.8-flash-preview',
+                    pro = 'gemini-3.1-pro-preview',
                   },
                 },
               })
