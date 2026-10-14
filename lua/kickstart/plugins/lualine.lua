@@ -41,8 +41,10 @@ return {
           -- theme = 'modus-vivendi',
           -- theme = '16color',
           globalstatus = true,
-          section_separators = { left = '', right = '' },
-          component_separators = { left = '', right = '' },
+          -- section_separators = { left = '', right = '' },
+          -- component_separators = { left = '', right = '' },
+          section_separators = { left = '', right = '' },
+          component_separators = { left = '', right = '' },
         },
       }
     end,
