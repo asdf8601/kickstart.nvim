@@ -4,6 +4,8 @@ vim.g.maplocalleader = ' '
 -- Set to true if you have a Nerd Font installed and selected in your terminal
 vim.g.have_nerd_font = true
 
+vim.g.loaded_python3_provider = 0
+
 vim.opt.exrc = true
 -- table.insert(vim._so_trails, '/?.dylib')
 vim.opt.secure = true
