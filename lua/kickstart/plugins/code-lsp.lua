@@ -7,6 +7,7 @@ local servers = {
   dockerls = {},
   -- golangci_lint_ls = {},
   gopls = {
+    filetypes = { 'go', 'gomod', 'gowork' },
     settings = {
       gopls = {
         buildFlags = { '-tags=unit,integration' },
@@ -16,9 +17,9 @@ local servers = {
     },
   },
   gotestsum = {},
-  html = { filetypes = { 'html', 'twig', 'hbs' } },
+  html = { filetypes = { 'html', 'twig', 'handlebars' } },
   jsonls = {},
-  jsonnet_ls = {},
+  jsonnet_ls = { filetypes = { 'jsonnet' } },
   -- pyright = {},
   ty = {},
   -- uv = {},
@@ -26,10 +27,10 @@ local servers = {
   ruff = {},
   rust_analyzer = {},
   taplo = {},
-  terraformls = {},
+  terraformls = { filetypes = { 'terraform' } },
   tflint = {},
   ts_ls = {},
-  yamlls = {},
+  yamlls = { filetypes = { 'yaml' } },
   lua_ls = {
     -- cmd = { ... },
     -- filetypes = { ... },
