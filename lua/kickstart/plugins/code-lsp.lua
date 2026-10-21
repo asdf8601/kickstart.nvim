@@ -204,6 +204,17 @@ return {
         vim.lsp.config(server_name, config)
         vim.lsp.enable(server_name)
       end
+
+      -- gopls rejects non-file URIs (fugitive://, diffview://) and errors on didOpen
+      local gopls_root_dir = vim.lsp.config.gopls.root_dir
+      vim.lsp.config('gopls', {
+        root_dir = function(bufnr, on_dir)
+          if vim.api.nvim_buf_get_name(bufnr):match '^%a+://' then
+            return
+          end
+          gopls_root_dir(bufnr, on_dir)
+        end,
+      })
       -- NOTE: Some servers may require an old setup until they are updated.
       -- For the full list refer here:
       -- https://github.com/neovim/nvim-lspconfig/issues/3705
