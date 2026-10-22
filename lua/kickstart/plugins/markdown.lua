@@ -10,35 +10,9 @@ vim.keymap.set('v', '<leader>h', ':<c-u>HSHighlight 2<cr>', { noremap = true, de
 
 return {
   {
-    -- A hackable Markdown, HTML, LaTeX, Typst & YAML previewer for Neovim.
-    -- https://github.com/OXY2DEV/markview.nvim
-    'OXY2DEV/markview.nvim',
-    ft = { 'markdown' },
-    config = function()
-      require('markview').setup {
-        preview = {
-          icon_provider = 'internal', -- "internal", "mini" or "devicons"
-        },
-      }
-      require('markview.extras.editor').setup()
-      require('markview.extras.checkboxes').setup {
-        default = 'X',
-        remove_style = 'disable', -- disable, checkbox, list_item
-        states = {
-          { ' ', '/', 'X' },
-          { '<', '>' },
-          { '?', '!', '*' },
-          { '"' },
-          { 'l', 'b', 'i' },
-          { 'S', 'I' },
-          { 'p', 'c' },
-          { 'f', 'k', 'w' },
-          { 'u', 'd' },
-        },
-      }
-    end,
-    dependencies = {
-      'saghen/blink.cmp',
-    },
+    -- Render markdown in normal mode with treesitter, here and in avante chats
+    'MeanderingProgrammer/render-markdown.nvim',
+    lazy = false, -- an ft trigger makes lazy.nvim re-fire FileType, which starts treesitter twice
+    opts = { file_types = { 'markdown', 'Avante' } },
   },
 }
