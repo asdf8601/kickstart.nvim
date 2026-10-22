@@ -36,6 +36,9 @@ return {
         lualine_b = {
           { 'branch', fmt = shorten_branch },
         },
+        sections = {
+          lualine_x = { vim.lsp.status, 'encoding', 'fileformat', 'filetype' },
+        },
         options = {
           theme = 'auto',
           -- theme = 'modus-vivendi',
