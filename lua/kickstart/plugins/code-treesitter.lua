@@ -63,7 +63,6 @@ return {
       require'nvim-treesitter'.install(filetypes_ensure_installed)
       require('nvim-treesitter.config').setup(opts)
 
-      vim.treesitter.language.register('markdown', 'mdx')
       vim.treesitter.language.register('bash', 'zsh')
 
       vim.api.nvim_create_autocmd('FileType', {
