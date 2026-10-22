@@ -115,6 +115,10 @@ end, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
+-- query macOS appearance (dark/light) now so it runs while plugins load
+local appearance_cmd = { 'defaults', 'read', '-g', 'AppleInterfaceStyle' }
+local appearance_ok, appearance_proc = pcall(vim.system, appearance_cmd, { text = true })
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -141,18 +145,15 @@ require 'asdf8601.openurl'
 require 'asdf8601.skiz'
 require 'asdf8601.lazyreload' -- :LazyReload <plugin>
 
--- detect macOS system appearance (dark/light)
-local appearance_cmd = { 'defaults', 'read', '-g', 'AppleInterfaceStyle' }
-
 local function parse_appearance(obj)
   return (obj.stdout or ''):match 'Dark' and 'dark' or 'light'
 end
 
 local function get_system_appearance()
   local ok, obj = pcall(function()
-    return vim.system(appearance_cmd, { text = true }):wait()
+    return appearance_proc:wait()
   end)
-  if not ok then
+  if not (appearance_ok and ok) then
     return 'light'
   end
   return parse_appearance(obj)
