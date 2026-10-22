@@ -1,0 +1,8 @@
+{
+  "Mermaid": { "prefix": "mer", "body": ["<Mermaid>", "\t$1", "</Mermaid>"] },
+  "Definition list": { "prefix": "dl", "body": ["<dl>", "\t<dt>$1</dt>", "\t<dd>$2</dd>", "</dl>"] },
+  "Definition term": { "prefix": "dt", "body": ["<dt>$1</dt>", "<dd>$2</dd>"] },
+  "Grid item": { "prefix": "gi", "body": ["<GridItem cols={1}>", "\t$1", "</GridItem>"] },
+  "Grid": { "prefix": "gr", "body": ["<Grid cols={2}>", "\t$1", "</Grid>"] },
+  "Card": { "prefix": "card", "body": ["<Card>", "\t$1", "</Card>"] }
+}

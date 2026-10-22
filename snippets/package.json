@@ -1,0 +1,6 @@
+{
+  "name": "personal-snippets",
+  "contributes": {
+    "snippets": [{ "language": ["mdx", "astro"], "path": "./mdx.json" }]
+  }
+}

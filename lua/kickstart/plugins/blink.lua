@@ -1,18 +1,3 @@
-local build_snippets = function()
-  local ls = require('luasnip')
-  local ps = ls.parser.parse_snippet
-  ls.filetype_extend("mdx",   { "md" })
-  ls.filetype_extend("astro", { "md" })
-
-  ls.add_snippets("md", { ps("mer", "<Mermaid>\n\t$1\n</Mermaid>") })
-  ls.add_snippets("md", { ps("dl", "<dl>\n\t<dt>$1</dt>\n\t<dd>$2</dd>\n</dl>") })
-  ls.add_snippets("md", { ps("dt", "<dt>$1</dt>\n<dd>$2</dd>") })
-  ls.add_snippets("md", { ps("gi", "<GridItem cols={1}>\n\t$1\n</GridItem>") })
-  ls.add_snippets("md", { ps("gr", "<Grid cols={2}>\n\t$1\n</Grid>") })
-  ls.add_snippets("md", { ps("card", "<Card>\n\t$1\n</Card>") })
-end
-
-
 return {
   { -- Autocompletion
     'saghen/blink.cmp',
@@ -20,18 +5,6 @@ return {
     version = '1.*',
     optional = true,
     dependencies = {
-      {
-        'L3MON4D3/LuaSnip',
-        version = 'v2.*',
-        opts = {
-            history = true,
-            delete_check_events = 'TextChanged',
-        },
-        config = function (_, opts)
-          require('luasnip').setup(opts)
-          build_snippets()
-        end,
-      },
       'fang2hou/blink-copilot',
       'Kaiser-Yang/blink-cmp-avante',
       'disrupted/blink-cmp-conventional-commits',
@@ -127,7 +100,7 @@ return {
           },
         },
       },
-      snippets = { preset = 'luasnip' },
+      snippets = { preset = 'default' },
       fuzzy = {
         -- implementation = 'lua'
         -- implementation = 'prefer_rust',
