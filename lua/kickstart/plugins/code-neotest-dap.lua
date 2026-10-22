@@ -335,6 +335,7 @@ return {
     config = function()
       local dap = require 'dap'
       local dapui = require 'dapui'
+      require('overseer').enable_dap()
       require('mason-nvim-dap').setup {
         automatic_setup = true,
         handlers = {},
