@@ -37,6 +37,7 @@ return {
   {
     -- TODO: why?????
     'windwp/nvim-ts-autotag',
+    ft = { 'html', 'xml', 'javascriptreact', 'typescriptreact', 'vue', 'svelte', 'astro', 'mdx' },
     config = function()
       require('nvim-ts-autotag').setup()
     end,
