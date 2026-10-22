@@ -14,7 +14,9 @@ local function bigfile_disable(buf)
 end
 
 local function bigfile_disable_highlight(buf)
-  if not vim.api.nvim_buf_is_valid(buf) then return end
+  if not vim.api.nvim_buf_is_valid(buf) then
+    return
+  end
   pcall(vim.treesitter.stop, buf)
   vim.bo[buf].syntax = 'off'
   vim.api.nvim_buf_call(buf, function()
@@ -28,7 +30,9 @@ vim.api.nvim_create_autocmd('BufReadPre', {
   desc = 'Disable heavy features for big files',
   callback = function(args)
     local size = vim.fn.getfsize(vim.api.nvim_buf_get_name(args.buf))
-    if size > bigfile_size then bigfile_disable(args.buf) end
+    if size > bigfile_size then
+      bigfile_disable(args.buf)
+    end
   end,
 })
 
@@ -36,7 +40,9 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   group = bigfile_group,
   desc = 'Disable heavy features for files with very long lines',
   callback = function(args)
-    if vim.b[args.buf].bigfile then return end
+    if vim.b[args.buf].bigfile then
+      return
+    end
     for _, line in ipairs(vim.api.nvim_buf_get_lines(args.buf, 0, 50, false)) do
       if #line > bigfile_line_len then
         bigfile_disable(args.buf)
@@ -51,7 +57,11 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 vim.api.nvim_create_autocmd({ 'FileType', 'BufWinEnter' }, {
   group = bigfile_group,
   callback = function(args)
-    if vim.b[args.buf].bigfile then vim.schedule(function() bigfile_disable_highlight(args.buf) end) end
+    if vim.b[args.buf].bigfile then
+      vim.schedule(function()
+        bigfile_disable_highlight(args.buf)
+      end)
+    end
   end,
 })
 

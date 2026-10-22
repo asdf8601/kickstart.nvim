@@ -2,16 +2,15 @@ vim.g.openurl_command = 'open'
 
 function GetVisual(mode)
   local data
-  local _, ls, cs = unpack(vim.fn.getpos('v'))
-  local _, le, ce = unpack(vim.fn.getpos('.'))
+  local _, ls, cs = unpack(vim.fn.getpos 'v')
+  local _, le, ce = unpack(vim.fn.getpos '.')
   if mode == 'V' then
-      data = vim.api.nvim_buf_get_lines(0, ls-1, le-1, false)
+    data = vim.api.nvim_buf_get_lines(0, ls - 1, le - 1, false)
   else
-      data = vim.api.nvim_buf_get_text(0, ls-1, cs-1, le-1, ce, {})
+    data = vim.api.nvim_buf_get_text(0, ls - 1, cs - 1, le - 1, ce, {})
   end
   return table.concat(data, '\\n')
 end
-
 
 function OpenUrl()
   local mode = vim.fn.mode()
@@ -24,12 +23,12 @@ function OpenUrl()
   if mode == 'v' or mode == 'V' then
     text = GetVisual(mode)
   else
-    text = vim.fn.expand('<cWORD>')
+    text = vim.fn.expand '<cWORD>'
   end
 
   -- chek if it is a url
   -- https://google.com
-  if text:match('https?://') then
+  if text:match 'https?://' then
     url = string.match(text, 'https?://[%w-_%.%?%.:/%+=&]+[^ >"\',;`]*')
     cmd = vim.g.openurl_command .. ' "' .. url .. '" &'
     out = vim.fn.system(cmd)
@@ -43,7 +42,5 @@ function OpenUrl()
   return out
 end
 
-
 vim.keymap.set('n', '<leader>xo', OpenUrl, { noremap = true, silent = true })
 vim.keymap.set('v', '<leader>xo', OpenUrl, { noremap = true, silent = false })
-

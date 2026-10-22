@@ -2,17 +2,17 @@
 function Skiz(args)
   local name = args.fargs[1]
   if name ~= nil then
-    name = vim.fn.join({"-n", name}, " ")
+    name = vim.fn.join({ '-n', name }, ' ')
   else
-    name = ""
+    name = ''
   end
   local ext = args.fargs[2]
   if ext ~= nil then
-    ext = vim.fn.join({"-e", ext}, " ")
+    ext = vim.fn.join({ '-e', ext }, ' ')
   else
-    ext = ""
+    ext = ''
   end
-  local cmd = vim.fn.join({'skiz', name, ext}, " ")
+  local cmd = vim.fn.join({ 'skiz', name, ext }, ' ')
   local output = vim.fn.system(cmd)
   vim.cmd('e ' .. output)
 end
@@ -26,7 +26,7 @@ function CreateScratch()
   if vim.fn.isdirectory(parent) == 0 then
     vim.fn.mkdir(parent, 'p')
   end
-  local fpath = vim.fn.input('Enter filename or extension (.py): ') or '.py'
+  local fpath = vim.fn.input 'Enter filename or extension (.py): ' or '.py'
   local fname_ext = vim.split(fpath, '.', { plain = true })
   local fname = fname_ext[1]
   local ext = '.' .. fname_ext[2]

@@ -195,17 +195,13 @@ set_theme(get_system_appearance())
 
 -- poll every 30s for system appearance changes
 local theme_timer = vim.uv.new_timer()
-theme_timer:start(
-  30000,
-  30000,
-  function()
-    get_system_appearance_async(function(mode)
-      if mode ~= vim.o.background then
-        set_theme(mode)
-      end
-    end)
-  end
-)
+theme_timer:start(30000, 30000, function()
+  get_system_appearance_async(function(mode)
+    if mode ~= vim.o.background then
+      set_theme(mode)
+    end
+  end)
+end)
 
 -- manual toggle: <leader>tb
 vim.keymap.set('n', '<leader>tb', function()

@@ -60,7 +60,7 @@ return {
     },
     config = function(_, opts)
       -- require('nvim-tresitter').setup()
-      require'nvim-treesitter'.install(filetypes_ensure_installed)
+      require('nvim-treesitter').install(filetypes_ensure_installed)
       require('nvim-treesitter.config').setup(opts)
 
       vim.treesitter.language.register('bash', 'zsh')

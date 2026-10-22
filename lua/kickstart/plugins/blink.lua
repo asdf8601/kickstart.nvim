@@ -21,7 +21,7 @@ return {
       },
       keymap = {
         preset = 'default',
-        ['<C-k>'] = { 'fallback' },  -- Permite que Neovim maneje el keybind normalmente
+        ['<C-k>'] = { 'fallback' }, -- Permite que Neovim maneje el keybind normalmente
         -- Tab and Shift-Tab always insert a tab. The default preset binds them to
         -- snippet_forward/backward, which jump into placeholders of snippets
         -- expanded earlier.
@@ -29,7 +29,11 @@ return {
         ['<S-Tab>'] = { 'fallback' },
         -- ['<C-k>'] = nil,
         -- ['<C-q>'] = { function(cmp) cmp.show { providers = { 'jira' } } end, },
-        ['<C-g>'] = { function(cmp) cmp.show { providers = { 'copilot' } } end },
+        ['<C-g>'] = {
+          function(cmp)
+            cmp.show { providers = { 'copilot' } }
+          end,
+        },
       },
       sources = {
         default = { 'snippets', 'lsp', 'path', 'buffer' },
@@ -45,10 +49,12 @@ return {
             async = true,
             opts = {
               -- solo el buffer actual (no todos los visibles)
-              get_bufnrs = function() return { vim.api.nvim_get_current_buf() } end,
+              get_bufnrs = function()
+                return { vim.api.nvim_get_current_buf() }
+              end,
               -- corta tamaños grandes
-              max_total_buffer_size = 200000,  -- 200KB
-              max_async_buffer_size = 150000,  -- por buffer
+              max_total_buffer_size = 200000, -- 200KB
+              max_async_buffer_size = 150000, -- por buffer
               use_cache = true,
             },
           },

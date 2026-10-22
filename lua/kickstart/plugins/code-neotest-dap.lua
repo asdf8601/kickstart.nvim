@@ -279,7 +279,6 @@ return {
           build_flags = '',
         },
       }
-
     end,
   },
 
@@ -340,7 +339,6 @@ return {
           'delve',
         },
       }
-
 
       dap.listeners.after.event_initialized['dapui_config'] = dapui.open
       dap.listeners.before.event_terminated['dapui_config'] = dapui.close
