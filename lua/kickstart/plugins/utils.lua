@@ -55,6 +55,11 @@ vim.api.nvim_create_autocmd({ 'FileType', 'BufWinEnter' }, {
   end,
 })
 
+vim.keymap.set('n', '<leader>u', function()
+  vim.cmd.packadd 'nvim.undotree'
+  require('undotree').open()
+end, { desc = 'Open/close UndoTree' })
+
 return {
   -- 'tpope/vim-unimpaired',
   'junegunn/vim-easy-align',
@@ -88,12 +93,6 @@ return {
         -- Configuration here, or leave empty to use defaults
       }
     end,
-  },
-
-  {
-    'mbbill/undotree',
-    cmd = 'UndotreeToggle',
-    keys = { { '<leader>u', ':UndotreeToggle<CR>', noremap = true, desc = 'Open/close UndoTree' } },
   },
 
   {
