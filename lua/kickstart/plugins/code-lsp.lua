@@ -63,33 +63,6 @@ end, { noremap = true, desc = 'Go to Previous Diagnostic' })
 
 return {
   {
-    -- A Neovim plugin that display prettier diagnostic messages. Display one
-    -- line diagnostic messages where the cursor is, with icons and colors.
-    -- https://github.com/rachartier/tiny-inline-diagnostic.nvim
-    'rachartier/tiny-inline-diagnostic.nvim',
-    event = 'VeryLazy', -- Or `LspAttach`
-    priority = 1000, -- needs to be loaded in first
-    config = function()
-      require('tiny-inline-diagnostic').setup {
-        -- Style preset for diagnostic messages
-        -- Available options:
-        -- "modern", "classic", "minimal", "powerline",
-        -- "ghost", "simple", "nonerdfont", "amongus"
-        preset = 'nonerdfont',
-        -- Configuration for breaking long messages into separate lines
-        options = {
-          break_line = {
-            -- Enable the feature to break messages after a specific length
-            enabled = true,
-            -- Number of characters after which to break the line
-            after = 30,
-          },
-        },
-      }
-      vim.diagnostic.config { virtual_text = false } -- Only if needed in your configuration, if you already have native LSP diagnostics
-    end,
-  },
-  {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
     'folke/lazydev.nvim',
@@ -181,6 +154,8 @@ return {
 
       vim.diagnostic.config {
         severity_sort = true,
+        virtual_text = false,
+        virtual_lines = { current_line = true },
         float = { border = 'rounded', source = 'if_many' },
         underline = { severity = vim.diagnostic.severity.ERROR },
         signs = vim.g.have_nerd_font and {
