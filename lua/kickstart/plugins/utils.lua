@@ -60,6 +60,15 @@ vim.keymap.set('n', '<leader>u', function()
   require('undotree').open()
 end, { desc = 'Open/close UndoTree' })
 
+-- :Cfilter and :Lfilter for quickfix and location lists
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'qf',
+  once = true,
+  callback = function()
+    vim.cmd.packadd 'cfilter'
+  end,
+})
+
 return {
   -- 'tpope/vim-unimpaired',
   'junegunn/vim-easy-align',
@@ -110,20 +119,6 @@ return {
     'stevearc/overseer.nvim',
     opts = { dap = false },
     event = 'VeryLazy',
-  },
-
-  {
-    -- better quickfix
-    'kevinhwang91/nvim-bqf',
-    dependencies = {
-      'junegunn/fzf',
-      -- config = function() vim.fn['fzf#install']() end,
-    },
-    opts = {
-      preview = {
-        auto_preview = false,
-      },
-    },
   },
 
   {
