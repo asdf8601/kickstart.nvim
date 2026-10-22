@@ -33,10 +33,8 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     init = function()
       require('lualine').setup {
-        lualine_b = {
-          { 'branch', fmt = shorten_branch },
-        },
         sections = {
+          lualine_b = { { 'branch', fmt = shorten_branch }, 'diff', 'diagnostics' },
           lualine_x = { vim.lsp.status, 'encoding', 'fileformat', 'filetype' },
         },
         options = {
