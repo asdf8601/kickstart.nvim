@@ -158,11 +158,4 @@ return {
       slime_use_neovim()
     end,
   },
-  {
-    'goerz/jupytext.vim',
-    lazy = false,
-    config = function()
-      vim.g.jupytext_fmt = 'py:percent'
-    end,
-  },
 }

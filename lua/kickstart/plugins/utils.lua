@@ -57,10 +57,8 @@ vim.api.nvim_create_autocmd({ 'FileType', 'BufWinEnter' }, {
 
 return {
   -- 'tpope/vim-unimpaired',
-  { 'folke/zen-mode.nvim', cmd = 'ZenMode' },
   'junegunn/vim-easy-align',
   { 'szw/vim-maximizer', cmd = 'MaximizerToggle' },
-  'tpope/vim-dispatch',
   'tpope/vim-repeat', -- better repeat
   'tpope/vim-sleuth',
   'tpope/vim-speeddating',

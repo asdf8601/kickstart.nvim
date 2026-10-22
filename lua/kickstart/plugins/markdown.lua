@@ -5,12 +5,10 @@ vim.keymap.set('n', '<leader>t<space>', ':s/\\[x\\]/[ ]/<cr>', { noremap = true,
 vim.keymap.set('n', '<leader>tc', 'I- [ ] <esc>', { noremap = true, desc = 'append empty checkbox in markdown' })
 vim.keymap.set('n', '<leader>m', ':MaximizerToggle<cr>', { noremap = true, desc = 'Maximize current window' })
 
-vim.keymap.set('n', '<leader>zz', '<cmd>ZenMode<cr>', { noremap = true, desc = 'ZenMode toggle' })
 vim.keymap.set('v', '<leader>h', ':<c-u>HSHighlight 2<cr>', { noremap = true, desc = 'high-str' })
 -- vim.keymap.set("n", "<leader>h", ":<c-u>HSHighlight 2<cr>", {noremap = true, desc = 'high-str'})
 
 return {
-  'mzlogin/vim-markdown-toc',
   {
     -- A hackable Markdown, HTML, LaTeX, Typst & YAML previewer for Neovim.
     -- https://github.com/OXY2DEV/markview.nvim

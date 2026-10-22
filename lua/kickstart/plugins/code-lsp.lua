@@ -62,7 +62,6 @@ vim.keymap.set('n', '<leader>dp', function()
 end, { noremap = true, desc = 'Go to Previous Diagnostic' })
 
 return {
-  { 'stevanmilic/nvim-lspimport' },
   {
     -- A Neovim plugin that display prettier diagnostic messages. Display one
     -- line diagnostic messages where the cursor is, with icons and colors.
