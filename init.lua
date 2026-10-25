@@ -144,6 +144,7 @@ require 'asdf8601.rwsh' -- read and write selection using sh
 require 'asdf8601.openurl'
 require 'asdf8601.skiz'
 require 'asdf8601.lazyreload' -- :LazyReload <plugin>
+require 'asdf8601.sr' -- gh sr: :SimpleReview open <N>, review a PR as suggestions
 
 local function parse_appearance(obj)
   return (obj.stdout or ''):match 'Dark' and 'dark' or 'light'

@@ -1,10 +1,18 @@
 -- Go is handled here by gopls instead of conform: goimports costs ~2s whenever its module
 -- index goes cold, while gopls already holds the module in memory and answers in ~100ms.
 -- One autocmd owns both halves, imports and formatting, so Go never straddles two mechanisms.
+-- In a `gh sr` PR worktree every edit becomes a review suggestion, so a reformat would post noise.
+local function in_pr_worktree(bufnr)
+  return vim.api.nvim_buf_get_name(bufnr):find '/%.worktree/pr%-%d+/' ~= nil
+end
+
 vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = '*.go',
   group = vim.api.nvim_create_augroup('go_format_on_save', { clear = true }),
   callback = function(args)
+    if in_pr_worktree(args.buf) then
+      return
+    end
     local clients = vim.lsp.get_clients { bufnr = args.buf, name = 'gopls' }
     if #clients == 0 then
       vim.notify('gopls not attached: saved without formatting', vim.log.levels.WARN)
@@ -63,7 +71,7 @@ return {
       notify_on_error = true,
       format_on_save = function(bufnr)
         -- go is owned by the gopls autocmd at the top of this file
-        if vim.bo[bufnr].filetype == 'go' then
+        if vim.bo[bufnr].filetype == 'go' or in_pr_worktree(bufnr) then
           return nil
         end
         return { lsp_format = 'fallback', timeout_ms = 500 }
